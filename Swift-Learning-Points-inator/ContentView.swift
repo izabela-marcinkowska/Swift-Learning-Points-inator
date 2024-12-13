@@ -13,10 +13,13 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
         List(tasks) { task in
+            NavigationLink (destination: DetailTaskView(task: task)) {
+                
             HStack {
                 Text(task.name)
                 Spacer()
                 Text("\(task.points)")
+            }
             }
         }
         .navigationTitle("Tasks")
