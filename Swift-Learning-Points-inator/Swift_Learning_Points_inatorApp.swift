@@ -6,12 +6,14 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct Swift_Learning_Points_inatorApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .modelContainer(for: [User.self, Task.self])
         }
     }
 }
