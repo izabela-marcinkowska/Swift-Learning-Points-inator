@@ -11,11 +11,22 @@ import SwiftData
 struct ContentView: View {
     @Query private var tasks: [Task]
     var body: some View {
+        NavigationStack {
         List(tasks) { task in
-            VStack {
-            Text(task.name)
-            Text("\(task.points)")
+            HStack {
+                Text(task.name)
+                Spacer()
+                Text("\(task.points)")
             }
+        }
+        .navigationTitle("Tasks")
+        .toolbar {
+            Button {
+                
+            } label: {
+                Image(systemName: "plus")
+            }
+        }
         }
     }
 }
