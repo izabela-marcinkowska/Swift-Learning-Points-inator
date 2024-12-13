@@ -21,5 +21,22 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let container = try! ModelContainer(for: Task.self, User.self, configurations: config)
+    
+    // Insert sample data
+    let modelContext = container.mainContext
+    let sampleTasks = [
+        Task(name: "Learn SwiftUI Animations", points: 60),
+        Task(name: "Master SwiftData Basics", points: 80),
+        Task(name: "Build Custom Views", points: 45),
+        Task(name: "Implement Error Handling", points: 70)
+    ]
+    
+    sampleTasks.forEach { task in
+        modelContext.insert(task)
+    }
+    
+    return ContentView()
+        .modelContainer(container)
 }
