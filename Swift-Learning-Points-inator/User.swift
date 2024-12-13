@@ -22,16 +22,16 @@ class User {
 }
 
 @Model
-class Task {
+class Task: Identifiable {
     var id: UUID
     var name: String
     var points: Int
-    var isDone: Bool
+    var isCompleted: Bool
     
-    init(id: UUID, name: String, points: Int, isDone: Bool) {
+    init(id: UUID = UUID(), name: String, points: Int, isCompleted: Bool = false) {
         self.id = id
         self.name = name
         self.points = points
-        self.isDone = isDone
+        self.isCompleted = isCompleted
     }
 }

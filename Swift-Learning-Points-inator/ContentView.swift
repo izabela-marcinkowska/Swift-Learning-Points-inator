@@ -6,16 +6,17 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct ContentView: View {
+    @Query private var tasks: [Task]
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        List(tasks) { task in
+            VStack {
+            Text(task.name)
+            Text("\(task.points)")
+            }
         }
-        .padding()
     }
 }
 
