@@ -10,6 +10,8 @@ import SwiftData
 
 struct ContentView: View {
     @Query private var tasks: [Task]
+    @State private var showingSheet = false
+    
     var body: some View {
         NavigationStack {
         List(tasks) { task in
@@ -25,11 +27,14 @@ struct ContentView: View {
         .navigationTitle("Tasks")
         .toolbar {
             Button {
-                
+                showingSheet.toggle()
             } label: {
                 Image(systemName: "plus")
             }
         }
+        .sheet(isPresented: $showingSheet) {
+            AddNewTaskView()
+                }
         }
     }
 }

@@ -9,12 +9,17 @@ import SwiftUI
 import SwiftData
 
 struct AddNewTaskView: View {
-    @Bindable var task: Task
+    @Environment(\.modelContext) var modelContext
+    @Environment(\.dismiss) var dismiss
+    
+    @State var title = ""
+    @State var points = 0
+    
     var body: some View {
         NavigationStack {
             Form {
                 Section {
-                    TextField("Title", text: $task.name)
+                    TextField("Title", text: $title)
                 } header: {
                     Text("Title")
                 } footer: {
@@ -22,7 +27,7 @@ struct AddNewTaskView: View {
                 }
                 
                 Section {
-                    TextField("Points", value: $task.points, format: .number)
+                    TextField("Points", value: $points, format: .number)
                 } header: {
                     Text("Points")
                 } footer: {
@@ -30,11 +35,16 @@ struct AddNewTaskView: View {
                 }
             }
             .navigationTitle("Add new task")
+            .toolbar {
+                Button("Save") {
+                    let newTask = Task(name: title, points: points)
+                    modelContext.insert(newTask)
+                    dismiss()
+                }
+            }
         }
     }
 }
 
 #Preview {
-    AddNewTaskView(task: Task(name: "Just random title", points: 75))
-        .modelContainer(for: [Task.self, User.self], inMemory: true)
 }
