@@ -39,6 +39,7 @@ struct AddNewTaskView: View {
                 Button("Save") {
                     let newTask = Task(name: title, points: points)
                     modelContext.insert(newTask)
+                    try? modelContext.save()
                     dismiss()
                 }
             }
