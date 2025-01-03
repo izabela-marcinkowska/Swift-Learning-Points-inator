@@ -15,6 +15,10 @@ struct AddNewTaskView: View {
     @State var title = ""
     @State var points = 0
     
+    private var isFormValid: Bool {
+            !title.trimmingCharacters(in: .whitespaces).isEmpty && points >= 0
+        }
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -42,6 +46,7 @@ struct AddNewTaskView: View {
                     try? modelContext.save()
                     dismiss()
                 }
+                .disabled(!isFormValid)
             }
         }
     }
