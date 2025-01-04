@@ -40,13 +40,20 @@ struct AddNewTaskView: View {
             }
             .navigationTitle("Add new task")
             .toolbar {
-                Button("Save") {
-                    let newTask = Task(name: title, points: points)
-                    modelContext.insert(newTask)
-                    try? modelContext.save()
-                    dismiss()
+                ToolbarItem (placement: .topBarLeading) {
+                    Button("Cancel") {
+                        dismiss()
+                    }
                 }
-                .disabled(!isFormValid)
+                ToolbarItem {
+                    Button("Save") {
+                        let newTask = Task(name: title, points: points)
+                        modelContext.insert(newTask)
+                        try? modelContext.save()
+                        dismiss()
+                    }
+                    .disabled(!isFormValid)
+                }
             }
         }
     }
