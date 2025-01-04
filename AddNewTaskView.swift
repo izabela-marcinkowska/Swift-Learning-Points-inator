@@ -16,8 +16,8 @@ struct AddNewTaskView: View {
     @State var points = 0
     
     private var isFormValid: Bool {
-            !title.trimmingCharacters(in: .whitespaces).isEmpty && points >= 0
-        }
+        !title.trimmingCharacters(in: .whitespaces).isEmpty && points >= 0
+    }
     
     var body: some View {
         NavigationStack {

@@ -11,30 +11,43 @@ import SwiftData
 struct ContentView: View {
     @Query private var tasks: [Task]
     @State private var showingSheet = false
+    @Environment(\.modelContext) var modelContext
+    
+    func deleteTask(at offsets: IndexSet) {
+        for offset in offsets {
+            // Find the book in the query using the offset
+            let task = tasks[offset]
+            
+            // Delete the book from the model context
+            modelContext.delete(task)
+        }
+    }
     
     var body: some View {
         NavigationStack {
-        List(tasks) { task in
-            NavigationLink (destination: DetailTaskView(task: task)) {
-                
-            HStack {
-                Text(task.name)
-                Spacer()
-                Text("\(task.points)")
-            }
-            }
-        }
-        .navigationTitle("Tasks")
-        .toolbar {
-            Button {
-                showingSheet.toggle()
-            } label: {
-                Image(systemName: "plus")
-            }
-        }
-        .sheet(isPresented: $showingSheet) {
-            AddNewTaskView()
+            List {
+                ForEach(tasks) { task in
+                    NavigationLink(destination: DetailTaskView(task: task)) {
+                        HStack {
+                            Text(task.name)
+                            Spacer()
+                            Text("\(task.points)")
+                        }
+                    }
                 }
+                .onDelete(perform: deleteTask)
+            }
+            .navigationTitle("Tasks")
+            .toolbar {
+                Button {
+                    showingSheet.toggle()
+                } label: {
+                    Image(systemName: "plus")
+                }
+            }
+            .sheet(isPresented: $showingSheet) {
+                AddNewTaskView()
+            }
         }
     }
 }
