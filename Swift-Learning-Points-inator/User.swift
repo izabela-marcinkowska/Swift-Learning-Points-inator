@@ -13,11 +13,22 @@ class User {
     var name: String
     var points: Int
     var streak: Int
+    var lastStreakDate: Date?
     
-    init(name: String = "", points: Int = 0, streak: Int = 0) {
+    init(name: String = "", points: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil) {
         self.name = name
         self.points = points
         self.streak = streak
+        self.lastStreakDate = lastStreakDate
+    }
+}
+
+extension User {
+    func checkStreakStatus() -> Bool {
+        guard let lastDate = lastStreakDate else {
+            return false
+        }
+        return Calendar.current.isDate(lastDate, inSameDayAs: Date())
     }
 }
 
