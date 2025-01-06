@@ -11,9 +11,14 @@ import SwiftData
 struct TaskFormView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
+    let task: Task?
     
     @State var title = ""
     @State var points = 0
+    
+    init(task: Task? = nil) {
+        self.task = task
+    }
     
     private var isFormValid: Bool {
         !title.trimmingCharacters(in: .whitespaces).isEmpty && points >= 0
@@ -38,7 +43,13 @@ struct TaskFormView: View {
                     Text("How many points is this task worth?")
                 }
             }
-            .navigationTitle("Add new task")
+            .navigationTitle(task == nil ? "Add new task" : "Edit task")
+            .onAppear {
+                if let task = task {
+                    title = task.name
+                    points = task.points
+                }
+            }
             .toolbar {
                 ToolbarItem (placement: .topBarLeading) {
                     Button("Cancel") {
@@ -46,10 +57,16 @@ struct TaskFormView: View {
                     }
                 }
                 ToolbarItem {
-                    Button("Save") {
-                        let newTask = Task(name: title, points: points)
-                        modelContext.insert(newTask)
-                        try? modelContext.save()
+                    Button(task == nil ? "Add" : "Update") {
+                        if let existingTask = task {
+                            existingTask.name = title
+                            existingTask.points = points
+                            try? modelContext.save()
+                        } else {
+                            let newTask = Task(name: title, points: points)
+                            modelContext.insert(newTask)
+                            try? modelContext.save()                            
+                        }
                         dismiss()
                     }
                     .disabled(!isFormValid)

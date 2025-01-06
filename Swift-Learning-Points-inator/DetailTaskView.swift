@@ -12,6 +12,7 @@ import SwiftData
 
 struct DetailTaskView: View {
     @Bindable var task: Task
+    @State private var showingEditSheet = false
     
     var body: some View {
         VStack {
@@ -32,9 +33,12 @@ struct DetailTaskView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Edit") {
-                    
+                    showingEditSheet = true
                 }
             }
+        }
+        .sheet(isPresented: $showingEditSheet) {
+            TaskFormView(task: task)
         }
     }
 }
