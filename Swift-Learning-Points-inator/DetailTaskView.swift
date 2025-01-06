@@ -20,6 +20,7 @@ struct DetailTaskView: View {
             Text(task.name)
                 .font(.largeTitle)
                 .multilineTextAlignment(.center)
+            Text("Task is \(task.isCompleted ? "completed" : "not completed")")
             Spacer()
             VStack(spacing: 20) {
                 Text("Points:")
@@ -28,6 +29,9 @@ struct DetailTaskView: View {
                     .font(.largeTitle)
             }
             Spacer()
+            Button ("Mark as \(task.isCompleted ? "not completed" : "completed")") {
+                task.isCompleted.toggle()
+            }
             Spacer()
         }
         .toolbar {
