@@ -8,14 +8,24 @@
 import SwiftUI
 import SwiftData
 
+
+
 struct DetailTaskView: View {
     @Bindable var task: Task
+    
     var body: some View {
         VStack {
-        Text("This is my task:")
-        Text(task.name)
-            Text("Points: \(task.points)")
+            Spacer()
+            VStack(spacing: 20) {
+                Text("Points:")
+                    .font(.title2)
+                Text("\(task.points)")
+                    .font(.largeTitle)
+            }
+            Spacer()
+            Spacer()
         }
+        .navigationBarTitle(task.name)
     }
 }
 
