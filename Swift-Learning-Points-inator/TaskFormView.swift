@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct AddNewTaskView: View {
+struct TaskFormView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     

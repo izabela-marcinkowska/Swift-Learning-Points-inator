@@ -16,6 +16,10 @@ struct DetailTaskView: View {
     var body: some View {
         VStack {
             Spacer()
+            Text(task.name)
+                .font(.largeTitle)
+                .multilineTextAlignment(.center)
+            Spacer()
             VStack(spacing: 20) {
                 Text("Points:")
                     .font(.title2)
@@ -25,10 +29,11 @@ struct DetailTaskView: View {
             Spacer()
             Spacer()
         }
-        .navigationBarTitle(task.name)
         .toolbar {
-            Button("Edit") {
-                
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Edit") {
+                    
+                }
             }
         }
     }

@@ -13,10 +13,6 @@ struct ContentView: View {
     @State private var showingSheet = false
     @Environment(\.modelContext) var modelContext
     
-    init() {
-        UILabel.appearance(whenContainedInInstancesOf: [UINavigationBar.self]).adjustsFontSizeToFitWidth = true
-    }
-    
     func deleteTask(at offsets: IndexSet) {
         for offset in offsets {
             // Find the book in the query using the offset
@@ -50,7 +46,7 @@ struct ContentView: View {
                 }
             }
             .sheet(isPresented: $showingSheet) {
-                AddNewTaskView()
+                TaskFormView()
             }
         }
     }
