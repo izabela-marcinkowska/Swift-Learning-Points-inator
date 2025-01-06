@@ -26,10 +26,17 @@ struct DetailTaskView: View {
             Spacer()
         }
         .navigationBarTitle(task.name)
+        .toolbar {
+            Button("Edit") {
+                
+            }
+        }
     }
 }
 
 #Preview {
-    DetailTaskView(task: Task(name: "Just random example", points: 75))
-        .modelContainer(for: [Task.self, User.self], inMemory: true)
+    NavigationStack {
+        DetailTaskView(task: Task(name: "Just random example", points: 75))
+    }
+    .modelContainer(for: [Task.self, User.self], inMemory: true)
 }
