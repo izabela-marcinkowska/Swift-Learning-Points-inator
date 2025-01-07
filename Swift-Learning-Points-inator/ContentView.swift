@@ -29,9 +29,18 @@ struct ContentView: View {
                 ForEach(tasks) { task in
                     NavigationLink(destination: DetailTaskView(task: task)) {
                         HStack {
-                            Text(task.name)
+                            VStack (alignment: .leading) {
+                                Text(task.name)
+                                Button("\(task.isCompleted ? "Not completed" : "Completed")") {
+                                    task.isCompleted.toggle()
+                                }
+                                .buttonStyle(.borderless)
+                            }
                             Spacer()
-                            Text("\(task.points)")
+                            VStack {
+                                
+                                Text("\(task.points)")
+                            }
                         }
                     }
                 }
