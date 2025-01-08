@@ -26,25 +26,61 @@ struct ContentView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(tasks) { task in
-                    NavigationLink(destination: DetailTaskView(task: task)) {
-                        HStack {
-                            VStack (alignment: .leading) {
-                                Text(task.name)
-                                Button("\(task.isCompleted ? "Not completed" : "Completed")") {
-                                    task.isCompleted.toggle()
+                Section ("Uncomplete tasks") {
+                    ForEach(tasks) { task in
+                        if (!task.isCompleted) {
+                            NavigationLink(
+                                destination: DetailTaskView(task: task)
+                            ) {
+                                HStack {
+                                    VStack (alignment: .leading) {
+                                        Text(task.name)
+                                        Button(
+                                            "\(task.isCompleted ? "Not completed" : "Completed")"
+                                        ) {
+                                            task.isCompleted.toggle()
+                                        }
+                                        .buttonStyle(.borderless)
+                                    }
+                                    Spacer()
+                                    VStack {
+                                        
+                                        Text("\(task.points)")
+                                    }
                                 }
-                                .buttonStyle(.borderless)
-                            }
-                            Spacer()
-                            VStack {
-                                
-                                Text("\(task.points)")
                             }
                         }
                     }
+                    .onDelete(perform: deleteTask)
                 }
-                .onDelete(perform: deleteTask)
+                
+                Section ("Complated tasks") {
+                    ForEach(tasks) { task in
+                        if (task.isCompleted) {
+                            NavigationLink(
+                                destination: DetailTaskView(task: task)
+                            ) {
+                                HStack {
+                                    VStack (alignment: .leading) {
+                                        Text(task.name)
+                                        Button(
+                                            "\(task.isCompleted ? "Not completed" : "Completed")"
+                                        ) {
+                                            task.isCompleted.toggle()
+                                        }
+                                        .buttonStyle(.borderless)
+                                    }
+                                    Spacer()
+                                    VStack {
+                                        
+                                        Text("\(task.points)")
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    .onDelete(perform: deleteTask)
+                }
             }
             .navigationTitle("Tasks")
             .toolbar {
@@ -63,7 +99,11 @@ struct ContentView: View {
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(for: Task.self, User.self, configurations: config)
+    let container = try! ModelContainer(
+        for: Task.self,
+        User.self,
+        configurations: config
+    )
     
     // Insert sample data
     let modelContext = container.mainContext
