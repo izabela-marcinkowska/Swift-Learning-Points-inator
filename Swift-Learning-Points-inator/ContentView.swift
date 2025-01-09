@@ -84,10 +84,19 @@ struct ContentView: View {
             }
             .navigationTitle("Tasks")
             .toolbar {
-                Button {
-                    showingSheet.toggle()
-                } label: {
-                    Image(systemName: "plus")
+                ToolbarItem (placement: .topBarLeading) {
+                    NavigationLink {
+                        UserView()
+                    } label: {
+                        Image(systemName: "person")
+                    }
+                }
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingSheet.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
             }
             .sheet(isPresented: $showingSheet) {

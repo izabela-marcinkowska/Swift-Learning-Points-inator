@@ -34,10 +34,19 @@ struct Swift_Learning_Points_inatorApp: App {
                 
                 try modelContext.save()
             }
+            let userDescriptor = FetchDescriptor<User>()
+            let existingUserCount = try modelContext.fetchCount(userDescriptor)
+            
+            if existingUserCount == 0 {
+                let newUser = User(name: "Bella", points: 0, streak: 0)
+                modelContext.insert(newUser)
+                try modelContext.save()
+            }
         } catch {
             fatalError("Could not initialize ModelContainer: \(error)")
         }
     }
+    
     
     var body: some Scene {
         WindowGroup {
