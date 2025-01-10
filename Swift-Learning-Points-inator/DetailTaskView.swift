@@ -12,6 +12,9 @@ import SwiftData
 
 struct DetailTaskView: View {
     @Bindable var task: Task
+    @Query private var users: [User]
+    @Environment(\.modelContext) private var modelContext
+    private var user: User? { users.first }
     @State private var showingEditSheet = false
     
     var body: some View {
@@ -30,7 +33,11 @@ struct DetailTaskView: View {
             }
             Spacer()
             Button ("Mark as \(task.isCompleted ? "not completed" : "completed")") {
+                if let user = user {
                 task.isCompleted.toggle()
+                task.isCompleted ? (user.points += task.points) : (user.points -= task.points)
+                try? modelContext.save()
+                }
             }
             Spacer()
         }
