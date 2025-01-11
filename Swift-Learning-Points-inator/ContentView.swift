@@ -13,6 +13,9 @@ struct ContentView: View {
     @State private var showingSheet = false
     @Environment(\.modelContext) var modelContext
     
+    @Query private var users: [User]
+    private var user: User? { users.first }
+    
     func deleteTask(at offsets: IndexSet) {
         for offset in offsets {
             // Find the book in the query using the offset
@@ -38,7 +41,11 @@ struct ContentView: View {
                                         Button(
                                             "\(task.isCompleted ? "Not completed" : "Completed")"
                                         ) {
+                                            if let user = user {
                                             task.isCompleted.toggle()
+                                            task.isCompleted ? (user.points += task.points) : (user.points -= task.points)
+                                            try? modelContext.save()
+                                            }
                                         }
                                         .buttonStyle(.borderless)
                                     }
@@ -66,7 +73,11 @@ struct ContentView: View {
                                         Button(
                                             "\(task.isCompleted ? "Not completed" : "Completed")"
                                         ) {
+                                            if let user = user {
                                             task.isCompleted.toggle()
+                                            task.isCompleted ? (user.points += task.points) : (user.points -= task.points)
+                                            try? modelContext.save()
+                                            }
                                         }
                                         .buttonStyle(.borderless)
                                     }
