@@ -42,6 +42,19 @@ struct Swift_Learning_Points_inatorApp: App {
                 modelContext.insert(newUser)
                 try modelContext.save()
             }
+            
+            if existingUserCount > 0 {
+                let users = try modelContext.fetch(userDescriptor)
+                if let user = users.first {
+                    let status = user.checkStreakStatus()
+                    
+                    if status == .broken {
+                        user.streak = 0
+                        user.lastStreakDate = nil
+                        try modelContext.save()
+                    }
+                }
+            }
         } catch {
             fatalError("Could not initialize ModelContainer: \(error)")
         }
