@@ -21,16 +21,35 @@ class User {
         self.streak = streak
         self.lastStreakDate = lastStreakDate
     }
-}
-
-extension User {
-    func checkStreakStatus() -> Bool {
+    
+    enum StreakStatus {
+        case continuing
+        case broken
+        case noStreak
+    }
+    
+    func checkStreakStatus() -> StreakStatus {
         guard let lastDate = lastStreakDate else {
-            return false
+            return .noStreak
         }
-        return Calendar.current.isDate(lastDate, inSameDayAs: Date())
+        
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let lastStreakDate = calendar.startOfDay(for: lastDate)
+        
+        if calendar.isDate(today, inSameDayAs: lastStreakDate) {
+            return .continuing
+        }
+        
+        if let dayAfterStreak = calendar.date(byAdding: .day, value: 1, to: lastStreakDate),
+           calendar.isDate(today, inSameDayAs: dayAfterStreak) {
+            return .continuing
+        }
+        
+        return .broken
     }
 }
+
 
 @Model
 class Task: Identifiable {
