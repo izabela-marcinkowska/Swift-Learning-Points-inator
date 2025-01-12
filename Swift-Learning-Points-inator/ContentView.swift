@@ -41,10 +41,17 @@ struct ContentView: View {
                                         Button(
                                             "\(task.isCompleted ? "Not completed" : "Completed")"
                                         ) {
+                                            
                                             if let user = user {
-                                            task.isCompleted.toggle()
-                                            task.isCompleted ? (user.points += task.points) : (user.points -= task.points)
-                                            try? modelContext.save()
+                                                task.isCompleted.toggle()
+                                                if (task.isCompleted) {
+                                                    user.points += task.points
+                                                    user.updateStreak()
+                                                } else {
+                                                    user.points -= task.points
+                                                }
+                                                
+                                                try? modelContext.save()
                                             }
                                         }
                                         .buttonStyle(.borderless)
@@ -74,9 +81,15 @@ struct ContentView: View {
                                             "\(task.isCompleted ? "Not completed" : "Completed")"
                                         ) {
                                             if let user = user {
-                                            task.isCompleted.toggle()
-                                            task.isCompleted ? (user.points += task.points) : (user.points -= task.points)
-                                            try? modelContext.save()
+                                                task.isCompleted.toggle()
+                                                if (task.isCompleted) {
+                                                    user.points += task.points
+                                                    user.updateStreak()
+                                                } else {
+                                                    user.points -= task.points
+                                                }
+                                                
+                                                try? modelContext.save()
                                             }
                                         }
                                         .buttonStyle(.borderless)

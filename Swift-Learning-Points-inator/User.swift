@@ -48,6 +48,21 @@ class User {
         
         return .broken
     }
+    
+    func updateStreak() {
+        let status = checkStreakStatus()
+        
+        switch status {
+        case .noStreak:
+            streak = 1
+        case .continuing:
+            self.streak += 1
+        case .broken:
+            streak = 1
+        }
+        
+        lastStreakDate = Date()
+    }
 }
 
 
