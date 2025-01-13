@@ -72,11 +72,13 @@ class Task: Identifiable {
     var name: String
     var points: Int
     var isCompleted: Bool
+    var completedDate: Date? 
     
     init(id: UUID = UUID(), name: String, points: Int, isCompleted: Bool = false) {
         self.id = id
         self.name = name
         self.points = points
         self.isCompleted = isCompleted
+        self.completedDate = nil
     }
 }

@@ -17,19 +17,35 @@ struct TaskRowView: View {
         users.first
     }
     
+    var dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
+    
     var body: some View {
         NavigationLink(destination: DetailTaskView(task: task)) {
             HStack {
                 VStack(alignment: .leading) {
                     Text(task.name)
+                    
+                    if task.isCompleted, let completedDate = task.completedDate {
+                        Text("Completed: \(completedDate, formatter: dateFormatter)")
+                            .font(.caption)
+                            .foregroundColor(.gray)
+                    }
+                    
                     Button("\(task.isCompleted ? "Not completed" : "Completed")") {
                         if let user = user {
                             task.isCompleted.toggle()
                             if task.isCompleted {
                                 user.points += task.points
+                                task.completedDate = Date()
                                 user.updateStreak()
                             } else {
                                 user.points -= task.points
+                                task.completedDate = nil
                             }
                             
                             try? modelContext.save()
