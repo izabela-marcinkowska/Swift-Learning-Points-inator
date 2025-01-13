@@ -32,37 +32,7 @@ struct ContentView: View {
                 Section ("Uncomplete tasks") {
                     ForEach(tasks) { task in
                         if (!task.isCompleted) {
-                            NavigationLink(
-                                destination: DetailTaskView(task: task)
-                            ) {
-                                HStack {
-                                    VStack (alignment: .leading) {
-                                        Text(task.name)
-                                        Button(
-                                            "\(task.isCompleted ? "Not completed" : "Completed")"
-                                        ) {
-                                            
-                                            if let user = user {
-                                                task.isCompleted.toggle()
-                                                if (task.isCompleted) {
-                                                    user.points += task.points
-                                                    user.updateStreak()
-                                                } else {
-                                                    user.points -= task.points
-                                                }
-                                                
-                                                try? modelContext.save()
-                                            }
-                                        }
-                                        .buttonStyle(.borderless)
-                                    }
-                                    Spacer()
-                                    VStack {
-                                        
-                                        Text("\(task.points)")
-                                    }
-                                }
-                            }
+                            TaskRowView(task: task)
                         }
                     }
                     .onDelete(perform: deleteTask)
@@ -71,36 +41,7 @@ struct ContentView: View {
                 Section ("Complated tasks") {
                     ForEach(tasks) { task in
                         if (task.isCompleted) {
-                            NavigationLink(
-                                destination: DetailTaskView(task: task)
-                            ) {
-                                HStack {
-                                    VStack (alignment: .leading) {
-                                        Text(task.name)
-                                        Button(
-                                            "\(task.isCompleted ? "Not completed" : "Completed")"
-                                        ) {
-                                            if let user = user {
-                                                task.isCompleted.toggle()
-                                                if (task.isCompleted) {
-                                                    user.points += task.points
-                                                    user.updateStreak()
-                                                } else {
-                                                    user.points -= task.points
-                                                }
-                                                
-                                                try? modelContext.save()
-                                            }
-                                        }
-                                        .buttonStyle(.borderless)
-                                    }
-                                    Spacer()
-                                    VStack {
-                                        
-                                        Text("\(task.points)")
-                                    }
-                                }
-                            }
+                            TaskRowView(task: task)
                         }
                     }
                     .onDelete(perform: deleteTask)
