@@ -81,4 +81,16 @@ class Task: Identifiable {
         self.isCompleted = isCompleted
         self.completedDate = nil
     }
+    
+    func toggleCompletion(for user: User) {
+            isCompleted.toggle()
+            if isCompleted {
+                completedDate = Date()
+                user.points += points
+                user.updateStreak()
+            } else {
+                completedDate = nil
+                user.points -= points
+            }
+        }
 }

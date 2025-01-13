@@ -56,16 +56,7 @@ struct DetailTaskView: View {
                 
                 Button("Mark as \(task.isCompleted ? "not completed" : "completed")") {
                     if let user = user {
-                        task.isCompleted.toggle()
-                        if (task.isCompleted) {
-                            user.points += task.points
-                            task.completedDate = Date()
-                            user.updateStreak()
-                        } else {
-                            user.points -= task.points
-                            task.completedDate = nil
-                        }
-                        
+                        task.toggleCompletion(for: user)
                         try? modelContext.save()
                     }
                 }

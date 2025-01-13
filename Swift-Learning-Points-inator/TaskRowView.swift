@@ -38,16 +38,7 @@ struct TaskRowView: View {
                     
                     Button("\(task.isCompleted ? "Not completed" : "Completed")") {
                         if let user = user {
-                            task.isCompleted.toggle()
-                            if task.isCompleted {
-                                user.points += task.points
-                                task.completedDate = Date()
-                                user.updateStreak()
-                            } else {
-                                user.points -= task.points
-                                task.completedDate = nil
-                            }
-                            
+                            task.toggleCompletion(for: user)
                             try? modelContext.save()
                         }
                     }
