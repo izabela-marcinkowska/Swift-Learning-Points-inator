@@ -43,4 +43,36 @@ enum SchoolOfMagic: String, CaseIterable {
             return "Explore the fundamental theories of magical programming"
         }
     }
+    
+    enum AchievementLevel: Int, CaseIterable {
+        case apprentice = 0
+        case mage = 1
+        case archmage = 2
+        case grandSorcerer = 3
+        
+        var title: String {
+            switch self {
+            case .apprentice: return "Apprentice"
+            case .mage: return "Mage"
+            case .archmage: return "Archmage"
+            case .grandSorcerer: return "Grand Sorcerer"
+            }
+        }
+    }
+
+    func titleForLevel(_ level: AchievementLevel) -> String {
+        switch self {
+        case .interfaceEnchantments:
+            return "\(level.title) of Interface Magic"
+        case .dataSorcery:
+            return "\(level.title) of Data Sorcery"
+        case .temporalMagic:
+            return "\(level.title) of Time"
+        case .transformationSpells:
+            return "\(level.title) of Transformation"
+        case .arcaneStudies:
+            return "\(level.title) of Arcane Knowledge"
+        }
+    }
+    
 }
