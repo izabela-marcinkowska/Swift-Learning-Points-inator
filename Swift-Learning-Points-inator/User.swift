@@ -14,12 +14,17 @@ class User {
     var mana: Int
     var streak: Int
     var lastStreakDate: Date?
+    var schoolProgress: [SchoolProgress]
     
     init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil) {
         self.name = name
         self.mana = mana
         self.streak = streak
         self.lastStreakDate = lastStreakDate
+        self.schoolProgress = SchoolOfMagic.allCases.map { school in
+            SchoolProgress(school: school)
+            
+        }
     }
     
     enum StreakStatus {
@@ -63,6 +68,12 @@ class User {
         
         lastStreakDate = Date()
     }
+    
+    func addMana(_ amount: Int, for school: SchoolOfMagic) {
+        if let progress = schoolProgress.first(where: { $0.school == school}) {
+            progress.totalMana += amount
+        }
+    }
 }
 
 
@@ -71,7 +82,16 @@ class Task: Identifiable {
     var id: UUID
     var name: String
     var mana: Int
-    var school: SchoolOfMagic
+    private var schoolRaw: String  // Store rawValue for the enum
+    
+    var school: SchoolOfMagic {
+        get {
+            SchoolOfMagic(rawValue: schoolRaw) ?? .arcaneStudies
+        }
+        set {
+            schoolRaw = newValue.rawValue
+        }
+    }
     var isCompleted: Bool
     var completedDate: Date?
     
@@ -79,20 +99,22 @@ class Task: Identifiable {
         self.id = id
         self.name = name
         self.mana = mana
-        self.school = school
+        self.schoolRaw = school.rawValue  // Assign rawValue here
         self.isCompleted = isCompleted
         self.completedDate = nil
     }
     
     func toggleCompletion(for user: User) {
-            isCompleted.toggle()
-            if isCompleted {
-                completedDate = Date()
-                user.mana += mana
-                user.updateStreak()
-            } else {
-                completedDate = nil
-                user.mana -= mana
-            }
+        isCompleted.toggle()
+        if isCompleted {
+            completedDate = Date()
+            user.mana += mana
+            user.addMana(mana, for: school)
+            user.updateStreak()
+        } else {
+            completedDate = nil
+            user.mana -= mana
+            user.addMana(-mana, for: school)
         }
+    }
 }
