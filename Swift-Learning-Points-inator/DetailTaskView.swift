@@ -49,7 +49,7 @@ struct DetailTaskView: View {
                 VStack(spacing: 20) {
                     Text("Points:")
                         .font(.title2)
-                    Text("\(task.points)")
+                    Text("\(task.mana)")
                         .font(.largeTitle)
                 }
                 .padding()
@@ -81,7 +81,7 @@ struct DetailTaskView: View {
 
 #Preview {
     NavigationStack {
-        DetailTaskView(task: Task(name: "Just random example", points: 75))
+        DetailTaskView(task: Task(name: "Just random example", mana: 75))
     }
     .modelContainer(for: [Task.self, User.self], inMemory: true)
 }

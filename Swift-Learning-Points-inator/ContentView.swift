@@ -82,10 +82,10 @@ struct ContentView: View {
     // Insert sample data
     let modelContext = container.mainContext
     let sampleTasks = [
-        Task(name: "Learn SwiftUI Animations", points: 60),
-        Task(name: "Master SwiftData Basics", points: 80),
-        Task(name: "Build Custom Views", points: 45),
-        Task(name: "Implement Error Handling", points: 70)
+        Task(name: "Learn SwiftUI Animations", mana: 60),
+        Task(name: "Master SwiftData Basics", mana: 80),
+        Task(name: "Build Custom Views", mana: 45),
+        Task(name: "Implement Error Handling", mana: 70)
     ]
     
     sampleTasks.forEach { task in

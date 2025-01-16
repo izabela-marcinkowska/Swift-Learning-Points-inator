@@ -39,7 +39,7 @@ struct UserView: View {
                 
                 HStack {
                     Image(systemName: "star.fill")
-                    Text("Points: \(user?.points ?? 0)")
+                    Text("Points: \(user?.mana ?? 0)")
                 }
                 
                 HStack {

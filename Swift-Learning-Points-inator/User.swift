@@ -11,13 +11,13 @@ import SwiftData
 @Model
 class User {
     var name: String
-    var points: Int
+    var mana: Int
     var streak: Int
     var lastStreakDate: Date?
     
-    init(name: String = "", points: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil) {
+    init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil) {
         self.name = name
-        self.points = points
+        self.mana = mana
         self.streak = streak
         self.lastStreakDate = lastStreakDate
     }
@@ -70,14 +70,16 @@ class User {
 class Task: Identifiable {
     var id: UUID
     var name: String
-    var points: Int
+    var mana: Int
+    var school: SchoolOfMagic
     var isCompleted: Bool
-    var completedDate: Date? 
+    var completedDate: Date?
     
-    init(id: UUID = UUID(), name: String, points: Int, isCompleted: Bool = false) {
+    init(id: UUID = UUID(), name: String, mana: Int, school: SchoolOfMagic = .arcaneStudies, isCompleted: Bool = false) {
         self.id = id
         self.name = name
-        self.points = points
+        self.mana = mana
+        self.school = school
         self.isCompleted = isCompleted
         self.completedDate = nil
     }
@@ -86,11 +88,11 @@ class Task: Identifiable {
             isCompleted.toggle()
             if isCompleted {
                 completedDate = Date()
-                user.points += points
+                user.mana += mana
                 user.updateStreak()
             } else {
                 completedDate = nil
-                user.points -= points
+                user.mana -= mana
             }
         }
 }

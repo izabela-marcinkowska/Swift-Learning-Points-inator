@@ -23,11 +23,11 @@ struct Swift_Learning_Points_inatorApp: App {
             
             if existingTaskCount == 0 {
                 [
-                    Task(name: "Exploring a new SwiftUI concept", points: 50),
-                    Task(name: "Debugging without giving up", points: 75),
-                    Task(name: "Reading documentation", points: 30),
-                    Task(name: "Completing tutorial sections", points: 40),
-                    Task(name: "Writing code from scratch", points: 100)
+                    Task(name: "Exploring a new SwiftUI concept", mana: 50),
+                    Task(name: "Debugging without giving up", mana: 75),
+                    Task(name: "Reading documentation", mana: 30),
+                    Task(name: "Completing tutorial sections", mana: 40),
+                    Task(name: "Writing code from scratch", mana: 100)
                 ].forEach { task in
                     modelContext.insert(task)
                 }
@@ -38,7 +38,7 @@ struct Swift_Learning_Points_inatorApp: App {
             let existingUserCount = try modelContext.fetchCount(userDescriptor)
             
             if existingUserCount == 0 {
-                let newUser = User(name: "Bella", points: 0, streak: 0)
+                let newUser = User(name: "Bella", mana: 0, streak: 0)
                 modelContext.insert(newUser)
                 try modelContext.save()
             }

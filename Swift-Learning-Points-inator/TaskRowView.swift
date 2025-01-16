@@ -47,7 +47,7 @@ struct TaskRowView: View {
                 }
                 Spacer()
                 VStack {
-                    Text("\(task.points)")
+                    Text("\(task.mana)")
                 }
             }
         }
@@ -56,7 +56,7 @@ struct TaskRowView: View {
 
 #Preview {
     NavigationStack {
-        TaskRowView(task: Task(name: "Sample Task", points: 50))
+        TaskRowView(task: Task(name: "Sample Task", mana: 50))
     }
     .modelContainer(for: [Task.self, User.self], inMemory: true)
 }
