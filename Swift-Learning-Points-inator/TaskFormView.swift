@@ -14,14 +14,15 @@ struct TaskFormView: View {
     let task: Task?
     
     @State var title = ""
-    @State var points = 0
+    @State var mana = 0
+    @State private var selectedSchool: SchoolOfMagic = .arcaneStudies
     
     init(task: Task? = nil) {
         self.task = task
     }
     
     private var isFormValid: Bool {
-        !title.trimmingCharacters(in: .whitespaces).isEmpty && points >= 0
+        !title.trimmingCharacters(in: .whitespaces).isEmpty && mana >= 0
     }
     
     var body: some View {
@@ -36,18 +37,34 @@ struct TaskFormView: View {
                 }
                 
                 Section {
-                    TextField("Points", value: $points, format: .number)
+                    TextField("Mana", value: $mana, format: .number)
                 } header: {
-                    Text("Points")
+                    Text("Mana")
                 } footer: {
-                    Text("How many points is this task worth?")
+                    Text("How much mana is this task worth?")
+                }
+                
+                Section {
+                    Picker("School of magic", selection: $selectedSchool) {
+                        ForEach(SchoolOfMagic.allCases, id: \.self) { school in
+                            HStack {
+                                Image(systemName: school.icon)
+                                Text(school.rawValue)
+                            }.tag(school)
+                            
+                        }
+                    }
+                } header: {
+                    Text("School of magic")
+                } footer: {
+                    Text("Select which school this task belongs to")
                 }
             }
             .navigationTitle(task == nil ? "Add new task" : "Edit task")
             .onAppear {
                 if let task = task {
                     title = task.name
-                    points = task.points
+                    mana = task.mana
                 }
             }
             .toolbar {
@@ -60,12 +77,13 @@ struct TaskFormView: View {
                     Button(task == nil ? "Add" : "Update") {
                         if let existingTask = task {
                             existingTask.name = title
-                            existingTask.points = points
+                            existingTask.mana = mana
+                            existingTask.school = selectedSchool
                             try? modelContext.save()
                         } else {
-                            let newTask = Task(name: title, points: points)
+                            let newTask = Task(name: title, mana: mana, school: selectedSchool)
                             modelContext.insert(newTask)
-                            try? modelContext.save()                            
+                            try? modelContext.save()
                         }
                         dismiss()
                     }
