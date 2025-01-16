@@ -14,7 +14,7 @@ struct Swift_Learning_Points_inatorApp: App {
     
     init() {
         do {
-            container = try ModelContainer(for: User.self, Task.self)
+            container = try ModelContainer(for: User.self, Task.self, SchoolProgress.self)
             
             let modelContext = container.mainContext
             
@@ -23,11 +23,11 @@ struct Swift_Learning_Points_inatorApp: App {
             
             if existingTaskCount == 0 {
                 [
-                    Task(name: "Exploring a new SwiftUI concept", mana: 50),
-                    Task(name: "Debugging without giving up", mana: 75),
-                    Task(name: "Reading documentation", mana: 30),
-                    Task(name: "Completing tutorial sections", mana: 40),
-                    Task(name: "Writing code from scratch", mana: 100)
+                    Task(name: "Design a magical user interface", mana: 50, school: .interfaceEnchantments),
+                    Task(name: "Debug a complex spell", mana: 75, school: .dataSorcery),
+                    Task(name: "Study ancient scrolls (documentation)", mana: 30, school: .arcaneStudies),
+                    Task(name: "Practice temporal magic patterns", mana: 40, school: .temporalMagic),
+                    Task(name: "Craft a new transformation spell", mana: 100, school: .transformationSpells)
                 ].forEach { task in
                     modelContext.insert(task)
                 }
