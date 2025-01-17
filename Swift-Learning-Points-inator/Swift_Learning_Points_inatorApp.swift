@@ -32,7 +32,11 @@ struct Swift_Learning_Points_inatorApp: App {
                     modelContext.insert(task)
                 }
                 
-                try modelContext.save()
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Error saving context: \(error)")
+                }
             }
             let userDescriptor = FetchDescriptor<User>()
             let existingUserCount = try modelContext.fetchCount(userDescriptor)
@@ -40,7 +44,11 @@ struct Swift_Learning_Points_inatorApp: App {
             if existingUserCount == 0 {
                 let newUser = User(name: "Bella", mana: 0, streak: 0)
                 modelContext.insert(newUser)
-                try modelContext.save()
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Error saving context: \(error)")
+                }
             }
             
             if existingUserCount > 0 {
@@ -51,7 +59,11 @@ struct Swift_Learning_Points_inatorApp: App {
                     if status == .broken {
                         user.streak = 0
                         user.lastStreakDate = nil
-                        try modelContext.save()
+                        do {
+                            try modelContext.save()
+                        } catch {
+                            print("Error saving context: \(error)")
+                        }
                     }
                 }
             }

@@ -39,7 +39,11 @@ struct TaskRowView: View {
                     Button("\(task.isCompleted ? "Not completed" : "Completed")") {
                         if let user = user {
                             task.toggleCompletion(for: user)
-                            try? modelContext.save()
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("Error saving context: \(error)")
+                            }
                         }
                     }
                     .buttonStyle(.borderless)

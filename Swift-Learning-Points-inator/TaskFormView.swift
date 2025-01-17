@@ -79,11 +79,19 @@ struct TaskFormView: View {
                             existingTask.name = title
                             existingTask.mana = mana
                             existingTask.school = selectedSchool
-                            try? modelContext.save()
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("Error saving context: \(error)")
+                            }
                         } else {
                             let newTask = Task(name: title, mana: mana, school: selectedSchool)
                             modelContext.insert(newTask)
-                            try? modelContext.save()
+                            do {
+                                try modelContext.save()
+                            } catch {
+                                print("Error saving context: \(error)")
+                            }
                         }
                         dismiss()
                     }

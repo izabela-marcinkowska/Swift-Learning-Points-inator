@@ -26,7 +26,10 @@ class User {
             
         }
     }
-    
+}
+
+// MARK: - Streak Management
+extension User {
     enum StreakStatus {
         case continuing
         case broken
@@ -68,10 +71,16 @@ class User {
         
         lastStreakDate = Date()
     }
-    
+}
+
+// MARK: -  School Progress
+extension User {
     func addMana(_ amount: Int, for school: SchoolOfMagic) {
         if let progress = schoolProgress.first(where: { $0.school == school}) {
             progress.totalMana += amount
         }
     }
 }
+
+
+
