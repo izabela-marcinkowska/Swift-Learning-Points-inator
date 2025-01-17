@@ -10,9 +10,9 @@ import SwiftData
 
 @Model
 class SchoolProgress {
-    var schoolRaw: String // Replace `school` property with `schoolRaw`.
+    var schoolRaw: String
     var totalMana: Int
-    var currentLevelRaw: Int // Replace `currentLevel` property with `currentLevelRaw`.
+    var currentLevelRaw: Int
     
     var school: SchoolOfMagic {
         get {
@@ -32,7 +32,6 @@ class SchoolProgress {
         }
     }
     
-    // Default initial values for compatibility
     init(
         school: SchoolOfMagic = .arcaneStudies,
         totalMana: Int = 0,
