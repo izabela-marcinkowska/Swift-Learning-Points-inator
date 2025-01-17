@@ -30,6 +30,14 @@ struct DetailTaskView: View {
                     .font(.largeTitle)
                     .multilineTextAlignment(.center)
                 
+                HStack {
+                    Image(systemName: task.school.icon)
+                        .font(.title2)
+                    Text(task.school.rawValue)
+                        .font(.title3)
+                }
+                .padding(.vertical, 8)
+                
                 Text("Task is \(task.isCompleted ? "completed" : "not completed")")
                     .foregroundColor(task.isCompleted ? .green : .blue)
                 

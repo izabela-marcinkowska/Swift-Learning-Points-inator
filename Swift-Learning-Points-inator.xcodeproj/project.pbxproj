@@ -6,14 +6,7 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		177A960E2D369A3E00BE9D77 /* SchoolOfMagic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177A960D2D369A3E00BE9D77 /* SchoolOfMagic.swift */; };
-		177A96102D38FEAC00BE9D77 /* SchoolProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 177A960F2D38FEAC00BE9D77 /* SchoolProgress.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		177A960D2D369A3E00BE9D77 /* SchoolOfMagic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolOfMagic.swift; sourceTree = "<group>"; };
-		177A960F2D38FEAC00BE9D77 /* SchoolProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolProgress.swift; sourceTree = "<group>"; };
 		17FFC5962D0C329D0018D26F /* Swift-Learning-Points-inator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift-Learning-Points-inator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -39,8 +32,6 @@
 		17FFC58D2D0C329D0018D26F = {
 			isa = PBXGroup;
 			children = (
-				177A960D2D369A3E00BE9D77 /* SchoolOfMagic.swift */,
-				177A960F2D38FEAC00BE9D77 /* SchoolProgress.swift */,
 				17FFC5982D0C329D0018D26F /* Swift-Learning-Points-inator */,
 				17FFC5972D0C329D0018D26F /* Products */,
 			);
@@ -128,8 +119,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				177A96102D38FEAC00BE9D77 /* SchoolProgress.swift in Sources */,
-				177A960E2D369A3E00BE9D77 /* SchoolOfMagic.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
