@@ -76,9 +76,17 @@ extension User {
 // MARK: -  School Progress
 extension User {
     func addMana(_ amount: Int, for school: SchoolOfMagic) {
+        let currentLevel = schoolProgress.first(where: { $0.school == school})?.currentLevel ?? .apprentice
+        
         if let progress = schoolProgress.first(where: { $0.school == school}) {
             progress.totalMana += amount
+            
+            let newLevel = progress.currentLevel
+            if newLevel != currentLevel {
+                print("Level up! Now you're \(school.titleForLevel(newLevel))")
+            }
         }
+        
     }
 }
 

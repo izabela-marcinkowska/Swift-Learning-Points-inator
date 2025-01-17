@@ -67,18 +67,18 @@ enum SchoolOfMagic: String, CaseIterable {
             case .grandSorcerer: return 2500
             }
         }
+        
+        static func level(for mana: Int) -> AchievementLevel {
+            let levels = AchievementLevel.allCases.reversed()
+            for level in levels {
+                if mana >= level.manaThreshold {
+                    return level
+                }
+            }
+            return .apprentice
+        }
     }
     
-    static func level(for mana: Int) -> AchievementLevel {
-        let levels = AchievementLevel.allCases.reversed()
-        for level in levels {
-            if mana >= level.manaThreshold {
-                return level
-            }
-        }
-        return .apprentice
-    }
-
     func titleForLevel(_ level: AchievementLevel) -> String {
         switch self {
         case .interfaceEnchantments:

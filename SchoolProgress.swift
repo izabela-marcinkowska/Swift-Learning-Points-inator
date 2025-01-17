@@ -25,7 +25,7 @@ class SchoolProgress {
     
     var currentLevel: SchoolOfMagic.AchievementLevel {
         get {
-            SchoolOfMagic.AchievementLevel(rawValue: currentLevelRaw) ?? .apprentice
+            SchoolOfMagic.AchievementLevel.level(for: totalMana)
         }
         set {
             currentLevelRaw = newValue.rawValue
