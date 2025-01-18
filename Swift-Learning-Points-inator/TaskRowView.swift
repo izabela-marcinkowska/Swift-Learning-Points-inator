@@ -36,6 +36,12 @@ struct TaskRowView: View {
                             .foregroundColor(.gray)
                     }
                     
+                    HStack {
+                        
+                    Image(systemName: task.school.icon)
+                    Text(task.school.rawValue)
+                    }
+                    
                     Button("\(task.isCompleted ? "Not completed" : "Completed")") {
                         if let user = user {
                             task.toggleCompletion(for: user)
@@ -47,6 +53,7 @@ struct TaskRowView: View {
                         }
                     }
                     .buttonStyle(.borderless)
+                    
                     
                 }
                 Spacer()
