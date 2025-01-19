@@ -47,6 +47,14 @@ struct UserView: View {
                     Text("Streak: \(user?.streak ?? 0)")
                 }
             }
+            
+            VStack {
+                Text("Interface Enchantments Progress:")
+                    .font(.headline)
+                ProgressView(value: 0.6)
+                    .tint(.blue)
+            }
+            .padding()
         }
         .padding()
         .navigationTitle("Welcome, \(user?.name ?? "User")")
