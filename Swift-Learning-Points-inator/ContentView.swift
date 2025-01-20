@@ -56,6 +56,15 @@ struct ContentView: View {
                         Image(systemName: "person")
                     }
                 }
+                
+                ToolbarItem(placement: .topBarLeading) {
+                    NavigationLink {
+                        SchoolsView()
+                    } label: {
+                        Image(systemName: "flag.2.crossed")
+                    }
+                }
+                
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         showingSheet.toggle()
