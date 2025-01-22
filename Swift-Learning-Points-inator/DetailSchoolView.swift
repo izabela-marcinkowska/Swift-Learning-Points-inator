@@ -12,6 +12,17 @@ struct DetailSchoolView: View {
     let school: SchoolOfMagic
     @Query private var tasks: [Task]
     
+    @Query private var users: [User]
+    @Environment(\.modelContext) private var modelContext
+    
+    private var user: User? {
+        users.first
+    }
+    
+    private var schoolProgress: SchoolProgress? {
+        user?.schoolProgress.first { $0.school == school}
+    }
+    
     private var uncompletedTasks: [Task] {
         tasks.filter {$0.school == school && !$0.isCompleted}
     }
@@ -28,6 +39,8 @@ struct DetailSchoolView: View {
                         Image(systemName: school.icon)
                             .font(.system(size: 60))
                             .foregroundColor(.blue)
+                        
+                        Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
                         
                         Text(school.description)
                             .multilineTextAlignment(.leading)
