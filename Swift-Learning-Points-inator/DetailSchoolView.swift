@@ -23,6 +23,29 @@ struct DetailSchoolView: View {
         user?.schoolProgress.first { $0.school == school}
     }
     
+    private var nextLevel: SchoolOfMagic.AchievementLevel? {
+        guard let currentLevel = schoolProgress?.currentLevel,
+              currentLevel.rawValue < SchoolOfMagic.AchievementLevel.allCases.count - 1 else {
+            return nil
+        }
+        return SchoolOfMagic.AchievementLevel(rawValue: currentLevel.rawValue + 1)
+    }
+    
+    private var progressToNextLevel: Double {
+        guard let currentLevel = schoolProgress?.currentLevel,
+              let currentMana = schoolProgress?.totalMana,
+              let nextLevel = nextLevel else {
+            return 0
+        }
+        
+        let currentThreshold = currentLevel.manaThreshold
+        let nextThreshold = nextLevel.manaThreshold
+        let manaForNextLevel = nextThreshold - currentThreshold
+        let currentProgress = currentMana - currentThreshold
+        
+        return Double(currentProgress) / Double(manaForNextLevel)
+    }
+    
     private var uncompletedTasks: [Task] {
         tasks.filter {$0.school == school && !$0.isCompleted}
     }
@@ -32,43 +55,48 @@ struct DetailSchoolView: View {
     }
     
     var body: some View {
-            List {
-                // Header Section
-                Section {
-                    VStack(alignment: .center, spacing: 20) {
-                        Image(systemName: school.icon)
-                            .font(.system(size: 60))
-                            .foregroundColor(.blue)
-                        
-                        Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
-                        
-                        Text(school.description)
-                            .multilineTextAlignment(.leading)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical)
+        List {
+            // Header Section
+            Section {
+                VStack(alignment: .center, spacing: 20) {
+                    Image(systemName: school.icon)
+                        .font(.system(size: 60))
+                        .foregroundColor(.blue)
+                    
+                    Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
+                    
+                    Text("Mana: \(schoolProgress?.totalMana ?? 0)")
+                    
+                    ProgressView(value: progressToNextLevel)
+                        .padding(.horizontal)
+                    
+                    Text(school.description)
+                        .multilineTextAlignment(.leading)
                 }
-                
-                // Uncompleted Tasks Section
-                if !uncompletedTasks.isEmpty {
-                    Section("Uncompleted Tasks") {
-                        ForEach(uncompletedTasks) { task in
-                            TaskRowView(task: task)
-                        }
-                    }
-                }
-                
-                // Completed Tasks Section
-                if !completedTasks.isEmpty {
-                    Section("Completed Tasks") {
-                        ForEach(completedTasks) { task in
-                            TaskRowView(task: task)
-                        }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical)
+            }
+            
+            // Uncompleted Tasks Section
+            if !uncompletedTasks.isEmpty {
+                Section("Uncompleted Tasks") {
+                    ForEach(uncompletedTasks) { task in
+                        TaskRowView(task: task)
                     }
                 }
             }
-            .navigationTitle(school.rawValue)
+            
+            // Completed Tasks Section
+            if !completedTasks.isEmpty {
+                Section("Completed Tasks") {
+                    ForEach(completedTasks) { task in
+                        TaskRowView(task: task)
+                    }
+                }
+            }
         }
+        .navigationTitle(school.rawValue)
+    }
 }
 #Preview {
     NavigationStack {
