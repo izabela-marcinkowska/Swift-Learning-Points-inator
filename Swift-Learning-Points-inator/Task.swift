@@ -13,7 +13,22 @@ class Task: Identifiable {
     var id: UUID
     var name: String
     var mana: Int
-    private var schoolRaw: String  // Store rawValue for the enum
+    private var schoolRaw: String
+    var isCompleted: Bool
+    var completedDate: Date?
+    var isRepeatable: Bool = false
+    
+    var completedToday: Bool {
+        guard let completedDate else { return false }
+        return Calendar.current.isDateInToday(completedDate)
+    }
+    
+    var isAvaliable: Bool {
+        if !isRepeatable {
+            return !completedToday
+        }
+        return !isCompleted
+    }
     
     var school: SchoolOfMagic {
         get {
@@ -23,16 +38,16 @@ class Task: Identifiable {
             schoolRaw = newValue.rawValue
         }
     }
-    var isCompleted: Bool
-    var completedDate: Date?
     
-    init(id: UUID = UUID(), name: String, mana: Int, school: SchoolOfMagic = .arcaneStudies, isCompleted: Bool = false) {
+    
+    init(id: UUID = UUID(), name: String, mana: Int, school: SchoolOfMagic = .arcaneStudies, isCompleted: Bool = false, isRepeatable: Bool = false) {
         self.id = id
         self.name = name
         self.mana = mana
-        self.schoolRaw = school.rawValue  // Assign rawValue here
+        self.schoolRaw = school.rawValue
         self.isCompleted = isCompleted
         self.completedDate = nil
+        self.isRepeatable = isRepeatable
     }
     
     func toggleCompletion(for user: User) {
