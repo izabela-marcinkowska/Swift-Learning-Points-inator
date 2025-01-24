@@ -16,6 +16,7 @@ struct TaskFormView: View {
     @State var title = ""
     @State var mana = 0
     @State private var selectedSchool: SchoolOfMagic = .arcaneStudies
+    @State private var isRepeatable = false
     
     init(task: Task? = nil) {
         self.task = task
@@ -43,6 +44,13 @@ struct TaskFormView: View {
                 } footer: {
                     Text("How much mana is this task worth?")
                 }
+                Section {
+                    
+                Toggle("Repeatable", isOn: $isRepeatable)
+                } footer: {
+                    Text("Repeatable tasks can be completed once per day")
+                }
+
                 
                 Section {
                     Picker("School of magic", selection: $selectedSchool) {
@@ -65,6 +73,8 @@ struct TaskFormView: View {
                 if let task = task {
                     title = task.name
                     mana = task.mana
+                    selectedSchool = task.school
+                    isRepeatable = task.isRepeatable
                 }
             }
             .toolbar {
@@ -79,13 +89,14 @@ struct TaskFormView: View {
                             existingTask.name = title
                             existingTask.mana = mana
                             existingTask.school = selectedSchool
+                            existingTask.isRepeatable = isRepeatable
                             do {
                                 try modelContext.save()
                             } catch {
                                 print("Error saving context: \(error)")
                             }
                         } else {
-                            let newTask = Task(name: title, mana: mana, school: selectedSchool)
+                            let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable)
                             modelContext.insert(newTask)
                             do {
                                 try modelContext.save()
