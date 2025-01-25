@@ -9,98 +9,41 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @Query private var tasks: [Task]
-    @State private var showingSheet = false
-    @Environment(\.modelContext) var modelContext
-    
-    @Query private var users: [User]
-    private var user: User? { users.first }
-    
-    func deleteTask(at offsets: IndexSet) {
-        for offset in offsets {
-            // Find the book in the query using the offset
-            let task = tasks[offset]
-            
-            // Delete the book from the model context
-            modelContext.delete(task)
-        }
-    }
     
     var body: some View {
         NavigationStack {
-            List {
-                Section ("Uncomplete tasks") {
-                    ForEach(tasks) { task in
-                        if (!task.isCompleted) {
-                            TaskRowView(task: task)
-                        }
-                    }
-                    .onDelete(perform: deleteTask)
-                }
-                
-                Section ("Complated tasks") {
-                    ForEach(tasks) { task in
-                        if (task.isCompleted) {
-                            TaskRowView(task: task)
-                        }
-                    }
-                    .onDelete(perform: deleteTask)
+            Text("Hello")
+        
+        .navigationTitle("Welcome, User")
+        .toolbar {
+            ToolbarItem (placement: .topBarLeading) {
+                NavigationLink {
+                    UserView()
+                } label: {
+                    Image(systemName: "person")
                 }
             }
-            .navigationTitle("Tasks")
-            .toolbar {
-                ToolbarItem (placement: .topBarLeading) {
-                    NavigationLink {
-                        UserView()
-                    } label: {
-                        Image(systemName: "person")
-                    }
-                }
-                
-                ToolbarItem(placement: .topBarLeading) {
-                    NavigationLink {
-                        SchoolsView()
-                    } label: {
-                        Image(systemName: "flag.2.crossed")
-                    }
-                }
-                
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showingSheet.toggle()
-                    } label: {
-                        Image(systemName: "plus")
-                    }
+            
+            ToolbarItem(placement: .topBarLeading) {
+                NavigationLink {
+                    SchoolsView()
+                } label: {
+                    Image(systemName: "flag.2.crossed")
                 }
             }
-            .sheet(isPresented: $showingSheet) {
-                TaskFormView()
+            
+            ToolbarItem(placement: .topBarTrailing) {
+                NavigationLink {
+                    TasksView()
+                } label: {
+                    Image(systemName: "list.bullet")
+                }
             }
         }
+    }
     }
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(
-        for: Task.self,
-        User.self,
-        configurations: config
-    )
-    
-    // Insert sample data
-    let modelContext = container.mainContext
-    let sampleTasks = [
-        Task(name: "Learn SwiftUI Animations", mana: 60),
-        Task(name: "Master SwiftData Basics", mana: 80),
-        Task(name: "Build Custom Views", mana: 45),
-        Task(name: "Implement Error Handling", mana: 70)
-    ]
-    
-    sampleTasks.forEach { task in
-        modelContext.insert(task)
-    }
-    
-    return ContentView()
-        .modelContainer(container)
+ContentView()
 }
