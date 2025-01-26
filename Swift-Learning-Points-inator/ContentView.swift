@@ -11,39 +11,30 @@ import SwiftData
 struct ContentView: View {
     
     var body: some View {
-        NavigationStack {
-            Text("Hello")
-        
-        .navigationTitle("Welcome, User")
-        .toolbar {
-            ToolbarItem (placement: .topBarLeading) {
-                NavigationLink {
-                    UserView()
-                } label: {
-                    Image(systemName: "person")
+        TabView {
+            Text("Dashboard")
+                .tabItem {
+                    Label("Dashboard", systemImage: "house.fill")
                 }
-            }
             
-            ToolbarItem(placement: .topBarLeading) {
-                NavigationLink {
-                    SchoolsView()
-                } label: {
-                    Image(systemName: "flag.2.crossed")
+            TasksView()
+                .tabItem {
+                    Label("Tasks", systemImage: "list.bullet")
                 }
-            }
             
-            ToolbarItem(placement: .topBarTrailing) {
-                NavigationLink {
-                    TasksView()
-                } label: {
-                    Image(systemName: "list.bullet")
+            SchoolsView()
+                .tabItem {
+                    Label("Schools", systemImage: "books.vertical.fill")
                 }
-            }
+            
+            UserView()
+                .tabItem {
+                    Label("Profile", systemImage: "person.fill")
+                }
         }
-    }
     }
 }
 
 #Preview {
-ContentView()
+    ContentView()
 }
