@@ -13,15 +13,9 @@ struct TasksView: View {
     @State private var showingSheet = false
     @Environment(\.modelContext) var modelContext
     
-    @Query private var users: [User]
-    private var user: User? { users.first }
-    
     func deleteTask(at offsets: IndexSet) {
         for offset in offsets {
-            // Find the book in the query using the offset
             let task = tasks[offset]
-            
-            // Delete the book from the model context
             modelContext.delete(task)
         }
     }
@@ -29,7 +23,7 @@ struct TasksView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section ("Uncomplete tasks") {
+                Section ("Uncompleted tasks") {
                     ForEach(tasks) { task in
                         if (!task.isCompleted) {
                             TaskRowView(task: task)

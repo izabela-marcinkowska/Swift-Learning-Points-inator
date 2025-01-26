@@ -15,7 +15,7 @@ struct UserView: View {
     @State private var showAlert: Bool = false
     @State private var newName = ""
     
-    func submit () {
+    private func submit () {
         if let user = user {
             user.name = newName
             try? modelContext.save()
@@ -24,54 +24,55 @@ struct UserView: View {
     }
     
     var body: some View {
-        VStack(spacing: 30) {  // Bigger spacing between main elements
-            // Profile section
-            Image(systemName: "person.circle.fill")
-                .font(.system(size: 60))
-                .foregroundColor(.gray)
-            
-            // Stats section
-            VStack(spacing: 15) {  // Group stats together with less spacing
-                HStack {
-                    Image(systemName: "person.text.rectangle")
-                    Text("Name: \(user?.name ?? "User")")
+        NavigationStack {
+            VStack(spacing: 30) {
+                Image(systemName: "person.circle.fill")
+                    .font(.system(size: 60))
+                    .foregroundColor(.gray)
+                
+                VStack(spacing: 15) {
+                    HStack {
+                        Image(systemName: "person.text.rectangle")
+                        Text("Name: \(user?.name ?? "User")")
+                    }
+                    
+                    HStack {
+                        Image(systemName: "star.fill")
+                        Text("Points: \(user?.mana ?? 0)")
+                    }
+                    
+                    HStack {
+                        Image(systemName: "flame.fill")
+                        Text("Streak: \(user?.streak ?? 0)")
+                    }
                 }
                 
-                HStack {
-                    Image(systemName: "star.fill")
-                    Text("Points: \(user?.mana ?? 0)")
+                VStack {
+                    Text("Interface Enchantments Progress:")
+                        .font(.headline)
+                    ProgressView(value: 0.6)
+                        .tint(.blue)
                 }
-                
-                HStack {
-                    Image(systemName: "flame.fill")
-                    Text("Streak: \(user?.streak ?? 0)")
-                }
-            }
-            
-            VStack {
-                Text("Interface Enchantments Progress:")
-                    .font(.headline)
-                ProgressView(value: 0.6)
-                    .tint(.blue)
+                .padding()
+                Spacer()
             }
             .padding()
-        }
-        .padding()
-        .navigationTitle("Welcome, \(user?.name ?? "User")")
-        .toolbar {
-            ToolbarItem {
-                Button {
-                    showAlert.toggle()
-                } label: {
-                    Image(systemName: "pencil")
+            .navigationTitle("Profile")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showAlert.toggle()
+                    } label: {
+                        Image(systemName: "pencil")
+                    }
                 }
-                .alert("Enter your name", isPresented: $showAlert) {
-                    TextField("Name", text: $newName)
-                    Button("Cancel", role: .cancel) {}
-                    Button("OK", action: submit)
-                } message: {
-                    Text("Please enter your name")
-                }
+            }
+            .alert("Enter your name", isPresented: $showAlert) {
+                TextField("Name", text: $newName)
+                Button("Cancel", role: .cancel) {}
+                Button("OK", action: submit)
+            } message: {
+                Text("Please enter your name")
             }
         }
     }

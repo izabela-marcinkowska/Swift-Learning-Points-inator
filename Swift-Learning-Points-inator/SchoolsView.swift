@@ -17,21 +17,24 @@ struct SchoolsView: View {
     ]
     
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(SchoolOfMagic.allCases, id: \.self) { school in
-                    NavigationLink {
-                        DetailSchoolView(school: school)
-                    } label: {
-                        SchooGridItem(school: school)
-                            .frame(height: 200)
-                            .foregroundColor(.primary)
+        NavigationStack {
+            
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(SchoolOfMagic.allCases, id: \.self) { school in
+                        NavigationLink {
+                            DetailSchoolView(school: school)
+                        } label: {
+                            SchooGridItem(school: school)
+                                .frame(height: 200)
+                                .foregroundColor(.primary)
+                        }
                     }
                 }
+                .padding()
             }
-            .padding()
-        }
         .navigationTitle("Schools of Magic")
+        }
     }
 }
 
