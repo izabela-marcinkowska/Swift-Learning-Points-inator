@@ -10,8 +10,8 @@ import SwiftData
 
 struct UserView: View {
     @Query private var users: [User]
-    @Environment(\.modelContext) private var modelContext
     private var user: User? { users.first }
+    @Environment(\.modelContext) private var modelContext
     @State private var showAlert: Bool = false
     @State private var newName = ""
     
