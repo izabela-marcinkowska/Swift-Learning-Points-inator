@@ -29,4 +29,5 @@ struct DashboardView: View {
 
 #Preview {
     DashboardView()
+        .modelContainer(for: User.self, inMemory: true)
 }
