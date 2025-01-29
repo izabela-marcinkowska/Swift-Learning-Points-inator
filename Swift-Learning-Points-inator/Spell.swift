@@ -30,6 +30,48 @@ enum SpellLevel: Int, CaseIterable {
     }
 }
 
+enum SpellCategory: String, CaseIterable {
+    case core = "Core Spells"
+    case seasonal = "Seasonal Spells"
+    case achievement = "Achievement Spells"
+    case event = "Event Spells"
+    
+    var icon: String {
+        switch self {
+        case .core:
+            return "wand.and.stars"
+        case .seasonal:
+            return "snowflake"
+        case .achievement:
+            return "trophy"
+        case .event:
+            return "star.circle"
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .core:
+            return "Fundamental spells for every digital sorcerer"
+        case .seasonal:
+            return "Special spells that change with the seasons"
+        case .achievement:
+            return "Powerful spells unlocked through your achievements"
+        case .event:
+            return "Limited-time spells from special magical events"
+        }
+    }
+    
+    var isVisibleByDefault: Bool {
+        switch self {
+        case .core, .seasonal, .event:
+            return true
+        default:
+            return false
+        }
+    }
+}
+
 @Model
 class Spell {
     var name: String
