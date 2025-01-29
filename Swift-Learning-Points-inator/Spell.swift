@@ -64,5 +64,13 @@ class Spell {
         return availableMana >= nextLevel.manaCost
     }
     
-    
+    func upgrade(for user: User) -> Bool {
+        guard canUpgrade(with: user.mana) else { return false }
+        
+        let nextLevel = SpellLevel(rawValue: currentLevel + 1) ?? .novice
+        user.mana -= nextLevel.manaCost
+        currentLevel += 1
+        manaCost = nextLevel.manaCost
+        return true
+    }
 }
