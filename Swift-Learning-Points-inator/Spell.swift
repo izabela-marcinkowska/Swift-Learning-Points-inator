@@ -11,63 +11,89 @@ import SwiftData
 enum SpellLevel: Int, CaseIterable {
     case novice = 1
     case adept = 2
-    case master = 3
+    case expert = 3
+    case master = 4
+    
     
     var title: String {
         switch self {
-        case .novice: return "Novice"
-        case .adept: return "Adept"
-        case .master: return "Master"
+        case .novice: return "Novice Charm"
+        case .adept: return "Adept Charm"
+        case .expert: return "Expert Charm"
+        case .master: return "Master Charm"
         }
     }
     
     var manaCost: Int {
         switch self {
-        case .novice: return 100
-        case .adept: return 300
-        case .master: return 500
+        case .novice: return 0
+        case .adept: return 200
+        case .expert: return 500
+        case .master: return 1000
         }
     }
 }
 
 enum SpellCategory: String, CaseIterable {
-    case core = "Core Spells"
+    
+    case focus = "Focus Enhancement"
+    case restoration = "Restoration"
+    case balance = "Balance"
+    case clarity = "Clarity"
+    case perseverance = "Perseverance"
+    
+    
     case seasonal = "Seasonal Spells"
-    case achievement = "Achievement Spells"
     case event = "Event Spells"
+    case achievement = "Achievement Spells"
+    
+    static let coreCategories: Set<SpellCategory> = [
+        .focus, .restoration, .balance, .clarity, .perseverance
+    ]
+    
+    var isPermanent: Bool {
+        SpellCategory.coreCategories.contains(self)
+    }
     
     var icon: String {
         switch self {
-        case .core:
-            return "wand.and.stars"
+        case .focus:
+            return "brain.filled.head.profile"
+        case .restoration:
+            return "batteries.100.fill"
+        case .balance:
+            return "scale.3d"
+        case .clarity:
+            return "light.beacon.max.fill"
+        case .perseverance:
+            return "figure.climbing"
         case .seasonal:
             return "snowflake"
-        case .achievement:
-            return "trophy"
         case .event:
             return "star.circle"
+        case .achievement:
+            return "trophy"
         }
     }
     
     var description: String {
         switch self {
-        case .core:
-            return "Fundamental spells for every digital sorcerer"
+        case .focus:
+            return "Master spells that enhance your learning focus and concentration"
+        case .restoration:
+            return "Learn the art of taking breaks and recharging your magical energy"
+        case .balance:
+            return "Maintain harmony between coding practice and rest"
+        case .clarity:
+            return "Enhance your understanding of magical coding concepts"
+        case .perseverance:
+            return "Overcome challenges and build resilience in your magical journey"
         case .seasonal:
-            return "Special spells that change with the seasons"
+            return "Limited-time spells that change with the seasons"
+        case .event:
+            return "Special spells available during magical events"
         case .achievement:
             return "Powerful spells unlocked through your achievements"
-        case .event:
-            return "Limited-time spells from special magical events"
-        }
-    }
-    
-    var isVisibleByDefault: Bool {
-        switch self {
-        case .core, .seasonal, .event:
-            return true
-        default:
-            return false
         }
     }
 }
@@ -77,9 +103,18 @@ class Spell {
     var name: String
     var spellDescription: String
     var currentLevel: Int
-    var isUnlocked: Bool
     var manaCost: Int
     var icon: String
+    var categoryRaw: String
+    
+    var category: SpellCategory {
+        get {
+            SpellCategory(rawValue: categoryRaw) ?? .core
+        }
+        set {
+            categoryRaw = newValue.rawValue
+        }
+    }
     
     var currentSpellLevel: SpellLevel {
         return SpellLevel(rawValue: currentLevel) ?? .novice
@@ -88,16 +123,16 @@ class Spell {
     init(
         name: String,
         spellDescription: String,
+        category: SpellCategory = .core,
         icon: String,
-        currentLevel: Int = 1,
-        isUnlocked: Bool = false
+        currentLevel: Int = 1
     ) {
         self.name = name
         self.spellDescription = spellDescription
         self.currentLevel = currentLevel
-        self.isUnlocked = isUnlocked
         self.manaCost = SpellLevel.novice.manaCost
         self.icon = icon
+        self.categoryRaw = category.rawValue
     }
     
     func canUpgrade(with availableMana: Int) -> Bool {
