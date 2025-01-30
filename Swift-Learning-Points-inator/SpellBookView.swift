@@ -1,14 +1,14 @@
 //
-//  SchoolsView.swift
+//  SpellBook.swift
 //  Swift-Learning-Points-inator
 //
-//  Created by Izabela Marcinkowska on 2025-01-20.
+//  Created by Izabela Marcinkowska on 2025-01-30.
 //
 
 import SwiftUI
 import SwiftData
 
-struct SchoolsView: View {
+struct SpellBookView: View {
     @Query private var users: [User]
     private var user: User? { users.first }
     
@@ -20,23 +20,21 @@ struct SchoolsView: View {
         NavigationStack {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(SchoolOfMagic.allCases, id: \.self) { school in
+                    ForEach(SpellCategory.allCases, id: \.self) { category in
                         NavigationLink {
-                            DetailSchoolView(school: school)
+                            SpellCategoryView()
                         } label: {
-                            SchooGridItem(school: school)
-                                .frame(height: 200)
-                                .foregroundColor(.primary)
+                            Text(category.rawValue)
                         }
                     }
                 }
                 .padding()
             }
-        .navigationTitle("Schools of Magic")
+        .navigationTitle("Book of Spells")
         }
     }
 }
 
 #Preview {
-    SchoolsView()
+    SpellBookView()
 }

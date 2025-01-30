@@ -17,7 +17,7 @@ struct ContentView: View {
                     Label("Dashboard", systemImage: "house.fill")
                 }
             
-            SpellBook()
+            SpellBookView()
                 .tabItem {
                     Label("Spellbook", systemImage: "book.fill")
                 }
