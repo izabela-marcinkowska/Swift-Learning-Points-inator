@@ -17,6 +17,11 @@ struct ContentView: View {
                     Label("Dashboard", systemImage: "house.fill")
                 }
             
+            SpellBook()
+                .tabItem {
+                    Label("Spellbook", systemImage: "book.fill")
+                }
+            
             TasksView()
                 .tabItem {
                     Label("Tasks", systemImage: "list.bullet")
