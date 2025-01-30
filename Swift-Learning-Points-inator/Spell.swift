@@ -60,7 +60,7 @@ enum SpellCategory: String, CaseIterable {
         case .focus:
             return "brain.filled.head.profile"
         case .restoration:
-            return "batteries.100.fill"
+            return "battery.50percent"
         case .balance:
             return "scale.3d"
         case .clarity:
