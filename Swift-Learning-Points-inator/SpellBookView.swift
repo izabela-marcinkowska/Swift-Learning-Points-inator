@@ -24,7 +24,9 @@ struct SpellBookView: View {
                         NavigationLink {
                             SpellCategoryView()
                         } label: {
-                            Text(category.rawValue)
+                            SpellCategoryGridItem(category: category)
+                                .frame(height: 200)
+                                .foregroundColor(.primary)
                         }
                     }
                 }

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SpellCategoryView: View {
     var body: some View {
-        Text("This will be details on every spell")
+        Text("This will be details on every spell category ")
     }
 }
 

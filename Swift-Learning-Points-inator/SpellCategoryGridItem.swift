@@ -8,26 +8,18 @@
 import SwiftUI
 import SwiftData
 
-struct SpellGridItem: View {
-    let spell: Spell
-    @Query private var users: [User]
-    @Environment(\.modelContext) private var modelContext
-    
-    private var user: User? {
-        users.first
-    }
+struct SpellCategoryGridItem: View {
+    let category: SpellCategory
     
     var body: some View {
         VStack(alignment: .center, spacing: 16) {
-            Image(systemName: spell.icon)
+            Image(systemName: category.icon)
                 .font(.system(size: 32))
                 .foregroundColor(.blue)
                 .padding(.top, 8)
             
             VStack(spacing: 8) {
-                
-            
-                Text(spell.category.rawValue)
+                Text(category.rawValue)
                 .font(.headline)
                 .multilineTextAlignment(.center)
                 .lineLimit(2)
@@ -45,12 +37,5 @@ struct SpellGridItem: View {
 }
 
 #Preview {
-    SpellGridItem(spell: Spell(
-        name: "Test Spell",
-        spellDescription: "A sample spell for testing",
-        category: .focus,
-        icon: "wand.and.rays"
-    ))
-    .modelContainer(for: [Spell.self, User.self], inMemory: true)
+    SpellCategoryGridItem(category: .focus)
 }
-
