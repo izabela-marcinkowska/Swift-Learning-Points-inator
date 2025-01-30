@@ -6,13 +6,43 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct SpellCategoryView: View {
+    let category: SpellCategory
+    
+    let columns = [
+        GridItem(.adaptive(minimum: 150, maximum: 200), spacing: 16)
+    ]
+    
+    @Query private var allSpells: [Spell]
+
+    var spells: [Spell] {
+        allSpells.filter { $0.category == category }
+    }
+    
     var body: some View {
-        Text("This will be details on every spell category ")
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 20) {
+                ForEach(spells) { spell in
+                    NavigationLink {
+                        Text("Detail view comming soon")
+                    } label: {
+                        SpellGridItem(spell: spell)
+                            .frame(height: 200)
+                            .foregroundColor(.primary)
+                    }
+                }
+            }
+            .padding()
+        }
+        .navigationTitle(category.rawValue)
     }
 }
 
 #Preview {
-    SpellCategoryView()
+    NavigationStack {
+        SpellCategoryView(category: .focus)
+    }
+    .modelContainer(for: [Spell.self, User.self], inMemory: true)
 }

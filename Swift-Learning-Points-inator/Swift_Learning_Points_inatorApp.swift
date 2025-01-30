@@ -14,7 +14,8 @@ struct Swift_Learning_Points_inatorApp: App {
     
     init() {
         do {
-            container = try ModelContainer(for: User.self, Task.self, SchoolProgress.self)
+            container = try ModelContainer(for: User.self, Task.self, Spell.self, SchoolProgress.self)
+
             
             let modelContext = container.mainContext
             

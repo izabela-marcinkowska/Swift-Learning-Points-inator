@@ -22,7 +22,7 @@ struct SpellBookView: View {
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(SpellCategory.allCases, id: \.self) { category in
                         NavigationLink {
-                            SpellCategoryView()
+                            SpellCategoryView(category: category)
                         } label: {
                             SpellCategoryGridItem(category: category)
                                 .frame(height: 200)
