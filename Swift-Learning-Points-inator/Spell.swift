@@ -109,7 +109,7 @@ class Spell {
     
     var category: SpellCategory {
         get {
-            SpellCategory(rawValue: categoryRaw) ?? .core
+            SpellCategory(rawValue: categoryRaw) ?? .focus
         }
         set {
             categoryRaw = newValue.rawValue
@@ -123,7 +123,7 @@ class Spell {
     init(
         name: String,
         spellDescription: String,
-        category: SpellCategory = .core,
+        category: SpellCategory = .focus,
         icon: String,
         currentLevel: Int = 1
     ) {
