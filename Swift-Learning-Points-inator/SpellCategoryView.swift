@@ -26,7 +26,7 @@ struct SpellCategoryView: View {
             LazyVGrid(columns: columns, spacing: 20) {
                 ForEach(spells) { spell in
                     NavigationLink {
-                        Text("Detail view comming soon")
+                        SpellDetailView(spell: spell)
                     } label: {
                         SpellGridItem(spell: spell)
                             .frame(height: 200)
