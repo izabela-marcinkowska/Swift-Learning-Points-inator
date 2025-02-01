@@ -16,6 +16,18 @@ struct SpellDetailView: View {
         users.first
     }
     
+    private var progressToNextLevel: Double {
+        guard spell.currentLevel < SpellLevel.master.rawValue else {
+            return 1.0
+        }
+        
+        let nextLevel = SpellLevel(rawValue: spell.currentLevel + 1) ?? .novice
+        let currentMana = spell.manaCost
+        let requiredMana = nextLevel.rawValue
+        
+        return Double(currentMana) / Double(requiredMana)
+    }
+    
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: spell.icon)
@@ -35,7 +47,19 @@ struct SpellDetailView: View {
             
             Text("Mana spent: \(spell.manaCost)")
             
-            Spacer()
+            HStack {
+                ProgressView(value: progressToNextLevel)
+                    .progressViewStyle(.linear)
+                    .frame(maxWidth: .infinity)
+                
+                Button {
+                    
+                } label: {
+                    Image(systemName: "plus.circle.fill")
+                        .font(.title2)
+                }
+            }
+            .padding(.horizontal)
             
             VStack(alignment: .leading, spacing: 10) {
                 Text("Bonuses:")
