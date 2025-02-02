@@ -51,14 +51,14 @@ struct Swift_Learning_Points_inatorApp: App {
                         spellDescription: "A fundamental spell that enhances your ability to concentrate during coding sessions. As you upgrade it, your focus periods become more effective.",
                         category: .focus,
                         icon: "brain.fill",
-                        currentLevel: 1,
                         investedMana: 150  
                     ),
                     Spell(
                         name: "Distraction Ward",
                         spellDescription: "Creates a magical barrier against distractions while you're deep in code. Higher levels strengthen this protective enchantment.",
                         category: .focus,
-                        icon: "shield.fill"
+                        icon: "shield.fill",
+                        investedMana: 560
                     ),
                     Spell(
                         name: "Time Dilation Spell",

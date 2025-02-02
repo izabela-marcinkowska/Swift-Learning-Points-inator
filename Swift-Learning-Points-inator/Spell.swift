@@ -32,6 +32,16 @@ enum SpellLevel: Int, CaseIterable {
         case .master: return 1000
         }
     }
+    
+    static func level(for mana: Int) -> SpellLevel {
+        let levels = SpellLevel.allCases.reversed()
+        for level in levels {
+            if mana >= level.manaCost {
+                return level
+            }
+        }
+        return .novice
+    }
 }
 
 enum SpellCategory: String, CaseIterable {
@@ -102,10 +112,18 @@ enum SpellCategory: String, CaseIterable {
 class Spell {
     var name: String
     var spellDescription: String
-    var currentLevel: Int
     var investedMana: Int
     var icon: String
     var categoryRaw: String
+    
+    var currentSpellLevel: SpellLevel {
+        SpellLevel.level(for: investedMana)
+    }
+    
+    var currentLevel: Int {
+        currentSpellLevel.rawValue
+    }
+    
     
     var category: SpellCategory {
         get {
@@ -116,21 +134,15 @@ class Spell {
         }
     }
     
-    var currentSpellLevel: SpellLevel {
-        return SpellLevel(rawValue: currentLevel) ?? .novice
-    }
-    
     init(
         name: String,
         spellDescription: String,
         category: SpellCategory = .focus,
         icon: String,
-        currentLevel: Int = 1,
         investedMana: Int = 0
     ) {
         self.name = name
         self.spellDescription = spellDescription
-        self.currentLevel = currentLevel
         self.investedMana = investedMana
         self.icon = icon
         self.categoryRaw = category.rawValue
@@ -141,11 +153,6 @@ class Spell {
         
         user.mana -= amount
         investedMana += amount
-        
-        if let nextLevel = SpellLevel(rawValue: currentLevel + 1),
-           investedMana >= nextLevel.manaCost {
-            currentLevel += 1
-        }
         
         return true
     }
