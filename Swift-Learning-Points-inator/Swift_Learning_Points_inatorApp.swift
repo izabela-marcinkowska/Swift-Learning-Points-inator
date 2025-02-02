@@ -51,7 +51,7 @@ struct Swift_Learning_Points_inatorApp: App {
                         spellDescription: "A fundamental spell that enhances your ability to concentrate during coding sessions. As you upgrade it, your focus periods become more effective.",
                         category: .focus,
                         icon: "brain.fill",
-                        currentLevel: 2,
+                        currentLevel: 1,
                         investedMana: 150  
                     ),
                     Spell(

@@ -22,10 +22,15 @@ struct SpellDetailView: View {
         }
         
         let nextLevel = SpellLevel(rawValue: spell.currentLevel + 1) ?? .novice
-        let currentMana = spell.investedMana
-        let requiredMana = nextLevel.rawValue
+        let currentLevel = SpellLevel(rawValue: spell.currentLevel) ?? .novice
         
-        return Double(currentMana) / Double(requiredMana)
+        let currentLevelMana = currentLevel.manaCost
+        let nextLevelMana = nextLevel.manaCost
+        
+        let manaForNextLevel = nextLevelMana - currentLevelMana
+        let currentProgress = spell.investedMana - currentLevelMana
+        
+        return min(max(Double(currentProgress) / Double(manaForNextLevel), 0), 1)
     }
     
     var body: some View {

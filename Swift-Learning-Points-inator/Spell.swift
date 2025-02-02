@@ -136,18 +136,17 @@ class Spell {
         self.categoryRaw = category.rawValue
     }
     
-    func canUpgrade(with availableMana: Int) -> Bool {
-        guard currentLevel < SpellLevel.master.rawValue else { return false }
-        let nextLevel = SpellLevel(rawValue: currentLevel + 1) ?? .novice
-        return availableMana >= nextLevel.manaCost
-    }
-    
-    func upgrade(for user: User) -> Bool {
-        guard canUpgrade(with: user.mana) else { return false }
+    func investMana(amount: Int, from user: User) -> Bool {
+        guard amount <= user.mana else { return false }
         
-        let nextLevel = SpellLevel(rawValue: currentLevel + 1) ?? .novice
-        user.mana -= nextLevel.manaCost
-        currentLevel += 1
+        user.mana -= amount
+        investedMana += amount
+        
+        if let nextLevel = SpellLevel(rawValue: currentLevel + 1),
+           investedMana >= nextLevel.manaCost {
+            currentLevel += 1
+        }
+        
         return true
     }
 }
