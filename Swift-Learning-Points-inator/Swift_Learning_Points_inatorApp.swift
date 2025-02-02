@@ -50,7 +50,9 @@ struct Swift_Learning_Points_inatorApp: App {
                         name: "Mind Sharpening Charm",
                         spellDescription: "A fundamental spell that enhances your ability to concentrate during coding sessions. As you upgrade it, your focus periods become more effective.",
                         category: .focus,
-                        icon: "brain.fill"
+                        icon: "brain.fill",
+                        currentLevel: 2,
+                        investedMana: 150  
                     ),
                     Spell(
                         name: "Distraction Ward",

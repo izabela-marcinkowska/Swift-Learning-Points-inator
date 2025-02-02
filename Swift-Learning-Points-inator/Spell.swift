@@ -103,7 +103,7 @@ class Spell {
     var name: String
     var spellDescription: String
     var currentLevel: Int
-    var manaCost: Int
+    var investedMana: Int
     var icon: String
     var categoryRaw: String
     
@@ -125,12 +125,13 @@ class Spell {
         spellDescription: String,
         category: SpellCategory = .focus,
         icon: String,
-        currentLevel: Int = 1
+        currentLevel: Int = 1,
+        investedMana: Int = 0
     ) {
         self.name = name
         self.spellDescription = spellDescription
         self.currentLevel = currentLevel
-        self.manaCost = SpellLevel.novice.manaCost
+        self.investedMana = investedMana
         self.icon = icon
         self.categoryRaw = category.rawValue
     }
@@ -147,7 +148,6 @@ class Spell {
         let nextLevel = SpellLevel(rawValue: currentLevel + 1) ?? .novice
         user.mana -= nextLevel.manaCost
         currentLevel += 1
-        manaCost = nextLevel.manaCost
         return true
     }
 }

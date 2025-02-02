@@ -22,7 +22,7 @@ struct SpellDetailView: View {
         }
         
         let nextLevel = SpellLevel(rawValue: spell.currentLevel + 1) ?? .novice
-        let currentMana = spell.manaCost
+        let currentMana = spell.investedMana
         let requiredMana = nextLevel.rawValue
         
         return Double(currentMana) / Double(requiredMana)
@@ -45,7 +45,7 @@ struct SpellDetailView: View {
             Text("Level \(spell.currentLevel)")
                 .font(.headline)
             
-            Text("Mana spent: \(spell.manaCost)")
+            Text("Mana invested: \(spell.investedMana)")
             
             HStack {
                 ProgressView(value: progressToNextLevel)
