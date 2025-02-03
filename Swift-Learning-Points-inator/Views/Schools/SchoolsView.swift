@@ -24,7 +24,7 @@ struct SchoolsView: View {
                         NavigationLink {
                             DetailSchoolView(school: school)
                         } label: {
-                            SchooGridItem(school: school)
+                            SchoolGridItem(school: school)
                                 .frame(height: 200)
                                 .foregroundColor(.primary)
                         }

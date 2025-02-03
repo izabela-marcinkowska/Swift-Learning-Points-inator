@@ -12,7 +12,6 @@ import SwiftData
 class SchoolProgress {
     var schoolRaw: String
     var totalMana: Int
-    var currentLevelRaw: Int
     
     var school: SchoolOfMagic {
         get {
@@ -24,21 +23,14 @@ class SchoolProgress {
     }
     
     var currentLevel: SchoolOfMagic.AchievementLevel {
-        get {
-            SchoolOfMagic.AchievementLevel.level(for: totalMana)
-        }
-        set {
-            currentLevelRaw = newValue.rawValue
-        }
+        SchoolOfMagic.AchievementLevel.level(for: totalMana)
     }
     
     init(
         school: SchoolOfMagic = .arcaneStudies,
-        totalMana: Int = 0,
-        currentLevel: SchoolOfMagic.AchievementLevel = .apprentice
+        totalMana: Int = 0
     ) {
         self.schoolRaw = school.rawValue
         self.totalMana = totalMana
-        self.currentLevelRaw = currentLevel.rawValue
     }
 }

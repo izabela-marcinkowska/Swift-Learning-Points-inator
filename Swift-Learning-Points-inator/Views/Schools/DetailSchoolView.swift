@@ -56,7 +56,6 @@ struct DetailSchoolView: View {
     
     var body: some View {
         List {
-            // Header Section
             Section {
                 VStack(alignment: .center, spacing: 20) {
                     Image(systemName: school.icon)
@@ -77,7 +76,6 @@ struct DetailSchoolView: View {
                 .padding(.vertical)
             }
             
-            // Uncompleted Tasks Section
             if !uncompletedTasks.isEmpty {
                 Section("Uncompleted Tasks") {
                     ForEach(uncompletedTasks) { task in
@@ -86,7 +84,6 @@ struct DetailSchoolView: View {
                 }
             }
             
-            // Completed Tasks Section
             if !completedTasks.isEmpty {
                 Section("Completed Tasks") {
                     ForEach(completedTasks) { task in

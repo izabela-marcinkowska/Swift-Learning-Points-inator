@@ -32,7 +32,7 @@ struct TasksView: View {
                     .onDelete(perform: deleteTask)
                 }
                 
-                Section ("Complated tasks") {
+                Section ("Completed tasks") {
                     ForEach(tasks) { task in
                         if (task.isCompleted) {
                             TaskRowView(task: task)
@@ -65,8 +65,7 @@ struct TasksView: View {
         User.self,
         configurations: config
     )
-    
-    // Insert sample data
+
     let modelContext = container.mainContext
     let sampleTasks = [
         Task(name: "Learn SwiftUI Animations", mana: 60),

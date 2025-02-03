@@ -36,7 +36,7 @@ struct TaskFormView: View {
                 } footer: {
                     Text("Add title to your new task.")
                 }
-                
+
                 Section {
                     TextField("Mana", value: $mana, format: .number)
                 } header: {
@@ -44,13 +44,12 @@ struct TaskFormView: View {
                 } footer: {
                     Text("How much mana is this task worth?")
                 }
+                
                 Section {
-                    
-                Toggle("Repeatable", isOn: $isRepeatable)
+                    Toggle("Repeatable", isOn: $isRepeatable)
                 } footer: {
                     Text("Repeatable tasks can be completed once per day")
                 }
-
                 
                 Section {
                     Picker("School of magic", selection: $selectedSchool) {

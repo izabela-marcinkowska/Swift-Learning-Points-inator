@@ -25,7 +25,7 @@ struct AddManaSheet: View {
     }
     
     var body: some View {
-        NavigationStack { // Add this to support toolbar
+        NavigationStack { 
             VStack(spacing: 24) {
                 Text("Invest mana in:")
                     .font(.headline)

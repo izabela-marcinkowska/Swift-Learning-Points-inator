@@ -37,9 +37,8 @@ struct TaskRowView: View {
                     }
                     
                     HStack {
-                        
-                    Image(systemName: task.school.icon)
-                    Text(task.school.rawValue)
+                        Image(systemName: task.school.icon)
+                        Text(task.school.rawValue)
                     }
                     
                     Button("\(task.isCompleted ? "Not completed" : "Completed")") {
@@ -53,8 +52,6 @@ struct TaskRowView: View {
                         }
                     }
                     .buttonStyle(.borderless)
-                    
-                    
                 }
                 Spacer()
                 VStack {

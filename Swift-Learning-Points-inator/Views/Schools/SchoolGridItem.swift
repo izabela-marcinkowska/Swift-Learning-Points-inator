@@ -8,7 +8,7 @@
 import SwiftUI
 import SwiftData
 
-struct SchooGridItem: View {
+struct SchoolGridItem: View {
     let school: SchoolOfMagic
     @Query private var users: [User]
     @Environment(\.modelContext) private var modelContext
@@ -44,7 +44,6 @@ struct SchooGridItem: View {
             
             VStack(spacing: 8) {
                 
-            
             Text(school.rawValue)
                 .font(.headline)
                 .multilineTextAlignment(.center)
@@ -73,5 +72,5 @@ struct SchooGridItem: View {
 }
 
 #Preview {
-    SchooGridItem(school: .dataSorcery)
+    SchoolGridItem(school: .dataSorcery)
 }
