@@ -25,14 +25,14 @@ struct AddManaSheet: View {
     }
     
     var body: some View {
-        NavigationStack {
-            VStack (spacing: 24) {
+        NavigationStack { // Add this to support toolbar
+            VStack(spacing: 24) {
                 Text("Invest mana in:")
                     .font(.headline)
                 
                 Text(spell.name)
                     .font(.title)
-                
+                Spacer()
                 HStack {
                     Text("0")
                     Slider(value: $manaToInvest, in: 0...Double(maxInvestment))
@@ -42,6 +42,8 @@ struct AddManaSheet: View {
                 
                 Text("\(Int(manaToInvest)) mana selected")
                     .font(.headline)
+                
+                Spacer()
                 
                 Button {
                     if let user = user {
@@ -60,13 +62,11 @@ struct AddManaSheet: View {
                         .cornerRadius(10)
                 }
                 .disabled(manaToInvest == 0)
-                .padding(.top)
                 
-                Spacer()
             }
             .padding()
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
+                ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
                         dismiss()
                     } label: {
@@ -74,7 +74,9 @@ struct AddManaSheet: View {
                     }
                 }
             }
+            .navigationBarTitleDisplayMode(.inline)
         }
+        .presentationDetents([.height(450)])
     }
 }
 
