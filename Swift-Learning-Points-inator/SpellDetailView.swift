@@ -94,7 +94,7 @@ struct SpellDetailView: View {
             }
         }
         .sheet(isPresented: $showingAddManaSheet) {
-            AddManaSheet()
+            AddManaSheet(spell: spell)
         }
     }
 }
