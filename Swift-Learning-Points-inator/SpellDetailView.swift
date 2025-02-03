@@ -11,6 +11,7 @@ import SwiftData
 struct SpellDetailView: View {
     var spell: Spell
     @Query private var users: [User]
+    @State private var showingAddManaSheet = false
     
     private var user: User? {
         users.first
@@ -58,7 +59,7 @@ struct SpellDetailView: View {
                     .frame(maxWidth: .infinity)
                 
                 Button {
-                    
+                    showingAddManaSheet.toggle()
                 } label: {
                     Image(systemName: "plus.circle.fill")
                         .font(.title2)
@@ -91,6 +92,9 @@ struct SpellDetailView: View {
                     Text("\(user?.mana ?? 0)")
                 }
             }
+        }
+        .sheet(isPresented: $showingAddManaSheet) {
+            AddManaSheet()
         }
     }
 }
