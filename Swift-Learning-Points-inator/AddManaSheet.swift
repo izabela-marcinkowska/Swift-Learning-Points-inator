@@ -43,8 +43,14 @@ struct AddManaSheet: View {
                     .font(.headline)
                 
                 Button {
-                    print("Invested \(Int(manaToInvest)) mana in \(spell.name)")
-                    dismiss()
+                    if let user = user {
+                        if spell.investMana(amount: Int(manaToInvest), from: user) {
+                            print("Successfully invested \(Int(manaToInvest)) mana in \(spell.name)")
+                            dismiss()
+                        } else {
+                            print("Failed to invest mana")
+                        }
+                    }
                 } label: {
                     Text("Use \(Int(manaToInvest)) mana")
                         .frame(maxWidth: .infinity)
