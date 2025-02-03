@@ -67,21 +67,6 @@ struct AddManaSheet: View {
                 }
             }
         }
-        
-        
-        
-        Text("Invest mana in:")
-        Text(spell.name)
-        
-        Slider(value: $manaToInvest, in: 0...Double(maxInvestment))
-        Text("\(Int(manaToInvest))")
-        
-        Button("Invest") {
-            print("Invested \(Int(manaToInvest)) mana in \(spell.name)")
-            dismiss()
-        }
-        
-        
     }
 }
 
