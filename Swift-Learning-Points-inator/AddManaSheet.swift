@@ -11,6 +11,7 @@ import SwiftData
 struct AddManaSheet: View {
     let spell: Spell
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
     
     @Query private var users: [User]
     @State private var manaToInvest: Double = 0
@@ -45,7 +46,7 @@ struct AddManaSheet: View {
                 Button {
                     if let user = user {
                         if spell.investMana(amount: Int(manaToInvest), from: user) {
-                            print("Successfully invested \(Int(manaToInvest)) mana in \(spell.name)")
+                            try? modelContext.save()
                             dismiss()
                         } else {
                             print("Failed to invest mana")
@@ -58,6 +59,7 @@ struct AddManaSheet: View {
                         .background(Color.gray.opacity(0.2))
                         .cornerRadius(10)
                 }
+                .disabled(manaToInvest == 0)
                 .padding(.top)
                 
                 Spacer()
