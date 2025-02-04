@@ -59,7 +59,7 @@ struct TasksView: View {
 }
 
 #Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
+    let config = ModelConfiguration(isStoredInMemoryOnly: true) 
     let container = try! ModelContainer(
         for: Task.self,
         User.self,
