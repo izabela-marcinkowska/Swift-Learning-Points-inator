@@ -12,6 +12,8 @@ struct DashboardView: View {
     @Query private var users: [User]
     private var user: User? { users.first }
     
+    @Query private var affirmations: [Affirmation]
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: 20) {
@@ -22,6 +24,7 @@ struct DashboardView: View {
                     Text("Welcome, Apprentice")
                         .font(.title)
                 }
+                
             }
         }
     }

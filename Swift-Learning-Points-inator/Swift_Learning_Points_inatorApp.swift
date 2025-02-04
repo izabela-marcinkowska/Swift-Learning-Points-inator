@@ -17,6 +17,7 @@ struct Swift_Learning_Points_inatorApp: App {
             container = try ModelContainer(for: User.self, Task.self, Spell.self, SchoolProgress.self, Affirmation.self)
 
             let modelContext = container.mainContext
+            // MARK: - Affirmation
             
             let affirmationDescriptor = FetchDescriptor<Affirmation>()
             let existingAffirmationCount = try modelContext.fetchCount(affirmationDescriptor)
@@ -103,6 +104,7 @@ struct Swift_Learning_Points_inatorApp: App {
                 }
             }
             
+            // MARK: - Task
             let descriptor = FetchDescriptor<Task>()
             let existingTaskCount = try modelContext.fetchCount(descriptor)
             
@@ -123,6 +125,8 @@ struct Swift_Learning_Points_inatorApp: App {
                     print("Error saving context: \(error)")
                 }
             }
+            
+            // MARK: - Spell
             
             let spellDescriptor = FetchDescriptor<Spell>()
             let existingSpellCount = try modelContext.fetchCount(spellDescriptor)
@@ -248,6 +252,8 @@ struct Swift_Learning_Points_inatorApp: App {
                     print("Error saving spells: \(error)")
                 }
             }
+            
+            //MARK: - User
             
             let userDescriptor = FetchDescriptor<User>()
             let existingUserCount = try modelContext.fetchCount(userDescriptor)
