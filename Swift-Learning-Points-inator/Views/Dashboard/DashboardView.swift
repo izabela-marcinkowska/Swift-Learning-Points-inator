@@ -21,7 +21,7 @@ struct DashboardView: View {
         guard let manager = affirmationManager else { return }
         
         do {
-            currentAffirmation = try manager.getRandomAffirmation(context: modelContext)
+            currentAffirmation = try manager.getDailyAffirmation(context: modelContext)
         } catch {
             print("Error fetching affirmation: {\(error)")
         }

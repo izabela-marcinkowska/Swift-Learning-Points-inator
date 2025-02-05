@@ -32,7 +32,7 @@ class Affirmation: Identifiable {
         category: AffirmationCategory,
         createdAt: Date = Date(),
         isUserCreated: Bool = false,
-        lastDisplayedAt: Date? = nil
+        lastDisplayedDate: Date? = nil
     ) {
         self.id = id
         self.text = text
@@ -61,14 +61,40 @@ extension Affirmation {
 @Model
 class AffirmationManager {
     var lastUpdateDate: Date
-    var currentAffirmationID: UUID?
+    var currentAffirmationId: UUID?
     
     init(lastUpdateDate: Date = Date()) {
         self.lastUpdateDate = lastUpdateDate
     }
-
     
-    func getRandomAffirmation(context: ModelContext) throws -> Affirmation? {
+    var needsNewAffirmation: Bool {
+        let calendar = Calendar.current
+        return !calendar.isDateInToday(lastUpdateDate)
+    }
+    
+    func getDailyAffirmation(context: ModelContext) throws -> Affirmation? {
+            // If we already have today's affirmation, fetch and return it
+            if !needsNewAffirmation, let currentId = currentAffirmationId {
+                let descriptor = FetchDescriptor<Affirmation>(
+                    predicate: #Predicate<Affirmation> { affirmation in
+                        affirmation.id == currentId
+                    }
+                )
+                return try context.fetch(descriptor).first
+            }
+            
+            // Otherwise get a new affirmation
+        if let newAffirmation = try getRandomAffirmation(context: context) {
+                lastUpdateDate = Date()
+                currentAffirmationId = newAffirmation.id
+                try context.save()
+                return newAffirmation
+            }
+            
+            return nil
+        }
+    
+    private func getRandomAffirmation(context: ModelContext) throws -> Affirmation? {
         let descriptor = FetchDescriptor<Affirmation>()
         let allAffirmation = try context.fetch(descriptor)
         
