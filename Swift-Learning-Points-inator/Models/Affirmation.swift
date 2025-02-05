@@ -43,6 +43,50 @@ class Affirmation: Identifiable {
     }
 }
 
+extension Affirmation {
+    var isEligibleToShow: Bool {
+        guard let lastShown = lastDisplayedDate else {
+            return true
+        }
+        
+        let calendar = Calendar.current
+        guard let sevenDaysAgo = calendar.date(byAdding: .day, value: -7, to: Date()) else {
+            return false
+        }
+        
+        return lastShown < sevenDaysAgo
+    }
+}
+
+@Model
+class AffirmationManager {
+    var lastUpdateDate: Date
+    
+    init(lastUpdateDate: Date = Date()) {
+        self.lastUpdateDate = lastUpdateDate
+    }
+    
+    func getRandomAffirmation(context: ModelContext) throws -> Affirmation? {
+        let descriptor = FetchDescriptor<Affirmation>()
+        let allAffirmation = try context.fetch(descriptor)
+        
+        let eligibleAffirmations = allAffirmation.filter {$0.isEligibleToShow}
+        
+        if eligibleAffirmations.isEmpty {
+            allAffirmation.forEach { $0.lastDisplayedDate = nil }
+            try context.save()
+            return allAffirmation.randomElement()
+        }
+        
+        let selected = eligibleAffirmations.randomElement()
+        selected?.lastDisplayedDate = Date()
+        try context.save()
+        
+        return selected
+        
+    }
+}
+
 
 enum AffirmationCategory: String, CaseIterable {
     case learning = "Learning Growth"

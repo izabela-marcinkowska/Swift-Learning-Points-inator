@@ -14,7 +14,7 @@ struct Swift_Learning_Points_inatorApp: App {
     
     init() {
         do {
-            container = try ModelContainer(for: User.self, Task.self, Spell.self, SchoolProgress.self, Affirmation.self)
+            container = try ModelContainer(for: User.self, Task.self, Spell.self, SchoolProgress.self, Affirmation.self, AffirmationManager.self)
 
             let modelContext = container.mainContext
             // MARK: - Affirmation
@@ -101,6 +101,19 @@ struct Swift_Learning_Points_inatorApp: App {
                     try modelContext.save()
                 } catch {
                     print("Error saving affirmations: \(error)")
+                }
+            }
+            
+            let affirmationManagerDescriptor = FetchDescriptor<AffirmationManager>()
+            let existingManagerCount = try modelContext.fetchCount(affirmationManagerDescriptor)
+            
+            if existingManagerCount == 0 {
+                let manager = AffirmationManager()
+                modelContext.insert(manager)
+                do {
+                    try modelContext.save()
+                } catch {
+                    print("Error saving affirmation manager: \(error)")
                 }
             }
             
