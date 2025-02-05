@@ -47,14 +47,25 @@ struct UserView: View {
                     }
                 }
                 
-                VStack {
-                    Text("Interface Enchantments Progress:")
-                        .font(.headline)
-                    ProgressView(value: 0.6)
-                        .tint(.blue)
+                if let user = user {
+                    
+                    HStack {
+                        Image(systemName: "circle.lefthalf.filled")
+                        Picker("Theme", selection: Binding(
+                            get: { user.themePreference },
+                            set: {
+                                user.themePreference = $0
+                                try? modelContext.save()
+                            }
+                        )) {
+                            ForEach(ThemePreference.allCases, id: \.self) {theme in
+                                Text(theme.rawValue)
+                                    .tag(theme)
+                            }
+                        }
+                    }
                 }
-                .padding()
-                Spacer()
+                
             }
             .padding()
             .navigationTitle("Profile")

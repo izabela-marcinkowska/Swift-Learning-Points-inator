@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 @Model
 class User {
@@ -15,17 +16,43 @@ class User {
     var streak: Int
     var lastStreakDate: Date?
     var schoolProgress: [SchoolProgress]
+    var themePreferenceRaw: String
     
-    init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil) {
+    var themePreference: ThemePreference {
+        get {
+            ThemePreference(rawValue: themePreferenceRaw) ?? .system
+        } set {
+            themePreferenceRaw = newValue.rawValue
+        }
+    }
+    
+    var swiftUIColorScheme: ColorScheme? {
+            switch themePreference {
+            case .light:
+                return .light
+            case .dark:
+                return .dark
+            case .system:
+                return nil
+            }
+        }
+    
+    init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil, themePreference: ThemePreference = .light) {
         self.name = name
         self.mana = mana
         self.streak = streak
         self.lastStreakDate = lastStreakDate
+        self.themePreferenceRaw = themePreference.rawValue
         self.schoolProgress = SchoolOfMagic.allCases.map { school in
             SchoolProgress(school: school)
-            
         }
     }
+}
+
+enum ThemePreference: String, CaseIterable {
+    case light = "Light Mode"
+    case dark = "Dark Mode"
+    case system = "System Default"
 }
 
 // MARK: - Streak Management
