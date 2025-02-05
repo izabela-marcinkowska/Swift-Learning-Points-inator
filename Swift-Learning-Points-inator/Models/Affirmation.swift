@@ -61,10 +61,12 @@ extension Affirmation {
 @Model
 class AffirmationManager {
     var lastUpdateDate: Date
+    var currentAffirmationID: UUID?
     
     init(lastUpdateDate: Date = Date()) {
         self.lastUpdateDate = lastUpdateDate
     }
+
     
     func getRandomAffirmation(context: ModelContext) throws -> Affirmation? {
         let descriptor = FetchDescriptor<Affirmation>()
