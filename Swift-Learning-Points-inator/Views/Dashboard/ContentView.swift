@@ -60,7 +60,7 @@ struct ContentView: View {
                 return user.themePreference == .system ? nil : user.themePreference.colorScheme
             } else {
                 // If no user, default to Light Mode.
-                return .light
+                return nil
             }
         }())
         .onAppear {

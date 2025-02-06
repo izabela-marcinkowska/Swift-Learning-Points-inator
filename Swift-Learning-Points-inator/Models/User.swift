@@ -37,7 +37,7 @@ class User {
             }
         }
     
-    init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil, themePreference: ThemePreference = .light) {
+    init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil, themePreference: ThemePreference = .system) {
         self.name = name
         self.mana = mana
         self.streak = streak
