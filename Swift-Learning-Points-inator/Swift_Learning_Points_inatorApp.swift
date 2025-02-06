@@ -122,13 +122,7 @@ struct Swift_Learning_Points_inatorApp: App {
             let existingTaskCount = try modelContext.fetchCount(descriptor)
             
             if existingTaskCount == 0 {
-                [
-                    Task(name: "Design a magical user interface", mana: 50, school: .interfaceEnchantments),
-                    Task(name: "Debug a complex spell", mana: 75, school: .dataSorcery),
-                    Task(name: "Study ancient scrolls (documentation)", mana: 30, school: .arcaneStudies),
-                    Task(name: "Practice temporal magic patterns", mana: 40, school: .temporalMagic),
-                    Task(name: "Craft a new transformation spell", mana: 100, school: .transformationSpells)
-                ].forEach { task in
+                SampleTasks.allTasks.forEach { task in
                     modelContext.insert(task)
                 }
                 
