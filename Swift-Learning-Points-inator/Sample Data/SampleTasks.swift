@@ -13,26 +13,32 @@ enum SampleTasks {
         // Easy tasks
         Task(name: "Practice basic animations",
              mana: 30,
-             school: .interfaceEnchantments),
+             school: .interfaceEnchantments,
+             difficulty: .easy),
         Task(name: "Style a button with modifiers",
              mana: 25,
-             school: .interfaceEnchantments),
+             school: .interfaceEnchantments,
+             difficulty: .easy),
         
         // Medium tasks
         Task(name: "Create a custom tab view",
              mana: 60,
-             school: .interfaceEnchantments),
+             school: .interfaceEnchantments,
+             difficulty: .medium),
         Task(name: "Implement gesture recognizers",
              mana: 50,
-             school: .interfaceEnchantments),
+             school: .interfaceEnchantments,
+             difficulty: .medium),
         
         // Hard tasks
         Task(name: "Build a complex navigation system",
              mana: 100,
-             school: .interfaceEnchantments),
+             school: .interfaceEnchantments,
+             difficulty: .hard),
         Task(name: "Create a custom chart visualization",
              mana: 90,
-             school: .interfaceEnchantments)
+             school: .interfaceEnchantments,
+             difficulty: .hard)
     ]
     
     // Data Sorcery Tasks
@@ -40,55 +46,69 @@ enum SampleTasks {
         // Easy tasks
         Task(name: "Create a basic SwiftData model",
              mana: 30,
-             school: .dataSorcery),
+             school: .dataSorcery,
+             difficulty: .easy),
         Task(name: "Implement simple CRUD operations",
              mana: 35,
-             school: .dataSorcery),
+             school: .dataSorcery,
+             difficulty: .easy),
         
         // Medium tasks
         Task(name: "Design relationships between models",
              mana: 65,
-             school: .dataSorcery),
+             school: .dataSorcery,
+             difficulty: .medium),
         Task(name: "Implement data filtering",
              mana: 55,
-             school: .dataSorcery),
+             school: .dataSorcery,
+             difficulty: .medium),
         
         // Hard tasks
         Task(name: "Create complex database queries",
              mana: 95,
-             school: .dataSorcery),
+             school: .dataSorcery,
+             difficulty: .hard),
         Task(name: "Implement data migration strategy",
              mana: 85,
-             school: .dataSorcery)
+             school: .dataSorcery,
+             difficulty: .hard)
     ]
+    
     // Temporal Magic Tasks
     static let temporalMagicTasks: [Task] = [
         // Easy tasks
         Task(name: "Study async/await basics",
              mana: 25,
-             school: .temporalMagic),
+             school: .temporalMagic,
+             difficulty: .easy),
         Task(name: "Implement basic Task handling",
              mana: 30,
-             school: .temporalMagic),
+             school: .temporalMagic,
+             difficulty: .easy),
         Task(name: "Practice with Timer class",
              mana: 35,
-             school: .temporalMagic),
+             school: .temporalMagic,
+             difficulty: .easy),
         
         // Medium tasks
         Task(name: "Handle multiple async operations",
              mana: 60,
-             school: .temporalMagic),
+             school: .temporalMagic,
+             difficulty: .medium),
         Task(name: "Implement custom async sequence",
              mana: 70,
-             school: .temporalMagic),
+             school: .temporalMagic,
+             difficulty: .medium),
         
         // Hard tasks
         Task(name: "Create complex concurrent systems",
              mana: 90,
-             school: .temporalMagic),
+             school: .temporalMagic,
+             difficulty: .hard),
         Task(name: "Master actor isolation patterns",
              mana: 100,
-             school: .temporalMagic)
+             school: .temporalMagic,
+             difficulty: .hard)
     ]
     
     // Transformation Spells Tasks
@@ -96,29 +116,36 @@ enum SampleTasks {
         // Easy tasks
         Task(name: "Apply basic view modifiers",
              mana: 20,
-             school: .transformationSpells),
+             school: .transformationSpells,
+             difficulty: .easy),
         Task(name: "Create simple custom modifiers",
              mana: 35,
-             school: .transformationSpells),
+             school: .transformationSpells,
+             difficulty: .easy),
         Task(name: "Practice with transition effects",
              mana: 30,
-             school: .transformationSpells),
+             school: .transformationSpells,
+             difficulty: .easy),
         
         // Medium tasks
         Task(name: "Build reusable modifier components",
              mana: 55,
-             school: .transformationSpells),
+             school: .transformationSpells,
+             difficulty: .medium),
         Task(name: "Implement custom transitions",
              mana: 65,
-             school: .transformationSpells),
+             school: .transformationSpells,
+             difficulty: .medium),
         
         // Hard tasks
         Task(name: "Create complex view transformations",
              mana: 85,
-             school: .transformationSpells),
+             school: .transformationSpells,
+             difficulty: .hard),
         Task(name: "Master geometry effect modifiers",
              mana: 95,
-             school: .transformationSpells)
+             school: .transformationSpells,
+             difficulty: .hard)
     ]
     
     // Arcane Studies Tasks
@@ -126,29 +153,36 @@ enum SampleTasks {
         // Easy tasks
         Task(name: "Read SwiftUI documentation",
              mana: 25,
-             school: .arcaneStudies),
+             school: .arcaneStudies,
+             difficulty: .easy),
         Task(name: "Study Swift language basics",
              mana: 30,
-             school: .arcaneStudies),
+             school: .arcaneStudies,
+             difficulty: .easy),
         Task(name: "Practice code organization",
              mana: 35,
-             school: .arcaneStudies),
+             school: .arcaneStudies,
+             difficulty: .easy),
         
         // Medium tasks
         Task(name: "Research design patterns",
              mana: 60,
-             school: .arcaneStudies),
+             school: .arcaneStudies,
+             difficulty: .medium),
         Task(name: "Study memory management",
              mana: 70,
-             school: .arcaneStudies),
+             school: .arcaneStudies,
+             difficulty: .medium),
         
         // Hard tasks
         Task(name: "Master advanced Swift concepts",
              mana: 90,
-             school: .arcaneStudies),
+             school: .arcaneStudies,
+             difficulty: .hard),
         Task(name: "Research app architecture patterns",
              mana: 100,
-             school: .arcaneStudies)
+             school: .arcaneStudies,
+             difficulty: .hard)
     ]
     
     // Helper to get all tasks

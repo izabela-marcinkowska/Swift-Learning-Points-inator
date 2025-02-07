@@ -17,6 +17,7 @@ class Task: Identifiable {
     var isCompleted: Bool
     var completedDate: Date?
     var isRepeatable: Bool = false
+    private var difficultyRaw: String
     
     var completedToday: Bool {
         guard let completedDate else { return false }
@@ -30,6 +31,15 @@ class Task: Identifiable {
         return !isCompleted
     }
     
+    var difficulty: TaskDifficulty {
+        get {
+            TaskDifficulty(rawValue: difficultyRaw) ?? .easy
+        }
+        set {
+            difficultyRaw = newValue.rawValue
+        }
+    }
+    
     var school: SchoolOfMagic {
         get {
             SchoolOfMagic(rawValue: schoolRaw) ?? .arcaneStudies
@@ -40,7 +50,7 @@ class Task: Identifiable {
     }
     
     
-    init(id: UUID = UUID(), name: String, mana: Int, school: SchoolOfMagic = .arcaneStudies, isCompleted: Bool = false, isRepeatable: Bool = false) {
+    init(id: UUID = UUID(), name: String, mana: Int, school: SchoolOfMagic = .arcaneStudies, isCompleted: Bool = false, isRepeatable: Bool = false, difficulty: TaskDifficulty = .easy) {
         self.id = id
         self.name = name
         self.mana = mana
@@ -48,6 +58,7 @@ class Task: Identifiable {
         self.isCompleted = isCompleted
         self.completedDate = nil
         self.isRepeatable = isRepeatable
+        self.difficultyRaw = difficulty.rawValue
     }
     
     func toggleCompletion(for user: User) {
@@ -65,3 +76,24 @@ class Task: Identifiable {
     }
 }
 
+enum TaskDifficulty: String, CaseIterable {
+    case easy = "Easy"
+    case medium = "Medium"
+    case hard = "Hard"
+    
+    var icon: String {
+        switch self {
+        case .easy: return "1.circle"
+        case .medium: return "2.circle"
+        case .hard: return "3.circle"
+        }
+    }
+    
+    var suggestedManaRange: String {
+        switch self {
+        case .easy: return "20-40"
+        case .medium: return "41-80"
+        case .hard: return "81-120"
+        }
+    }
+}
