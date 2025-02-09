@@ -14,15 +14,18 @@ struct DashboardView: View {
     
     var body: some View {
         NavigationStack {
+            Rectangle()
+                .fill(.gray.opacity(0.1))
+                .frame(height: 200)
             VStack(spacing: 20) {
-                if let user = user {
-                    Text("Welcome, \(user.name)")
-                        .font(.title)
-                } else {
-                    Text("Welcome, Apprentice")
+                HStack (spacing: 20) {
+                    Text("Welcome, \(user?.name ?? "Apprentice")")
                         .font(.title)
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
                 AffirmationWindow()
+                Spacer()
+                
             }
             .padding()
         }
