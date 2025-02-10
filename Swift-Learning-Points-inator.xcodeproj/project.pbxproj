@@ -6,7 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1750D7DB2D5A012500B86E51 /* SpellConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1750D7DA2D5A012500B86E51 /* SpellConfiguration.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		1750D7DA2D5A012500B86E51 /* SpellConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellConfiguration.swift; sourceTree = "<group>"; };
 		17FFC5962D0C329D0018D26F /* Swift-Learning-Points-inator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift-Learning-Points-inator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -32,6 +37,7 @@
 		17FFC58D2D0C329D0018D26F = {
 			isa = PBXGroup;
 			children = (
+				1750D7DA2D5A012500B86E51 /* SpellConfiguration.swift */,
 				17FFC5982D0C329D0018D26F /* Swift-Learning-Points-inator */,
 				17FFC5972D0C329D0018D26F /* Products */,
 			);
@@ -119,6 +125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1750D7DB2D5A012500B86E51 /* SpellConfiguration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
