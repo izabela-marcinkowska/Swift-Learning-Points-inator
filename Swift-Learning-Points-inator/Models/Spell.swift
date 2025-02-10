@@ -44,6 +44,26 @@ enum SpellLevel: Int, CaseIterable {
     }
 }
 
+extension SpellLevel {
+    var bonusMultiplier: Double {
+        SpellConfiguration.BonusValues.getBonus(for: self)
+    }
+}
+
+extension SpellLevel {
+    func calculateBonus(for mana: Int) -> Int {
+        let bonus = Double(mana) * bonusMultiplier
+        return Int(bonus.rounded())
+    }
+}
+
+extension SpellLevel {
+    var bonusDescription: String {
+        let percentage = bonusMultiplier * 100
+        return String(format: "+%.0f%%", percentage)
+    }
+}
+
 enum SpellCategory: String, CaseIterable {
     
     case focus = "Focus Enhancement"
