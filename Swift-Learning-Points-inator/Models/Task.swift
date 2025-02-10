@@ -97,3 +97,27 @@ enum TaskDifficulty: String, CaseIterable {
         }
     }
 }
+
+extension Task {
+    func calculateTotalMana(for user: User, spells: [Spell]) -> Int {
+        let baseAmount = mana
+        let bonusAmount = user.calculateTotalBonus(for: school, baseMana: baseAmount, spells: spells)
+        return baseAmount + bonusAmount
+    }
+    
+    func toggleCompletion(for user: User, spells: [Spell]) {
+        isCompleted.toggle()
+        if isCompleted {
+            completedDate = Date()
+            let totalMana = calculateTotalMana(for: user, spells: spells)
+            user.mana += totalMana
+            user.addMana(totalMana, for: school)
+            user.updateStreak()
+        } else {
+            completedDate = nil
+            let totalMana = calculateTotalMana(for: user, spells: spells)
+            user.mana -= totalMana
+            user.addMana(-totalMana, for: school)
+        }
+    }
+}
