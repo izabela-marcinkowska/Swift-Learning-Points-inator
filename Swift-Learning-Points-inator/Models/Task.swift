@@ -121,3 +121,11 @@ extension Task {
         }
     }
 }
+
+extension Task {
+    func calculateManaBreakdown(for user: User, spells: [Spell]) -> (base: Int, bonus: Int) {
+        let baseAmount = mana
+        let bonusAmount = user.calculateTotalBonus(for: school, baseMana: baseAmount, spells: spells)
+        return (baseAmount, bonusAmount)
+    }
+}

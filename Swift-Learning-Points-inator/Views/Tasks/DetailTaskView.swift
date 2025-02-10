@@ -58,8 +58,22 @@ struct DetailTaskView: View {
                 VStack(spacing: 20) {
                     Text("Points:")
                         .font(.title2)
-                    Text("\(task.mana)")
-                        .font(.largeTitle)
+                    
+                    let manaBreakdown = task.calculateManaBreakdown(for: user ?? User(), spells: spells)
+                    
+                    VStack(spacing: 8) {
+                        Text("\(manaBreakdown.base)")
+                            .font(.largeTitle)
+                        
+                        if manaBreakdown.bonus > 0 {
+                            HStack {
+                                Text("+")
+                                Text("\(manaBreakdown.bonus)")
+                                Text("bonus")
+                            }
+                            .foregroundStyle(.green)
+                        }
+                    }
                 }
                 .padding()
                 
