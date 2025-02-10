@@ -31,7 +31,7 @@ enum SpellConfiguration {
 extension SpellConfiguration {
     struct BonusValues {
         static let levelBonuses: [SpellLevel: Double] = [
-            .novice: 0.05,
+            .novice: 0.0,
             .adept: 0.10,
             .expert: 0.20,
             .master: 0.35
