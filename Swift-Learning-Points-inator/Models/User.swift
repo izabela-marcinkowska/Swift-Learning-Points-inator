@@ -118,4 +118,13 @@ extension User {
 }
 
 
-
+//MARK: - Mana Calculation
+extension User {
+    func calculateTotalBonus(for school: SchoolOfMagic, baseMana: Int, spells: [Spell]) -> Int {
+        let totalBonus = spells.reduce(0) { sum, spell in
+            sum + spell.calculatedBonusAmount(for: baseMana, school: school)
+        }
+        
+        return totalBonus
+    }
+}

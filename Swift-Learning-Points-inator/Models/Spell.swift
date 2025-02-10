@@ -44,6 +44,26 @@ enum SpellLevel: Int, CaseIterable {
     }
 }
 
+extension SpellLevel {
+    var bonusMultiplier: Double {
+        SpellConfiguration.BonusValues.getBonus(for: self)
+    }
+}
+
+extension SpellLevel {
+    func calculateBonus(for mana: Int) -> Int {
+        let bonus = Double(mana) * bonusMultiplier
+        return Int(bonus.rounded())
+    }
+}
+
+extension SpellLevel {
+    var bonusDescription: String {
+        let percentage = bonusMultiplier * 100
+        return String(format: "+%.0f%%", percentage)
+    }
+}
+
 enum SpellCategory: String, CaseIterable {
     
     case focus = "Focus Enhancement"
@@ -155,5 +175,30 @@ class Spell {
         investedMana += amount
         
         return true
+    }
+}
+
+extension Spell {
+    var affectedSchool: SchoolOfMagic? {
+        SpellConfiguration.SchoolMapping.getAffectedSchool(for: category)
+    }
+}
+
+extension Spell {
+    func getBonus(for school: SchoolOfMagic) -> Double {
+        guard affectedSchool == school else { return 0.0 }
+        return currentSpellLevel.bonusMultiplier
+    }
+    
+    func calculatedBonusAmount(for mana: Int, school: SchoolOfMagic) -> Int {
+        guard affectedSchool == school else { return 0 }
+        return currentSpellLevel.calculateBonus(for: mana)
+    }
+}
+
+extension Spell {
+    var bonusDescription: String {
+        guard let school = affectedSchool else { return "No bonus" }
+        return "\(currentSpellLevel.bonusDescription) for \(school.rawValue)"
     }
 }

@@ -11,6 +11,7 @@ import SwiftData
 struct TaskRowView: View {
     let task: Task
     @Query private var users: [User]
+    @Query private var spells: [Spell]
     @Environment(\.modelContext) private var modelContext
     
     private var user: User? {
@@ -43,7 +44,7 @@ struct TaskRowView: View {
                     
                     Button("\(task.isCompleted ? "Not completed" : "Completed")") {
                         if let user = user {
-                            task.toggleCompletion(for: user)
+                            task.toggleCompletionWithBonus(for: user, spells: spells)
                             do {
                                 try modelContext.save()
                             } catch {

@@ -13,6 +13,7 @@ import SwiftData
 struct DetailTaskView: View {
     @Bindable var task: Task
     @Query private var users: [User]
+    @Query private var spells: [Spell]
     @Environment(\.modelContext) private var modelContext
     private var user: User? { users.first }
     @State private var showingEditSheet = false
@@ -57,14 +58,28 @@ struct DetailTaskView: View {
                 VStack(spacing: 20) {
                     Text("Points:")
                         .font(.title2)
-                    Text("\(task.mana)")
-                        .font(.largeTitle)
+                    
+                    let manaBreakdown = task.calculateManaBreakdown(for: user ?? User(), spells: spells)
+                    
+                    VStack(spacing: 8) {
+                        Text("\(manaBreakdown.base)")
+                            .font(.largeTitle)
+                        
+                        if manaBreakdown.bonus > 0 {
+                            HStack {
+                                Text("+")
+                                Text("\(manaBreakdown.bonus)")
+                                Text("bonus")
+                            }
+                            .foregroundStyle(.green)
+                        }
+                    }
                 }
                 .padding()
                 
                 Button("Mark as \(task.isCompleted ? "not completed" : "completed")") {
                     if let user = user {
-                        task.toggleCompletion(for: user)
+                        task.toggleCompletionWithBonus(for: user, spells: spells)
                         try? modelContext.save()
                     }
                 }
