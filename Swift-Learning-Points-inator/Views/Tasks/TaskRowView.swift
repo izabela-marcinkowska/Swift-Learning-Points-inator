@@ -44,6 +44,7 @@ struct TaskRowView: View {
                     
                     Button("\(task.isCompleted ? "Not completed" : "Completed")") {
                         if let user = user {
+                            let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
                             task.toggleCompletionWithBonus(for: user, spells: spells)
                             do {
                                 try modelContext.save()

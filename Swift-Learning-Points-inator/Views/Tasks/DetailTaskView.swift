@@ -19,87 +19,98 @@ struct DetailTaskView: View {
     @State private var showingEditSheet = false
     
     var dateFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-            return formatter
-        }()
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
     
     var body: some View {
-            VStack(spacing: 20) {
-                Text(task.name)
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
-                
-                HStack {
-                    Image(systemName: task.school.icon)
-                        .font(.title2)
-                    Text(task.school.rawValue)
-                        .font(.title3)
+        VStack(spacing: 20) {
+            Text(task.name)
+                .font(.largeTitle)
+                .multilineTextAlignment(.center)
+            
+            HStack {
+                Image(systemName: task.school.icon)
+                    .font(.title2)
+                Text(task.school.rawValue)
+                    .font(.title3)
+            }
+            .padding(.vertical, 8)
+            
+            Text("Task is \(task.isCompleted ? "completed" : "not completed")")
+                .foregroundColor(task.isCompleted ? .green : .blue)
+            
+            VStack(spacing: 8) {
+                if task.isCompleted, let completedDate = task.completedDate {
+                    Text("Completed:")
+                        .font(.headline)
+                        .padding(.top, 8)
+                    Text(completedDate, formatter: dateFormatter)
+                        .foregroundColor(.green)
                 }
-                .padding(.vertical, 8)
+            }
+            .padding()
+            .background(RoundedRectangle(cornerRadius: 10)
+                .fill(Color.gray.opacity(0.1)))
+            
+            VStack(spacing: 20) {
+                Text("Points:")
+                    .font(.title2)
                 
-                Text("Task is \(task.isCompleted ? "completed" : "not completed")")
-                    .foregroundColor(task.isCompleted ? .green : .blue)
+                let breakdown = task.calculateManaBreakdown(for: user ?? User(), spells: spells)
                 
                 VStack(spacing: 8) {
-                    if task.isCompleted, let completedDate = task.completedDate {
-                        Text("Completed:")
-                            .font(.headline)
-                            .padding(.top, 8)
-                        Text(completedDate, formatter: dateFormatter)
-                            .foregroundColor(.green)
-                    }
-                }
-                .padding()
-                .background(RoundedRectangle(cornerRadius: 10)
-                    .fill(Color.gray.opacity(0.1)))
-                
-                VStack(spacing: 20) {
-                    Text("Points:")
-                        .font(.title2)
+                    Text("\(breakdown.baseMana)")
+                        .font(.largeTitle)
                     
-                    let manaBreakdown = task.calculateManaBreakdown(for: user ?? User(), spells: spells)
-                    
-                    VStack(spacing: 8) {
-                        Text("\(manaBreakdown.base)")
-                            .font(.largeTitle)
-                        
-                        if manaBreakdown.bonus > 0 {
-                            HStack {
-                                Text("+")
-                                Text("\(manaBreakdown.bonus)")
-                                Text("bonus")
+                    if !breakdown.bonuses.isEmpty {
+                        VStack(spacing: 8) {
+                            ForEach(breakdown.bonuses, id: \.spell.id) { bonus in
+                                HStack {
+                                    Image(systemName: bonus.spell.icon)
+                                    Text("+\(bonus.amount)")
+                                    Text("from \(bonus.spell.name)")
+                                }
+                                .foregroundStyle(.green)
+                                .font(.subheadline)
                             }
-                            .foregroundStyle(.green)
+                            
+                            Divider()
+                                .padding(.vertical, 4)
+                            
+                            Text("Total: \(breakdown.total)")
+                                .font(.headline)
                         }
                     }
                 }
-                .padding()
-                
-                Button("Mark as \(task.isCompleted ? "not completed" : "completed")") {
-                    if let user = user {
-                        task.toggleCompletionWithBonus(for: user, spells: spells)
-                        try? modelContext.save()
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-                .padding()
-                
-                Spacer()
             }
             .padding()
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button("Edit") {
-                        showingEditSheet = true
-                    }
+            
+            Button("Mark as \(task.isCompleted ? "not completed" : "completed")") {
+                if let user = user {
+                    task.toggleCompletionWithBonus(for: user, spells: spells)
+                    try? modelContext.save()
                 }
             }
-            .sheet(isPresented: $showingEditSheet) {
-                TaskFormView(task: task)
+            .buttonStyle(.borderedProminent)
+            .padding()
+            
+            Spacer()
+        }
+        .padding()
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("Edit") {
+                    showingEditSheet = true
+                }
             }
         }
+        .sheet(isPresented: $showingEditSheet) {
+            TaskFormView(task: task)
+        }
+    }
 }
 
 #Preview {

@@ -99,33 +99,24 @@ enum TaskDifficulty: String, CaseIterable {
 }
 
 extension Task {
-    func calculateTotalMana(for user: User, spells: [Spell]) -> Int {
-        let baseAmount = mana
-        let bonusAmount = user.calculateTotalBonus(for: school, baseMana: baseAmount, spells: spells)
-        return baseAmount + bonusAmount
+    func calculateManaBreakdown(for user: User, spells: [Spell]) -> ManaCalculator.ManaBreakdown {
+        return ManaCalculator.calculateMana(for: self, user: user, spells: spells)
     }
     
     func toggleCompletionWithBonus(for user: User, spells: [Spell]) {
         isCompleted.toggle()
         if isCompleted {
             completedDate = Date()
-            let totalMana = calculateTotalMana(for: user, spells: spells)
-            user.mana += totalMana
-            user.addMana(totalMana, for: school)
+            let breakdown = calculateManaBreakdown(for: user, spells: spells    )
+            user.mana += breakdown.total
+            user.addMana(breakdown.total, for: school)
             user.updateStreak()
         } else {
             completedDate = nil
-            let totalMana = calculateTotalMana(for: user, spells: spells)
-            user.mana -= totalMana
-            user.addMana(-totalMana, for: school)
+            let breakdown = calculateManaBreakdown(for: user, spells: spells)
+            user.mana -= breakdown.total
+            user.addMana(-breakdown.total, for: school)
         }
     }
 }
 
-extension Task {
-    func calculateManaBreakdown(for user: User, spells: [Spell]) -> (base: Int, bonus: Int) {
-        let baseAmount = mana
-        let bonusAmount = user.calculateTotalBonus(for: school, baseMana: baseAmount, spells: spells)
-        return (baseAmount, bonusAmount)
-    }
-}
