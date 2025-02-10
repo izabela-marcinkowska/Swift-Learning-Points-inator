@@ -105,7 +105,7 @@ extension Task {
         return baseAmount + bonusAmount
     }
     
-    func toggleCompletion(for user: User, spells: [Spell]) {
+    func toggleCompletionWithBonus(for user: User, spells: [Spell]) {
         isCompleted.toggle()
         if isCompleted {
             completedDate = Date()
