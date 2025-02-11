@@ -51,13 +51,6 @@ extension SpellLevel {
 }
 
 extension SpellLevel {
-    func calculateBonus(for mana: Int) -> Int {
-        let bonus = Double(mana) * bonusMultiplier
-        return Int(bonus.rounded())
-    }
-}
-
-extension SpellLevel {
     var bonusDescription: String {
         let percentage = bonusMultiplier * 100
         return String(format: "+%.0f%%", percentage)
@@ -181,18 +174,6 @@ class Spell {
 extension Spell {
     var affectedSchool: SchoolOfMagic? {
         SpellConfiguration.SchoolMapping.getAffectedSchool(for: category)
-    }
-}
-
-extension Spell {
-    func getBonus(for school: SchoolOfMagic) -> Double {
-        guard affectedSchool == school else { return 0.0 }
-        return currentSpellLevel.bonusMultiplier
-    }
-    
-    func calculatedBonusAmount(for mana: Int, school: SchoolOfMagic) -> Int {
-        guard affectedSchool == school else { return 0 }
-        return currentSpellLevel.calculateBonus(for: mana)
     }
 }
 
