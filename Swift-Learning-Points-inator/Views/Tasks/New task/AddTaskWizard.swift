@@ -20,6 +20,11 @@ struct AddTaskWizard: View {
     @Environment(\.dismiss) private var dismiss
     @State private var currentStep = 0
     @State private var formData = TaskFormData()
+    
+    private var isStepOneValid: Bool {
+        !formData.title.trimmingCharacters(in: .whitespaces).isEmpty
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -35,7 +40,7 @@ struct AddTaskWizard: View {
             .padding()
             
             TabView(selection: $currentStep) {
-                Text("Step 1")
+                TaskWizardStepOne(formData: $formData)
                     .tag(0)
                 Text("Step 2")
                     .tag(1)
@@ -55,6 +60,7 @@ struct AddTaskWizard: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(currentStep == 0 && !isStepOneValid)
                 .padding()
                 
                 HStack(spacing: 0) {
