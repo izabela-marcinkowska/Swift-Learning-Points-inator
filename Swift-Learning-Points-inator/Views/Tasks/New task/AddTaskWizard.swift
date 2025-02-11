@@ -18,6 +18,8 @@ struct TaskFormData {
 
 struct AddTaskWizard: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.modelContext) private var modelContext
+    
     @State private var currentStep = 0
     @State private var formData = TaskFormData()
     
@@ -27,6 +29,18 @@ struct AddTaskWizard: View {
     
     private var isStepTwoValid: Bool {
         formData.mana > 0
+    }
+    
+    private func createTask() {
+        let newTask = Task(
+            name: formData.title,
+            mana: formData.mana,
+            school: formData.school,
+            isRepeatable: formData.isRepeatable,
+            difficulty: formData.difficulty
+        )
+        modelContext.insert(newTask)
+        dismiss()
     }
     
     var body: some View {
@@ -60,7 +74,7 @@ struct AddTaskWizard: View {
                             currentStep += 1
                         }
                     } else {
-                        // handle creation
+                        createTask()
                     }
                 }
                 .buttonStyle(.borderedProminent)
