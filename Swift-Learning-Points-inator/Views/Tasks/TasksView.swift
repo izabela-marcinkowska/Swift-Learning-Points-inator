@@ -107,7 +107,8 @@ struct TasksView: View {
             }
         }
         .sheet(isPresented: $showingSheet) {
-            TaskFormView()
+            AddTaskWizard()
+                .presentationDetents([.height(450)])
         }
     }
 }
