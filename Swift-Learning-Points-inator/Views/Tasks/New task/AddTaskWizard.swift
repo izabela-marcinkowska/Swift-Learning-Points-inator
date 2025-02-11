@@ -25,6 +25,10 @@ struct AddTaskWizard: View {
         !formData.title.trimmingCharacters(in: .whitespaces).isEmpty
     }
     
+    private var isStepTwoValid: Bool {
+        formData.mana > 0
+    }
+    
     var body: some View {
         VStack {
             HStack {
@@ -42,7 +46,7 @@ struct AddTaskWizard: View {
             TabView(selection: $currentStep) {
                 TaskWizardStepOne(formData: $formData)
                     .tag(0)
-                Text("Step 2")
+                TaskWizardStepTwo(formData: $formData)
                     .tag(1)
                 Text("Step 3")
                     .tag(2)
@@ -60,7 +64,8 @@ struct AddTaskWizard: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled(currentStep == 0 && !isStepOneValid)
+                .disabled((currentStep == 0 && !isStepOneValid) ||
+                          (currentStep == 1 && !isStepTwoValid))
                 .padding()
                 
                 HStack(spacing: 0) {
