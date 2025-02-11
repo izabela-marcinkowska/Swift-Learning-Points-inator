@@ -23,12 +23,17 @@ struct AddTaskWizard: View {
     @State private var currentStep = 0
     @State private var formData = TaskFormData()
     
-    private var isStepOneValid: Bool {
-        !formData.title.trimmingCharacters(in: .whitespaces).isEmpty
-    }
-    
-    private var isStepTwoValid: Bool {
-        formData.mana > 0
+    private var isCurrentStepValid: Bool {
+        switch currentStep {
+        case 0:
+            return !formData.title.trimmingCharacters(in: .whitespaces).isEmpty
+        case 1:
+            return formData.mana > 0
+        case 2:
+            return true
+        case 3:
+            return false
+        }
     }
     
     private func createTask() {
@@ -46,6 +51,18 @@ struct AddTaskWizard: View {
     var body: some View {
         VStack {
             HStack {
+                if currentStep > 0 {
+                    Button {
+                        withAnimation {
+                            currentStep -= 1
+                        }
+                    } label: {
+                        Image(systemName: "chevron.left")
+                    }
+                }
+                
+                Spacer()
+                
                 Text("Create new task")
                     .font(.headline)
                 Spacer()
@@ -66,6 +83,7 @@ struct AddTaskWizard: View {
                     .tag(2)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
+            .interactiveDismissDisabled()
             
             VStack {
                 Button(currentStep == 2 ? "Create task" : "Next") {
@@ -78,11 +96,10 @@ struct AddTaskWizard: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
-                .disabled((currentStep == 0 && !isStepOneValid) ||
-                          (currentStep == 1 && !isStepTwoValid))
+                .disabled(!isCurrentStepValid)
                 .padding()
                 
-                HStack(spacing: 0) {
+                HStack(spacing: 8) {
                     ForEach(0..<3) { index in
                             Circle()
                             .fill(currentStep == index ? Color.blue : Color.gray)
