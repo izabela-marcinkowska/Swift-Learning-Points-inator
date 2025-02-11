@@ -31,7 +31,7 @@ struct AddTaskWizard: View {
             return formData.mana > 0
         case 2:
             return true
-        case 3:
+        default:
             return false
         }
     }
@@ -45,7 +45,13 @@ struct AddTaskWizard: View {
             difficulty: formData.difficulty
         )
         modelContext.insert(newTask)
-        dismiss()
+        
+        do {
+            try modelContext.save()
+            dismiss()
+        } catch {
+            print("Error saving content: \(error)")
+        }
     }
     
     var body: some View {

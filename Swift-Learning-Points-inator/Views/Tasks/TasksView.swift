@@ -107,7 +107,7 @@ struct TasksView: View {
             }
         }
         .sheet(isPresented: $showingSheet) {
-            TaskFormView()
+            AddTaskWizard()
         }
     }
 }

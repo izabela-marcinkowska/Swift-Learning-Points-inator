@@ -32,7 +32,3 @@ struct TaskWizardStepThree: View {
         .padding()
     }
 }
-
-#Preview {
-    TaskWizardStepThree()
-}
