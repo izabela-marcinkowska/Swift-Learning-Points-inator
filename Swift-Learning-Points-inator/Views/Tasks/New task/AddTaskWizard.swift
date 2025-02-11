@@ -48,7 +48,7 @@ struct AddTaskWizard: View {
                     .tag(0)
                 TaskWizardStepTwo(formData: $formData)
                     .tag(1)
-                Text("Step 3")
+                TaskWizardStepThree(formData: $formData)
                     .tag(2)
             }
             .tabViewStyle(.page(indexDisplayMode: .never))
