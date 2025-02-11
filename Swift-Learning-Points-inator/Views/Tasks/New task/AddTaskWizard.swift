@@ -55,66 +55,68 @@ struct AddTaskWizard: View {
     }
     
     var body: some View {
-        VStack {
-            HStack {
-                if currentStep > 0 {
+        NavigationStack {
+            VStack(spacing: 24) {
+                TabView(selection: $currentStep) {
+                    TaskWizardStepOne(formData: $formData)
+                        .tag(0)
+                    TaskWizardStepTwo(formData: $formData)
+                        .tag(1)
+                    TaskWizardStepThree(formData: $formData)
+                        .tag(2)
+                }
+                .tabViewStyle(.page(indexDisplayMode: .never))
+                
+                VStack(spacing: 16) {
                     Button {
-                        withAnimation {
-                            currentStep -= 1
+                        if currentStep < 2 {
+                            withAnimation {
+                                currentStep += 1
+                            }
+                        } else {
+                            createTask()
                         }
                     } label: {
-                        Image(systemName: "chevron.left")
+                        Text(currentStep == 2 ? "Create task" : "Next")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.gray.opacity(0.2))
+                            .cornerRadius(10)
                     }
-                }
-                
-                Spacer()
-                
-                Text("Create new task")
-                    .font(.headline)
-                Spacer()
-                Button {
-                    dismiss()
-                } label: {
-                    Image(systemName: "xmark")
+                    .disabled(!isCurrentStepValid)
+                    
+                    HStack(spacing: 8) {
+                        ForEach(0..<3) { index in
+                            Circle()
+                                .fill(currentStep == index ? Color.blue : Color.gray)
+                                .frame(width: 8, height: 8)
+                        }
+                    }
                 }
             }
             .padding()
-            
-            TabView(selection: $currentStep) {
-                TaskWizardStepOne(formData: $formData)
-                    .tag(0)
-                TaskWizardStepTwo(formData: $formData)
-                    .tag(1)
-                TaskWizardStepThree(formData: $formData)
-                    .tag(2)
-            }
-            .tabViewStyle(.page(indexDisplayMode: .never))
-            .interactiveDismissDisabled()
-            
-            VStack {
-                Button(currentStep == 2 ? "Create task" : "Next") {
-                    if currentStep < 2 {
-                        withAnimation {
-                            currentStep += 1
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    if currentStep > 0 {
+                        Button {
+                            withAnimation {
+                                currentStep -= 1
+                            }
+                        } label: {
+                            Image(systemName: "chevron.left")
                         }
-                    } else {
-                        createTask()
                     }
                 }
-                .buttonStyle(.borderedProminent)
-                .disabled(!isCurrentStepValid)
-                .padding()
                 
-                HStack(spacing: 8) {
-                    ForEach(0..<3) { index in
-                            Circle()
-                            .fill(currentStep == index ? Color.blue : Color.gray)
-                            .frame(width: 8, height: 8)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
                     }
                 }
-                .padding(.bottom)
             }
-            
         }
     }
 }

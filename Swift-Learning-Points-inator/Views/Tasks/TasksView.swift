@@ -108,6 +108,7 @@ struct TasksView: View {
         }
         .sheet(isPresented: $showingSheet) {
             AddTaskWizard()
+                .presentationDetents([.height(450)])
         }
     }
 }
