@@ -67,22 +67,19 @@ struct SpellDetailView: View {
             }
             .padding(.horizontal)
             
-            VStack(alignment: .leading, spacing: 10) {
+            VStack(alignment: .leading, spacing: 16) {
                 Text("Bonuses:")
                     .font(.headline)
                     .padding(.bottom, 5)
                 
-                ForEach(1...3, id: \.self) { level in
-                    HStack {
-                        Circle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 20, height: 20)
-                        Text("\(level * 5)% extra mana")
-                    }
+                ForEach(SpellLevel.allCases, id: \.self) { level in
+                    SpellLevelMilestone(level: level, isArchieved: spell.investedMana >= level.manaCost)
                 }
+                
             }
-            Spacer()
             .padding()
+            .background(Color.gray.opacity(0.1))
+            .cornerRadius(10)
         }
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {

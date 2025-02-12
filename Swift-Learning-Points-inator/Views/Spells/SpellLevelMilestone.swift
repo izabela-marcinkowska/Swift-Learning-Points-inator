@@ -12,12 +12,12 @@ struct SpellLevelMilestone: View {
     let isArchieved: Bool
     
     var body: some View {
-        HStack {
+        HStack(spacing: 16) {
             Circle()
                 .fill(isArchieved ? Color.blue : Color.gray.opacity(0.3))
                 .frame(width: 20, height: 20)
             
-            VStack(alignment: .leading) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text(level.title)
                     .font(.subheadline)
                     .fontWeight(.medium)
@@ -26,7 +26,9 @@ struct SpellLevelMilestone: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
-            
+            Spacer()
         }
+        .padding(.vertical, 8)
+        .frame(maxWidth: .infinity)
     }
 }
