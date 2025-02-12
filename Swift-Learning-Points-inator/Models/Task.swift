@@ -19,11 +19,16 @@ class Task: Identifiable {
     var isRepeatable: Bool = false
     private var difficultyRaw: String
     
+    /// Computed property controlling if tasks `completedDate` is today.
     var completedToday: Bool {
         guard let completedDate else { return false }
         return Calendar.current.isDateInToday(completedDate)
     }
     
+    /// Determines if a task can be completed based on its repeatable status and completion state.
+    /// - For non-repeatable tasks: Available if not completed today
+    /// - For repeatable tasks: Available if not currently completed
+    /// - Note: This property will be used in conjunction with the daily task reset mechanism
     var isAvaliable: Bool {
         if !isRepeatable {
             return !completedToday
@@ -31,6 +36,8 @@ class Task: Identifiable {
         return !isCompleted
     }
     
+    /// The difficulty level of the task.
+    /// Stored as a raw string value internally for SwiftData compatibility.
     var difficulty: TaskDifficulty {
         get {
             TaskDifficulty(rawValue: difficultyRaw) ?? .easy
@@ -61,6 +68,22 @@ class Task: Identifiable {
         self.difficultyRaw = difficulty.rawValue
     }
     
+    /// Toggles the completion state of a task and updates the user's progress accordingly.
+    /// - Parameter user: ``User`` The user whose progress should be updated
+    ///
+    ///
+    /// When the task is marked as completed:
+    /// - Sets `completedDate` to current date
+    /// - Adds mana to user's total
+    /// - Updates school-specific progress via `addMana`
+    /// - Updates user's daily streak
+    ///
+    /// When the task is marked as uncompleted:
+    /// - Clears `completedDate`
+    /// - Deducts mana from user's total
+    /// - Removes mana from school-specific progress
+    ///
+    /// - Note: This method modifies both the task state and user progress
     func toggleCompletion(for user: User) {
         isCompleted.toggle()
         if isCompleted {
@@ -76,6 +99,8 @@ class Task: Identifiable {
     }
 }
 
+/// Represents the difficulty levels available for tasks,
+/// affecting suggested mana rewards and visual representation
 enum TaskDifficulty: String, CaseIterable {
     case easy = "Easy"
     case medium = "Medium"
@@ -89,6 +114,7 @@ enum TaskDifficulty: String, CaseIterable {
         }
     }
     
+    // TODO: Implement this in Step 2 Wizard on Add new task view
     var suggestedManaRange: String {
         switch self {
         case .easy: return "20-40"
@@ -99,10 +125,23 @@ enum TaskDifficulty: String, CaseIterable {
 }
 
 extension Task {
+    /// Calculates the total mana reward for this task, including any applicable spell bonuses.
+    /// - Parameters:
+    ///   - user: The user for whom to calculate the mana
+    ///   - spells: Array of spells that might provide mana bonuses
+    /// - Returns: A breakdown of base mana and bonus mana from applicable spells
     func calculateManaBreakdown(for user: User, spells: [Spell]) -> ManaCalculator.ManaBreakdown {
         return ManaCalculator.calculateMana(for: self, user: user, spells: spells)
     }
     
+    /// Toggles the completion state of a task and updates the user's progress with spell bonuses.
+    ///
+    /// - Note: This is an enhanced version of `toggleCompletion` that includes spell bonus calculations
+    /// - Parameters:
+    ///   - user: The user whose progress should be updated
+    ///   - spells: Array of spells that might provide mana bonuses
+    ///
+
     func toggleCompletionWithBonus(for user: User, spells: [Spell]) {
         isCompleted.toggle()
         if isCompleted {
