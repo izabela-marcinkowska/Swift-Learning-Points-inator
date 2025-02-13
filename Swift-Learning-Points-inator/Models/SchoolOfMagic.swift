@@ -7,13 +7,25 @@
 
 import Foundation
 
+/// Represents the different schools of magic in the learning system.
+/// Each school focuses on a different aspect of programming, themed as magical disciplines.
 enum SchoolOfMagic: String, CaseIterable {
+    /// Focuses on UI/UX development and interface design
     case interfaceEnchantments = "Interface Enchantments"
+    
+    /// Concentrates on data management and persistence
     case dataSorcery = "Data Sorcery"
+    
+    /// Deals with async programming and timing operations
     case temporalMagic = "Temporal Magic"
+    
+    /// Covers view modifications and transformations
     case transformationSpells = "Transformation Spells"
+    
+    /// Encompasses fundamental programming concepts
     case arcaneStudies = "Arcane Studies"
     
+    /// SF Symbol icon representing this school of magic
     var icon: String {
         switch self {
         case .interfaceEnchantments:
@@ -29,6 +41,7 @@ enum SchoolOfMagic: String, CaseIterable {
         }
     }
     
+    /// Detailed description of what this school of magic teaches
     var description: String {
         switch self {
         case .interfaceEnchantments:
@@ -44,6 +57,8 @@ enum SchoolOfMagic: String, CaseIterable {
         }
     }
     
+    /// Represents achievement levels that can be attained within each school of magic.
+    /// Users progress through these levels by earning mana in school-specific tasks.
     enum AchievementLevel: Int, CaseIterable {
         case apprentice = 0
         case mage = 1
@@ -59,6 +74,7 @@ enum SchoolOfMagic: String, CaseIterable {
             }
         }
         
+        /// The amount of mana required to reach this level
         var manaThreshold: Int {
             switch self {
             case .apprentice: return 0
@@ -68,6 +84,9 @@ enum SchoolOfMagic: String, CaseIterable {
             }
         }
         
+        /// Determines the achievement level based on accumulated mana
+        /// - Parameter mana: Total mana accumulated in the school
+        /// - Returns: The highest achievement level reached with this amount of mana
         static func level(for mana: Int) -> AchievementLevel {
             let levels = AchievementLevel.allCases.reversed()
             for level in levels {
@@ -79,6 +98,9 @@ enum SchoolOfMagic: String, CaseIterable {
         }
     }
     
+    /// Creates a formatted title combining the achievement level and school specialization
+    /// - Parameter level: The achievement level to create the title for
+    /// - Returns: A formatted string like "Archmage of Data Sorcery"
     func titleForLevel(_ level: AchievementLevel) -> String {
         switch self {
         case .interfaceEnchantments:
