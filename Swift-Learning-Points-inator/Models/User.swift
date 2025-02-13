@@ -102,9 +102,7 @@ extension User {
     /// Updates the user's streak based on their activity pattern.
     ///
     /// Streaks continue if:
-    ///
     /// - Task completed today
-    ///
     /// - Task completed yesterday
     ///
     /// A streak breaks if more than one day passes between activities.

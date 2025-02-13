@@ -17,6 +17,18 @@ struct SpellDetailView: View {
         users.first
     }
     
+    /// Calculates the progress towards the next spell level as a value between 0 and 1.
+    /// This value is used to display the progress bar in the UI.
+    ///
+    /// The calculation works as follows:
+    /// 1. Returns 1.0 if spell is already at master level (maximum)
+    /// 2. Determines current and next level mana thresholds
+    /// 3. Calculates progress by comparing current mana against the thresholds
+    /// 4. Normalizes the result to be between 0 and 1
+    ///
+    /// For example:
+    /// - If current level requires 200 mana and next level 500 mana:
+    /// - With 350 mana invested, progress would be 0.5 (halfway between levels)
     private var progressToNextLevel: Double {
         guard spell.currentLevel < SpellLevel.master.rawValue else {
             return 1.0

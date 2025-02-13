@@ -21,6 +21,13 @@ struct SchoolGridItem: View {
         user?.schoolProgress.first { $0.school == school}
     }
     
+    /// Determines the next achievement level for this school if available.
+    /// Returns nil if:
+    /// - No current level exists
+    /// - User is already at the maximum level (Grand Sorcerer)
+    ///
+    /// For example, if current level is 'apprentice' (0), returns 'mage' (1).
+    /// If current level is 'grandSorcerer' (3), returns nil.
     private var nextLevel: SchoolOfMagic.AchievementLevel? {
         guard let currentLevel = schoolProgress?.currentLevel,
               currentLevel.rawValue < SchoolOfMagic.AchievementLevel.allCases.count - 1 else {
@@ -29,6 +36,14 @@ struct SchoolGridItem: View {
         return SchoolOfMagic.AchievementLevel(rawValue: currentLevel.rawValue + 1)
     }
     
+    /// Creates a string showing progress towards next level threshold.
+    /// Format: "currentMana/nextLevelThreshold"
+    ///
+    /// Examples:
+    /// - "150/300" (150 mana earned, need 300 for next level)
+    /// - "2600/2600" (at max level, showing current mana)
+    ///
+    /// If no progress exists, defaults to "0/0"
     private var manaProgress: String {
         let currentMana = schoolProgress?.totalMana ?? 0
         let nextThreshold = nextLevel?.manaThreshold ?? currentMana

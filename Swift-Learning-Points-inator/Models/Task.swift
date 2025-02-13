@@ -8,6 +8,9 @@
 import Foundation
 import SwiftData
 
+/// A learning activity that users can complete to earn mana and progress in Schools of Magic.
+/// Tasks have specific schools, difficulty levels, and can be either one-time or repeatable daily.
+/// When completed, they award mana and contribute to the user's school progress and daily streak.
 @Model
 class Task: Identifiable {
     var id: UUID
