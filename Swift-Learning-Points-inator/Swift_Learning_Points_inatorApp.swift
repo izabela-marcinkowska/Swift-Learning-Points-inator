@@ -13,6 +13,14 @@ struct Swift_Learning_Points_inatorApp: App {
     let container: ModelContainer
     
     init() {
+#if DEBUG
+        if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
+            let config = ModelConfiguration(isStoredInMemoryOnly: true)
+            container = try! ModelContainer(for: User.self, configurations: config)
+            return
+        }
+        #endif
+        
         do {
             container = try ModelContainer(for: User.self, Task.self, Spell.self, SchoolProgress.self, Affirmation.self, AffirmationManager.self)
 

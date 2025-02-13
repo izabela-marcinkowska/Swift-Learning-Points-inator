@@ -43,6 +43,11 @@ struct AffirmationWindow: View {
 }
 
 #Preview {
+    let container = try! ModelContainer(
+        for: Affirmation.self, AffirmationManager.self,
+        configurations: ModelConfiguration(isStoredInMemoryOnly: true)
+    )
+
     AffirmationWindow()
-        .modelContainer(for: [Affirmation.self, AffirmationManager.self], inMemory: true)
+        .modelContainer(container)
 }

@@ -51,7 +51,7 @@ enum SpellLevel: Int, CaseIterable {
 }
 
 extension SpellLevel {
-    /// Computed property that uses ``SpellConfiguration.BonusValues.getBonus`` to get what bonus is applied for a this Spell.
+    /// Computed property that uses SpellConfiguration to get what bonus is applied for a this Spell.
     var bonusMultiplier: Double {
         SpellConfiguration.BonusValues.getBonus(for: self)
     }
