@@ -8,11 +8,17 @@
 import Foundation
 import SwiftData
 
+/// Tracks a user's progress in a specific School of Magic, including total mana earned
+/// and achievement level within that school.
 @Model
 class SchoolProgress {
+    /// Raw string representation of the school type, used for SwiftData persistence
     var schoolRaw: String
+    /// Total amount of mana earned in this school through completed tasks
     var totalMana: Int
     
+    /// The School of Magic this progress tracks.
+    /// Uses a computed property to convert between the raw stored string and the SchoolOfMagic enum.
     var school: SchoolOfMagic {
         get {
             SchoolOfMagic(rawValue: schoolRaw) ?? .arcaneStudies
@@ -22,6 +28,9 @@ class SchoolProgress {
         }
     }
     
+    /// Current achievement level in this school, calculated based on total mana earned.
+    /// The level increases automatically as more mana is accumulated.
+    /// - Note: Level thresholds are defined in `SchoolOfMagic.AchievementLevel`
     var currentLevel: SchoolOfMagic.AchievementLevel {
         SchoolOfMagic.AchievementLevel.level(for: totalMana)
     }
