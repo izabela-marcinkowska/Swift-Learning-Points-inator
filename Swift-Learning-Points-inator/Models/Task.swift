@@ -141,7 +141,6 @@ extension Task {
     ///   - user: The user whose progress should be updated
     ///   - spells: Array of spells that might provide mana bonuses
     ///
-
     func toggleCompletionWithBonus(for user: User, spells: [Spell]) {
         isCompleted.toggle()
         if isCompleted {
