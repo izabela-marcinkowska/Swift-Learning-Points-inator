@@ -8,6 +8,8 @@
 import Foundation
 import SwiftData
 
+/// Represents a single affirmation message that can be shown to users to encourage and motivate them
+/// in their learning journey.
 @Model
 class Affirmation: Identifiable {
     var id: UUID
@@ -17,6 +19,7 @@ class Affirmation: Identifiable {
     var lastDisplayedDate: Date?
     private var categoryRaw: String
     
+    /// The category this affirmation belongs to
     var category: AffirmationCategory {
         get {
             AffirmationCategory(rawValue: categoryRaw) ?? .learning
@@ -44,9 +47,11 @@ class Affirmation: Identifiable {
 }
 
 extension Affirmation {
+    /// Determines if an affirmation is eligible to be shown based on when it was last displayed.
+    /// An affirmation becomes eligible again 7 days after it was last shown.
     var isEligibleToShow: Bool {
         guard let lastShown = lastDisplayedDate else {
-            return true
+            return true // Never shown before
         }
         
         let calendar = Calendar.current
@@ -58,6 +63,8 @@ extension Affirmation {
     }
 }
 
+/// Manages the selection and rotation of daily affirmations shown to the user.
+/// Ensures that affirmations are properly cycled and not repeated too frequently.
 @Model
 class AffirmationManager {
     var lastUpdateDate: Date
@@ -67,11 +74,17 @@ class AffirmationManager {
         self.lastUpdateDate = lastUpdateDate
     }
     
+    /// Determines if a new affirmation should be selected for today
     var needsNewAffirmation: Bool {
         let calendar = Calendar.current
         return !calendar.isDateInToday(lastUpdateDate)
     }
     
+    /// Retrieves the appropriate affirmation for today, either returning the existing one
+    /// or selecting a new one if needed.
+    /// - Parameter context: The SwiftData context to fetch affirmations from
+    /// - Returns: The selected affirmation, or nil if none are available
+    /// - Throws: Any errors that occur during database operations
     func getDailyAffirmation(context: ModelContext) throws -> Affirmation? {
             // If we already have today's affirmation, fetch and return it
             if !needsNewAffirmation, let currentId = currentAffirmationId {
@@ -94,6 +107,11 @@ class AffirmationManager {
             return nil
         }
     
+    /// Selects a random affirmation from the eligible pool, respecting the 7-day cooling period.
+    /// If no eligible affirmations exist, resets all cooldowns and picks from the entire pool.
+    /// - Parameter context: The SwiftData context to fetch affirmations from
+    /// - Returns: The selected affirmation, or nil if none are available
+    /// - Throws: Any errors that occur during database operations
     private func getRandomAffirmation(context: ModelContext) throws -> Affirmation? {
         let descriptor = FetchDescriptor<Affirmation>()
         let allAffirmation = try context.fetch(descriptor)
@@ -115,7 +133,7 @@ class AffirmationManager {
     }
 }
 
-
+/// Categories for grouping affirmations by their intended purpose or focus area.
 enum AffirmationCategory: String, CaseIterable {
     case learning = "Learning Growth"
     case persistence = "Persistence"
