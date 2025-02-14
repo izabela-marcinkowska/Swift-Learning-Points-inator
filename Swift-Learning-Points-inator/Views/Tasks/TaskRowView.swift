@@ -31,7 +31,7 @@ struct TaskRowView: View {
                 VStack(alignment: .leading) {
                     Text(task.name)
                     
-                    if task.isCompleted, let completedDate = task.completedDate {
+                    if task.isCompleted, let completedDate = task.lastCompletedDate {
                         Text("Completed: \(completedDate, formatter: dateFormatter)")
                             .font(.caption)
                             .foregroundColor(.gray)
@@ -41,19 +41,6 @@ struct TaskRowView: View {
                         Image(systemName: task.school.icon)
                         Text(task.school.rawValue)
                     }
-                    
-                    Button("\(task.isCompleted ? "Not completed" : "Completed")") {
-                        if let user = user {
-                            let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
-                            task.toggleCompletionWithBonus(for: user, spells: spells)
-                            do {
-                                try modelContext.save()
-                            } catch {
-                                print("Error saving context: \(error)")
-                            }
-                        }
-                    }
-                    .buttonStyle(.borderless)
                 }
                 Spacer()
                 VStack {
