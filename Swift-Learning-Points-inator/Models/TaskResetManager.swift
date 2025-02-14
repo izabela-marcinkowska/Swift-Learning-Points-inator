@@ -42,6 +42,9 @@ class TaskResetManager {
         return Date() >= nextResetDate
     }
     
+    
+    /// Fetching all the tasks that are repeatable and performing the reset of `isCompleted` so that tasks can we completed again.
+    /// - Parameter modelContext: current model context
     private func performReset(modelContext: ModelContext) {
         let descriptor = FetchDescriptor<Task>(
             predicate: #Predicate<Task> { task in
@@ -65,6 +68,9 @@ class TaskResetManager {
         }
     }
     
+    
+    /// If time passed reset time, it's calling the function that is performing reset of the tasks. 
+    /// - Parameter modelContext: <#modelContext description#>
     func checkAndResetTasks(modelContext: ModelContext) {
         if needReset() {
             performReset(modelContext: modelContext)

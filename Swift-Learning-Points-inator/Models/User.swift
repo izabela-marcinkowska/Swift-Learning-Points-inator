@@ -55,11 +55,8 @@ class User {
 }
 
 /// Defines the available theme options for the application's appearance.
-///
 /// - light: Forces light mode regardless of system settings
-///
 /// - dark: Forces dark mode regardless of system settings
-/// 
 /// - system: Follows the device's appearance settings
 enum ThemePreference: String, CaseIterable {
     case light = "Light Mode"
