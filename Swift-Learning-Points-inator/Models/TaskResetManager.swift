@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 class TaskResetManager {
     private let lastResetDateKey = "lastTaskResetDate"
@@ -37,4 +38,34 @@ class TaskResetManager {
         }
         return Date() >= nextResetDate
     }
+    
+    private func performReset(modelContext: ModelContext) {
+        let descriptor = FetchDescriptor<Task>(
+            predicate: #Predicate<Task> { task in
+                task.isRepeatable
+            }
+        )
+        
+        do {
+            let repeatableTasks = try modelContext.fetch(descriptor)
+            
+            for task in repeatableTasks {
+                task.isCompleted = false
+                task.currentCompletionDate = nil
+            }
+            
+            try modelContext.save()
+            
+            lastResetDate = Date()
+        } catch {
+            print("Error resetting tasks: \(error)")
+        }
+    }
+    
+    func checkAndResetTask(modelContext: ModelContext) {
+        if needReset() {
+            performReset(modelContext: modelContext)
+        }
+    }
+    
 }
