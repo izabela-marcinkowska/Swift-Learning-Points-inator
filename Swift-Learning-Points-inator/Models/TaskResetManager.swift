@@ -9,6 +9,9 @@ import Foundation
 import SwiftData
 
 class TaskResetManager {
+    static let shared = TaskResetManager()
+    private init() {}
+    
     private let lastResetDateKey = "lastTaskResetDate"
     private let resetHour = 3
     
@@ -62,7 +65,7 @@ class TaskResetManager {
         }
     }
     
-    func checkAndResetTask(modelContext: ModelContext) {
+    func checkAndResetTasks(modelContext: ModelContext) {
         if needReset() {
             performReset(modelContext: modelContext)
         }

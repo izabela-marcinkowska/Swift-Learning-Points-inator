@@ -25,6 +25,7 @@ struct Swift_Learning_Points_inatorApp: App {
             container = try ModelContainer(for: User.self, Task.self, Spell.self, SchoolProgress.self, Affirmation.self, AffirmationManager.self)
 
             let modelContext = container.mainContext
+            TaskResetManager.shared.checkAndResetTasks(modelContext: modelContext)
             // MARK: - Affirmation
             
             let affirmationDescriptor = FetchDescriptor<Affirmation>()
