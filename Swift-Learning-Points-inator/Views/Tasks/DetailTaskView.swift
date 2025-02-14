@@ -42,7 +42,7 @@ struct DetailTaskView: View {
             Text("Task is \(task.isCompleted ? "completed" : "not completed")")
                 .foregroundColor(task.isCompleted ? .green : .blue)
             
-                if task.isCompleted, let completedDate = task.completedDate {
+            if task.isCompleted, let completedDate = task.lastCompletedDate {
                     VStack(spacing: 8) {
                     Text("Completed:")
                         .font(.headline)
@@ -88,13 +88,25 @@ struct DetailTaskView: View {
             }
             .padding()
             
-            Button("Mark as \(task.isCompleted ? "not completed" : "completed")") {
-                if let user = user {
-                    task.toggleCompletionWithBonus(for: user, spells: spells)
-                    try? modelContext.save()
+            VStack(spacing: 12) {
+                if !task.isCompleted {
+                    Button("Complete Task") {
+                        if let user = user {
+                            task.completeTaskWithBonus(for: user, spells: spells)
+                            try? modelContext.save()
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                } else {
+                    Button("Unmark Task", role: .destructive) {
+                        if let user = user {
+                            task.unmarkTask(for: user, spells: spells)
+                            try? modelContext.save()
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
                 }
             }
-            .buttonStyle(.borderedProminent)
             .padding()
             
             Spacer()

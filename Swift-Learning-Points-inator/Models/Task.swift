@@ -18,25 +18,35 @@ class Task: Identifiable {
     var mana: Int
     private var schoolRaw: String
     var isCompleted: Bool
-    var completedDate: Date?
     var isRepeatable: Bool = false
     private var difficultyRaw: String
+    /// The most recent date when this task was successfully completed.
+    /// - For non-repeatable tasks: Gets cleared when task is unmarked
+    /// - For repeatable tasks: Preserves the last completion date even after unmarking or day reset
+    /// Used for historical tracking and displaying completion timestamps to users.
+    var lastCompletedDate: Date?
+    /// Tracks whether the task has been completed for the current day.
+    /// - Gets cleared when unmarking a task
+    /// - Gets cleared on daily reset for repeatable tasks
+    /// - Used for internal logic to prevent multiple completions per day
+    /// Used for determining if repeatable tasks are available for completion today.
+    var currentCompletionDate: Date?
     
     /// Computed property controlling if tasks `completedDate` is today.
     var completedToday: Bool {
-        guard let completedDate else { return false }
-        return Calendar.current.isDateInToday(completedDate)
+        guard let currentCompletionDate else { return false }
+        return Calendar.current.isDateInToday(currentCompletionDate)
     }
     
     /// Determines if a task can be completed based on its repeatable status and completion state.
     /// - For non-repeatable tasks: Available if not completed today
     /// - For repeatable tasks: Available if not currently completed
     /// - Note: This property will be used in conjunction with the daily task reset mechanism
-    var isAvaliable: Bool {
+    var canBeCompleted: Bool {
         if !isRepeatable {
-            return !completedToday
+            return !isCompleted
         }
-        return !isCompleted
+        return !completedToday
     }
     
     /// The difficulty level of the task.
@@ -66,42 +76,88 @@ class Task: Identifiable {
         self.mana = mana
         self.schoolRaw = school.rawValue
         self.isCompleted = isCompleted
-        self.completedDate = nil
         self.isRepeatable = isRepeatable
         self.difficultyRaw = difficulty.rawValue
     }
+}
+
+//MARK: - Task Completion
+extension Task {
+    /// Toggles the completion state of a task and updates the user's progress with spell bonuses.
+    ///
+    /// - Parameters:
+    ///   - user: The user whose progress should be updated
+    ///   - spells: Array of spells that might provide mana bonuses
+    func completeTaskWithBonus(for user: User, spells: [Spell]) {
+        guard !isCompleted else { return }
+        
+        isCompleted = true
+        let now = Date()
+        lastCompletedDate = now
+        currentCompletionDate = now
+        
+        let breakdown = calculateManaBreakdown(for: user, spells: spells)
+        user.mana += breakdown.total
+        user.addMana(breakdown.total, for: school)
+        user.updateStreak()
+    }
     
-    /// Toggles the completion state of a task and updates the user's progress accordingly.
-    /// - Parameter user: ``User`` The user whose progress should be updated
-    ///
-    ///
-    /// When the task is marked as completed:
-    /// - Sets `completedDate` to current date
-    /// - Adds mana to user's total
-    /// - Updates school-specific progress via `addMana`
-    /// - Updates user's daily streak
-    ///
-    /// When the task is marked as uncompleted:
-    /// - Clears `completedDate`
-    /// - Deducts mana from user's total
-    /// - Removes mana from school-specific progress
-    ///
-    /// - Note: This method modifies both the task state and user progress
-    func toggleCompletion(for user: User) {
-        isCompleted.toggle()
-        if isCompleted {
-            completedDate = Date()
-            user.mana += mana
-            user.addMana(mana, for: school)
-            user.updateStreak()
+    /// Reverts a task's completion state and removes awarded mana from the user with bonuses
+    /// /// - Parameters:
+    ///   - user: The user whose progress should be updated
+    ///   - spells: Array of spells that were used for bonus calculation
+    func unmarkTask(for user: User, spells: [Spell]) {
+        guard isCompleted else { return }
+        
+        isCompleted = false
+        if !isRepeatable {
+            lastCompletedDate = nil
+            currentCompletionDate = nil
         } else {
-            completedDate = nil
-            user.mana -= mana
-            user.addMana(-mana, for: school)
+            currentCompletionDate = nil
         }
+        
+        let breakdown = calculateManaBreakdown(for: user, spells: spells)
+        user.mana -= breakdown.total
+        user.addMana(-breakdown.total, for: school)
     }
 }
 
+extension Task {
+    /// Reverts a task's completion state and removes awarded mana from the user without bonuses
+    ///
+    /// - Parameters:
+    ///   - user: The user whose progress should be updated
+    func completeTaskWithoutBonus(for user: User) {
+        guard !isCompleted else { return }
+        
+        isCompleted = true
+        let now = Date()
+        lastCompletedDate = now
+        currentCompletionDate = now
+        
+        user.mana += mana
+        user.addMana(mana, for: school)
+        user.updateStreak()
+    }
+    
+    func unmarkTaskWithoutBonus(for user: User) {
+        guard isCompleted else { return }
+        
+        isCompleted = false
+        if !isRepeatable {
+            lastCompletedDate = nil
+            currentCompletionDate = nil
+        } else {
+            currentCompletionDate = nil
+        }
+        
+        user.mana -= mana
+        user.addMana(-mana, for: school)
+    }
+}
+
+// MARK: - Task Difficulty
 /// Represents the difficulty levels available for tasks,
 /// affecting suggested mana rewards and visual representation
 enum TaskDifficulty: String, CaseIterable {
@@ -127,6 +183,7 @@ enum TaskDifficulty: String, CaseIterable {
     }
 }
 
+// MARK: - Mana Calculation
 extension Task {
     /// Calculates the total mana reward for this task, including any applicable spell bonuses.
     /// - Parameters:
@@ -135,29 +192,6 @@ extension Task {
     /// - Returns: A breakdown of base mana and bonus mana from applicable spells
     func calculateManaBreakdown(for user: User, spells: [Spell]) -> ManaCalculator.ManaBreakdown {
         return ManaCalculator.calculateMana(for: self, user: user, spells: spells)
-    }
-    
-    /// Toggles the completion state of a task and updates the user's progress with spell bonuses.
-    ///
-    /// - Note: This is an enhanced version of `toggleCompletion` that includes spell bonus calculations
-    /// - Parameters:
-    ///   - user: The user whose progress should be updated
-    ///   - spells: Array of spells that might provide mana bonuses
-    ///
-    func toggleCompletionWithBonus(for user: User, spells: [Spell]) {
-        isCompleted.toggle()
-        if isCompleted {
-            completedDate = Date()
-            let breakdown = calculateManaBreakdown(for: user, spells: spells    )
-            user.mana += breakdown.total
-            user.addMana(breakdown.total, for: school)
-            user.updateStreak()
-        } else {
-            completedDate = nil
-            let breakdown = calculateManaBreakdown(for: user, spells: spells)
-            user.mana -= breakdown.total
-            user.addMana(-breakdown.total, for: school)
-        }
     }
 }
 
