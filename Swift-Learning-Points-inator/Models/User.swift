@@ -108,17 +108,22 @@ extension User {
     /// A streak breaks if more than one day passes between activities.
     func updateStreak() {
         let status = checkStreakStatus()
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
         
         switch status {
         case .noStreak:
             streak = 1
+            lastStreakDate = today
         case .continuing:
-            self.streak += 1
+            if let lastDate = lastStreakDate, !calendar.isDate(today, inSameDayAs: lastDate) {
+                streak += 1
+                lastStreakDate = today
+            }
         case .broken:
             streak = 1
+            lastStreakDate = today
         }
-        
-        lastStreakDate = Date()
     }
 }
 
