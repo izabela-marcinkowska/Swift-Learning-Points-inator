@@ -42,7 +42,7 @@ class Task: Identifiable {
     /// - For non-repeatable tasks: Available if not completed today
     /// - For repeatable tasks: Available if not currently completed
     /// - Note: This property will be used in conjunction with the daily task reset mechanism
-    var isAvaliable: Bool {
+    var canBeCompleted: Bool {
         if !isRepeatable {
             return !isCompleted
         }
@@ -102,6 +102,10 @@ extension Task {
         user.updateStreak()
     }
     
+    /// Reverts a task's completion state and removes awarded mana from the user with bonuses
+    /// /// - Parameters:
+    ///   - user: The user whose progress should be updated
+    ///   - spells: Array of spells that were used for bonus calculation
     func unmarkTask(for user: User, spells: [Spell]) {
         guard isCompleted else { return }
         
@@ -120,11 +124,10 @@ extension Task {
 }
 
 extension Task {
-    /// Toggles the completion state of a task and updates the user's progress without spell bonuses.
+    /// Reverts a task's completion state and removes awarded mana from the user without bonuses
     ///
     /// - Parameters:
     ///   - user: The user whose progress should be updated
-    ///   - spells: Array of spells that might provide mana bonuses
     func completeTaskWithoutBonus(for user: User) {
         guard !isCompleted else { return }
         
