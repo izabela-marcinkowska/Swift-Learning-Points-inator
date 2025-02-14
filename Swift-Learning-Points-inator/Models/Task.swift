@@ -21,11 +21,12 @@ class Task: Identifiable {
     var isRepeatable: Bool = false
     private var difficultyRaw: String
     var lastCompletedDate: Date?
+    var currentCompletionDate: Date?
     
     /// Computed property controlling if tasks `completedDate` is today.
     var completedToday: Bool {
-        guard let lastCompletedDate else { return false }
-        return Calendar.current.isDateInToday(lastCompletedDate)
+        guard let currentCompletionDate else { return false }
+        return Calendar.current.isDateInToday(currentCompletionDate)
     }
     
     /// Determines if a task can be completed based on its repeatable status and completion state.
@@ -82,7 +83,9 @@ extension Task {
         guard !isCompleted else { return }
         
         isCompleted = true
-        lastCompletedDate = Date()
+        let now = Date()
+        lastCompletedDate = now
+        currentCompletionDate = now
         
         let breakdown = calculateManaBreakdown(for: user, spells: spells)
         user.mana += breakdown.total
@@ -96,6 +99,9 @@ extension Task {
         isCompleted = false
         if !isRepeatable {
             lastCompletedDate = nil
+            currentCompletionDate = nil
+        } else {
+            currentCompletionDate = nil
         }
         
         let breakdown = calculateManaBreakdown(for: user, spells: spells)
@@ -114,7 +120,9 @@ extension Task {
         guard !isCompleted else { return }
         
         isCompleted = true
-        lastCompletedDate = Date()
+        let now = Date()
+        lastCompletedDate = now
+        currentCompletionDate = now
         
         user.mana += mana
         user.addMana(mana, for: school)
@@ -127,6 +135,9 @@ extension Task {
         isCompleted = false
         if !isRepeatable {
             lastCompletedDate = nil
+            currentCompletionDate = nil
+        } else {
+            currentCompletionDate = nil
         }
         
         user.mana -= mana
