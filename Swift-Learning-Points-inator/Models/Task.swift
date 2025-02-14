@@ -20,7 +20,16 @@ class Task: Identifiable {
     var isCompleted: Bool
     var isRepeatable: Bool = false
     private var difficultyRaw: String
+    /// The most recent date when this task was successfully completed.
+    /// - For non-repeatable tasks: Gets cleared when task is unmarked
+    /// - For repeatable tasks: Preserves the last completion date even after unmarking or day reset
+    /// Used for historical tracking and displaying completion timestamps to users.
     var lastCompletedDate: Date?
+    /// Tracks whether the task has been completed for the current day.
+    /// - Gets cleared when unmarking a task
+    /// - Gets cleared on daily reset for repeatable tasks
+    /// - Used for internal logic to prevent multiple completions per day
+    /// Used for determining if repeatable tasks are available for completion today.
     var currentCompletionDate: Date?
     
     /// Computed property controlling if tasks `completedDate` is today.
