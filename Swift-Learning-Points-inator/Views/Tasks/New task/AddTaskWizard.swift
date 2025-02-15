@@ -23,6 +23,8 @@ struct AddTaskWizard: View {
     @State private var currentStep = 0
     @State private var formData = TaskFormData()
     
+    @State private var movingForward = true
+    
     private var isCurrentStepValid: Bool {
         switch currentStep {
         case 0:
@@ -57,19 +59,35 @@ struct AddTaskWizard: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 24) {
-                TabView(selection: $currentStep) {
-                    TaskWizardStepOne(formData: $formData)
-                        .tag(0)
-                    TaskWizardStepTwo(formData: $formData)
-                        .tag(1)
-                    TaskWizardStepThree(formData: $formData)
-                        .tag(2)
+                ZStack {
+                    if currentStep == 0 {
+                        TaskWizardStepOne(formData: $formData)
+                            .transition(.asymmetric(
+                                insertion: movingForward ? .move(edge: .trailing) : .move(edge: .leading),
+                                removal: movingForward ? .move(edge: .leading) : .move(edge: .trailing)
+                            ))
+                    }
+                    else if currentStep == 1 {
+                        TaskWizardStepTwo(formData: $formData)
+                            .transition(.asymmetric(
+                                insertion: movingForward ? .move(edge: .trailing) : .move(edge: .leading),
+                                removal: movingForward ? .move(edge: .leading) : .move(edge: .trailing)
+                            ))
+                    }
+                    else if currentStep == 2 {
+                        TaskWizardStepThree(formData: $formData)
+                            .transition(.asymmetric(
+                                insertion: movingForward ? .move(edge: .trailing) : .move(edge: .leading),
+                                removal: movingForward ? .move(edge: .leading) : .move(edge: .trailing)
+                            ))
+                    }
                 }
-                .tabViewStyle(.page(indexDisplayMode: .never))
+                .animation(.default, value: currentStep)
                 
                 VStack(spacing: 16) {
                     Button {
                         if currentStep < 2 {
+                            movingForward = true
                             withAnimation {
                                 currentStep += 1
                             }
@@ -100,6 +118,7 @@ struct AddTaskWizard: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if currentStep > 0 {
                         Button {
+                            movingForward = false
                             withAnimation {
                                 currentStep -= 1
                             }
