@@ -43,6 +43,21 @@ struct DashboardView: View {
                     )
                 }
             }
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    HStack (spacing: 4) {
+                        Image(systemName: "diamond")
+                        Text("\(user?.mana ?? 0)")
+                    }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    
+                    HStack(spacing: 4) {
+                        Image(systemName: "flame.fill")
+                        Text("\(user?.streak ?? 0)")
+                    }
+                }
+            }
         }
     }
 }
