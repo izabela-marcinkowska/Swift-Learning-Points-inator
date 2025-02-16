@@ -46,7 +46,10 @@ struct DashboardView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack (spacing: 4) {
-                        Image(systemName: "diamond")
+                        Image("mana-diamond")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 30, height: 30)
                         Text("\(user?.mana ?? 0)")
                     }
                 }

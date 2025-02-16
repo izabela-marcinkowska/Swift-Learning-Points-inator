@@ -30,8 +30,10 @@ struct TaskRowItem: View {
                 Spacer()
                 
                 HStack(spacing: 4) {
-                    Image(systemName: "diamond.fill")
-                        .font(.caption)
+                    Image("mana-diamond")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 20, height: 20)
                     Text("\(task.mana)")
                         .font(.headline)
                 }

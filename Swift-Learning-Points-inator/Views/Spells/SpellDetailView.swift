@@ -97,7 +97,10 @@ struct SpellDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack {
-                    Image(systemName: "diamond.fill")
+                    Image("mana-diamond")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 30, height: 30)
                     Text("\(user?.mana ?? 0)")
                 }
             }
