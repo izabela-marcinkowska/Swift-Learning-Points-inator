@@ -59,12 +59,24 @@ struct DashboardView: View {
                         Spacer()
                     }
                     .padding()
-                    .background(Color(.systemBackground))
+                    .background(
+                        LinearGradient(
+                                gradient: Gradient(colors: [
+                                    Color("card-background"),
+                                    Color("card-background").opacity(0.9),
+                                    Color.black
+                                ]),
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                    )
                     .clipShape(
                         RoundedCorner(radius: 30, corners: [.topLeft, .topRight])
                     )
                 }
+                
             }
+            
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack (spacing: 4) {

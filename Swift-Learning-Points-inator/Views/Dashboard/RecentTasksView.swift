@@ -22,7 +22,6 @@ struct RecentTasksView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.gray.opacity(0.1))
         .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
