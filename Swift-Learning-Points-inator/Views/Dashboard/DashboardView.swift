@@ -96,13 +96,16 @@ struct DashboardView: View {
                             .scaledToFit()
                             .frame(width: 30, height: 30)
                         Text("\(user?.mana ?? 0)")
+                            .foregroundColor(.black)
                     }
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     
                     HStack(spacing: 4) {
-                        Image(systemName: "flame.fill")
+                        Image(systemName: "flame")
+                            .foregroundStyle(.black)
                         Text("\(user?.streak ?? 0)")
+                            .foregroundColor(.black)
                     }
                 }
             }
