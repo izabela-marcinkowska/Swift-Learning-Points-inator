@@ -39,7 +39,7 @@ class SchoolProgress {
     
     init(
         school: SchoolOfMagic = .arcaneStudies,
-        totalMana: Int = 0
+        totalMana: Int = 0,
         lastLevelUpdate: Date? = nil
     ) {
         self.schoolRaw = school.rawValue

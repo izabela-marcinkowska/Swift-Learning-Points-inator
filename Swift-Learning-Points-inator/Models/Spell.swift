@@ -166,7 +166,7 @@ class Spell {
         spellDescription: String,
         category: SpellCategory = .focus,
         icon: String,
-        investedMana: Int = 0
+        investedMana: Int = 0,
         lastLevelUpdate: Date? = nil
     ) {
         self.name = name

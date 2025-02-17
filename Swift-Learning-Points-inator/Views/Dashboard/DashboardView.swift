@@ -12,6 +12,8 @@ struct DashboardView: View {
     @Query private var users: [User]
     private var user: User? { users.first }
     
+    @Query private var spells: [Spell]
+    
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
@@ -34,6 +36,12 @@ struct DashboardView: View {
                             Spacer()
                         }
                         AffirmationWindow()
+                        
+                        if let user = user,
+                           let achievement = user.getMostRecentAchievement(spells: spells) {
+                            RecentAchievementView(achievement: achievement)
+                        }
+                        
                         Spacer()
                     }
                     .padding()
