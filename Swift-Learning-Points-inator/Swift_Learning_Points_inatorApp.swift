@@ -13,24 +13,37 @@ struct Swift_Learning_Points_inatorApp: App {
     let container: ModelContainer
     
     init() {
+        let lightAppearance = UITabBarAppearance()
+        lightAppearance.configureWithDefaultBackground()
+        
 #if DEBUG
         if ProcessInfo.processInfo.environment["XCODE_RUNNING_FOR_PREVIEWS"] == "1" {
             let config = ModelConfiguration(isStoredInMemoryOnly: true)
             container = try! ModelContainer(for: User.self, configurations: config)
             return
         }
-        #endif
-        
+#endif
         do {
             container = try ModelContainer(for: User.self, Task.self, Spell.self, SchoolProgress.self, Affirmation.self, AffirmationManager.self)
-
+            
             let modelContext = container.mainContext
+            
+            let userDescriptor = FetchDescriptor<User>()
+            if let user = try? modelContext.fetch(userDescriptor).first {
+                configureTabBarAppearance(for: user.themePreference)
+            } else {
+                configureTabBarAppearance(for: .system)
+            }
+            
+            
             TaskResetManager.shared.checkAndResetTasks(modelContext: modelContext)
+            
+            
             // MARK: - Affirmation
             
             let affirmationDescriptor = FetchDescriptor<Affirmation>()
             let existingAffirmationCount = try modelContext.fetchCount(affirmationDescriptor)
-
+            
             if existingAffirmationCount == 0 {
                 SampleAffirmations.allAffiliations.forEach { affirmation in
                     modelContext.insert(affirmation)
@@ -76,7 +89,7 @@ struct Swift_Learning_Points_inatorApp: App {
             
             let spellDescriptor = FetchDescriptor<Spell>()
             let existingSpellCount = try modelContext.fetchCount(spellDescriptor)
-
+            
             if existingSpellCount == 0 {
                 SampleSpells.allSpells.forEach { spell in
                     modelContext.insert(spell)
@@ -91,7 +104,6 @@ struct Swift_Learning_Points_inatorApp: App {
             
             //MARK: - User
             
-            let userDescriptor = FetchDescriptor<User>()
             let existingUserCount = try modelContext.fetchCount(userDescriptor)
             
             if existingUserCount == 0 {
@@ -122,6 +134,46 @@ struct Swift_Learning_Points_inatorApp: App {
             }
         } catch {
             fatalError("Could not initialize ModelContainer: \(error)")
+        }
+    }
+    
+    private func configureTabBarAppearance(for theme: ThemePreference) {
+        let lightAppearance = UITabBarAppearance()
+        lightAppearance.configureWithDefaultBackground()
+        lightAppearance.backgroundColor = .white
+        lightAppearance.stackedLayoutAppearance.normal.iconColor = .black
+        lightAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.black]
+        lightAppearance.stackedLayoutAppearance.selected.iconColor = .systemBlue
+        lightAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
+        
+        let darkAppearance = UITabBarAppearance()
+        darkAppearance.configureWithDefaultBackground()
+        darkAppearance.backgroundColor = .black
+        darkAppearance.shadowColor = .clear
+        darkAppearance.shadowImage = UIImage()
+        darkAppearance.stackedLayoutAppearance.normal.iconColor = .white
+        darkAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
+        darkAppearance.stackedLayoutAppearance.selected.iconColor = .systemBlue
+        darkAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
+        
+        let tabBar = UITabBar.appearance()
+        
+        switch theme {
+        case .dark:
+            tabBar.standardAppearance = darkAppearance
+            tabBar.scrollEdgeAppearance = darkAppearance
+        case .light:
+            tabBar.standardAppearance = lightAppearance
+            tabBar.scrollEdgeAppearance = lightAppearance
+        case .system:
+            // For system theme, we'll check the current interface style
+            if UITraitCollection.current.userInterfaceStyle == .dark {
+                tabBar.standardAppearance = darkAppearance
+                tabBar.scrollEdgeAppearance = darkAppearance
+            } else {
+                tabBar.standardAppearance = lightAppearance
+                tabBar.scrollEdgeAppearance = lightAppearance
+            }
         }
     }
     
