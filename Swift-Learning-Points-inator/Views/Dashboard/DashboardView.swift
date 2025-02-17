@@ -44,6 +44,7 @@ struct DashboardView: View {
                             Spacer()
                         }
                         AffirmationWindow()
+                            .fixedSize(horizontal: false, vertical: true)
                         
                         if let user = user,
                            let achievement = user.getMostRecentAchievement(spells: spells) {

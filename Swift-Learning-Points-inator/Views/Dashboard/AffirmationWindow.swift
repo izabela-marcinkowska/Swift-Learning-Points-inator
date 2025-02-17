@@ -34,8 +34,11 @@ struct AffirmationWindow: View {
                     .frame(maxWidth: .infinity)
                     .background(Color.gray.opacity(0.1))
                     .clipShape(RoundedRectangle(cornerRadius: 10))
+                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
+        .frame(minHeight: 80)
         .onAppear {
             fetchDailyAffirmation()
         }
