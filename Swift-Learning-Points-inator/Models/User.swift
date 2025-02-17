@@ -151,7 +151,10 @@ extension User {
 
 // MARK: - Recent Achivement
 extension User {
+    /// Represents a milestone achievement in the user's progression, either in a School of Magic or Spell mastery.
     struct RecentAchievement {
+        /// Distinguishes between school-based and spell-based achievements.
+        /// Each type carries its associated data (school/level or spell/level).
         enum AchievementType {
             case school(SchoolOfMagic, SchoolOfMagic.AchievementLevel)
             case spell (Spell, SpellLevel)
@@ -160,6 +163,9 @@ extension User {
         let type: AchievementType
         let date: Date
         
+        /// Provides a human-readable description of the achievement.
+        /// For schools: Returns the formatted title (e.g., "Archmage of Data Sorcery")
+        /// For spells: Returns the spell name and level (e.g., "Mind Sharpening Charm reached Expert Level")
         var description: String {
             switch type {
             case .school(let school, let level):
@@ -170,6 +176,9 @@ extension User {
         }
     }
     
+    /// Finds the most recently earned achievement across all schools and spells.
+    /// - Parameter spells: Array of spells to check for recent level-ups
+    /// - Returns: The most recent achievement if any exists, nil otherwise
     func getMostRecentAchievement(spells: [Spell]) -> RecentAchievement? {
         var allAchievements: [RecentAchievement] = []
         

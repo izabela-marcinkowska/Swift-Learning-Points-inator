@@ -157,6 +157,26 @@ extension Task {
     }
 }
 
+extension Task {
+    static func recentlyCompleted(context: ModelContext, limit: Int = 2) -> [Task] {
+        var descriptor = FetchDescriptor<Task>(
+            predicate: #Predicate<Task> { task in
+                task.lastCompletedDate != nil
+            }
+        )
+
+        descriptor.sortBy = [SortDescriptor(\.lastCompletedDate, order: .reverse)]
+        descriptor.fetchLimit = limit
+        
+        do {
+            return try context.fetch(descriptor)
+        } catch {
+            print("Error fetching recent tasks: \(error)")
+            return []
+        }
+    }
+}
+
 // MARK: - Task Difficulty
 /// Represents the difficulty levels available for tasks,
 /// affecting suggested mana rewards and visual representation
