@@ -31,16 +31,16 @@ class User {
     
     /// Based on the all existing themes, gives ColorScheme or nil to use inside `preferredColorScheme`.
     var swiftUIColorScheme: ColorScheme? {
-            switch themePreference {
-            case .light:
-                return .light
-            case .dark:
-                return .dark
-            case .system:
-                return nil
-            }
+        switch themePreference {
+        case .light:
+            return .light
+        case .dark:
+            return .dark
+        case .system:
+            return nil
         }
-
+    }
+    
     
     init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil, themePreference: ThemePreference = .system) {
         self.name = name
@@ -149,4 +149,53 @@ extension User {
     }
 }
 
-
+// MARK: - Recent Achivement
+extension User {
+    struct RecentAchievement {
+        enum AchievementType {
+            case school(SchoolOfMagic, SchoolOfMagic.AchievementLevel)
+            case spell (Spell, SpellLevel)
+        }
+        
+        let type: AchievementType
+        let date: Date
+        
+        var description: String {
+            switch type {
+            case .school(let school, let level):
+                return school.titleForLevel(level)
+            case .spell(let spell, let level):
+                return "\(spell.name) reached \(level.title)"
+            }
+        }
+    }
+    
+    func getMostRecentAchievement(spells: [Spell]) -> RecentAchievement? {
+        var allAchievements: [RecentAchievement] = []
+        
+        for progress in schoolProgress {
+            if let date = progress.lastLevelUpdate {
+                allAchievements.append(
+                    RecentAchievement(type: .school(progress.school, progress.currentLevel),
+                                      date: date
+                                     )
+                )
+            }
+        }
+        
+        for spell in spells {
+            if let date = spell.lastLevelUpdate {
+                allAchievements.append(
+                    RecentAchievement(type: .spell(spell, spell.currentSpellLevel),
+                                      date: date
+                                     )
+                )
+            }
+        }
+        
+        return allAchievements
+            .sorted { $0.date > $1.date }
+            .first
+    }
+    
+}
