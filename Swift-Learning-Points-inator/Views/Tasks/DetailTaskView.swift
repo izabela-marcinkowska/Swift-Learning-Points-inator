@@ -39,21 +39,7 @@ struct DetailTaskView: View {
             }
             .padding(.vertical, 8)
             
-            Text("Task is \(task.isCompleted ? "completed" : "not completed")")
-                .foregroundColor(task.isCompleted ? .green : .blue)
-            
-            if task.isCompleted, let completedDate = task.lastCompletedDate {
-                    VStack(spacing: 8) {
-                    Text("Completed:")
-                        .font(.headline)
-                        .padding(.top, 8)
-                    Text(completedDate, formatter: dateFormatter)
-                        .foregroundColor(.green)
-                }
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.gray.opacity(0.1)))
-            }
+            TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
             
             VStack(spacing: 20) {
                 Text("Points:")
