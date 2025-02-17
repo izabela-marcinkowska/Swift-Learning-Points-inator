@@ -10,6 +10,10 @@ import SwiftUI
 struct RecentTaskItem: View {
     let task: Task
     
+    init(task: Task) {
+        self.task = task
+    }
+    
     private var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .short
@@ -48,8 +52,4 @@ struct RecentTaskItem: View {
             
         }
     }
-}
-
-#Preview {
-    RecentTaskItem()
 }

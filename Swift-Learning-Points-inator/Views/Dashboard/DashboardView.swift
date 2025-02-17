@@ -13,6 +13,14 @@ struct DashboardView: View {
     private var user: User? { users.first }
     
     @Query private var spells: [Spell]
+    @Query private var tasks: [Task]
+    
+    private var recentTasks: [Task] {
+        tasks.filter {$0.lastCompletedDate != nil}
+            .sorted { ($0.lastCompletedDate ?? .distantPast) > ($1.lastCompletedDate ?? .distantPast) }
+            .prefix(2)
+            .map { $0 }
+    }
     
     var body: some View {
         NavigationStack {
@@ -40,6 +48,10 @@ struct DashboardView: View {
                         if let user = user,
                            let achievement = user.getMostRecentAchievement(spells: spells) {
                             RecentAchievementView(achievement: achievement)
+                        }
+                        
+                        if !recentTasks.isEmpty {
+                            RecentTasksView(tasks: recentTasks)
                         }
                         
                         Spacer()
