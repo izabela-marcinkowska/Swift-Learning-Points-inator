@@ -27,16 +27,27 @@ struct DashboardView: View {
     
     var body: some View {
         NavigationStack {
-            ZStack(alignment: .top) {
-
-                Color.cyan
-                    .ignoresSafeArea(edges: .top)
-                
                 VStack(spacing: 0) {
-                    Image("witchexample")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(maxHeight: 180)
+                    ZStack {
+                        Image("dashboard-background")
+                            .resizable()
+                            .scaledToFill()
+                            .ignoresSafeArea()
+                        
+                        // White glow shape
+                        Circle()
+                            .fill(.white)
+                            .frame(width: 220, height: 220)
+                            .blur(radius: 20)
+                            .opacity(0.3)
+                        
+                        // Main witch image
+                        Image("witchexample")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxHeight: 180)
+                    }
+                    .frame(maxHeight: 180)
                     
                     VStack(spacing: 20) {
                         HStack {
@@ -75,7 +86,7 @@ struct DashboardView: View {
                     )
                 }
                 
-            }
+            
             
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {

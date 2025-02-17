@@ -138,43 +138,35 @@ struct Swift_Learning_Points_inatorApp: App {
     }
     
     private func configureTabBarAppearance(for theme: ThemePreference) {
-        let lightAppearance = UITabBarAppearance()
-        lightAppearance.configureWithDefaultBackground()
-        lightAppearance.backgroundColor = .white
-        lightAppearance.stackedLayoutAppearance.normal.iconColor = .black
-        lightAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.black]
-        lightAppearance.stackedLayoutAppearance.selected.iconColor = .systemBlue
-        lightAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        appearance.shadowColor = .clear
+        appearance.shadowImage = UIImage()
         
-        let darkAppearance = UITabBarAppearance()
-        darkAppearance.configureWithDefaultBackground()
-        darkAppearance.backgroundColor = .black
-        darkAppearance.shadowColor = .clear
-        darkAppearance.shadowImage = UIImage()
-        darkAppearance.stackedLayoutAppearance.normal.iconColor = .white
-        darkAppearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
-        darkAppearance.stackedLayoutAppearance.selected.iconColor = .systemBlue
-        darkAppearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
-        
-        let tabBar = UITabBar.appearance()
-        
+        // Set colors based on theme
         switch theme {
         case .dark:
-            tabBar.standardAppearance = darkAppearance
-            tabBar.scrollEdgeAppearance = darkAppearance
+            appearance.backgroundColor = .black
+            appearance.stackedLayoutAppearance.normal.iconColor = .white
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
         case .light:
-            tabBar.standardAppearance = lightAppearance
-            tabBar.scrollEdgeAppearance = lightAppearance
+            appearance.backgroundColor = .systemBackground
+            // Using a softer color instead of pure black
+            appearance.stackedLayoutAppearance.normal.iconColor = .gray
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.gray]
         case .system:
-            // For system theme, we'll check the current interface style
-            if UITraitCollection.current.userInterfaceStyle == .dark {
-                tabBar.standardAppearance = darkAppearance
-                tabBar.scrollEdgeAppearance = darkAppearance
-            } else {
-                tabBar.standardAppearance = lightAppearance
-                tabBar.scrollEdgeAppearance = lightAppearance
-            }
+            appearance.backgroundColor = .systemBackground
+            appearance.stackedLayoutAppearance.normal.iconColor = .gray
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.gray]
         }
+        
+        // Selected state is always blue for contrast
+        appearance.stackedLayoutAppearance.selected.iconColor = .systemBlue
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
+        
+        let tabBar = UITabBar.appearance()
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
     }
     
     
