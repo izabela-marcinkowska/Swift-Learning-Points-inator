@@ -41,38 +41,7 @@ struct DetailTaskView: View {
             
             TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
             
-            VStack(spacing: 20) {
-                Text("Points:")
-                    .font(.title2)
-                
-                let breakdown = task.calculateManaBreakdown(for: user ?? User(), spells: spells)
-                
-                VStack(spacing: 8) {
-                    Text("\(breakdown.baseMana)")
-                        .font(.largeTitle)
-                    
-                    if !breakdown.bonuses.isEmpty {
-                        VStack(spacing: 8) {
-                            ForEach(breakdown.bonuses, id: \.spell.id) { bonus in
-                                HStack {
-                                    Image(systemName: bonus.spell.icon)
-                                    Text("+\(bonus.amount)")
-                                    Text("from \(bonus.spell.name)")
-                                }
-                                .foregroundStyle(.green)
-                                .font(.subheadline)
-                            }
-                            
-                            Divider()
-                                .padding(.vertical, 4)
-                            
-                            Text("Total: \(breakdown.total)")
-                                .font(.headline)
-                        }
-                    }
-                }
-            }
-            .padding()
+            TaskManaBreakdownView(task: task, user: user, spells: spells)
             
             VStack(spacing: 12) {
                 if !task.isCompleted {
