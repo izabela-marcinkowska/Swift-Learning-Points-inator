@@ -35,11 +35,15 @@ class SchoolProgress {
         SchoolOfMagic.AchievementLevel.level(for: totalMana)
     }
     
+    var lastLevelUpdate: Date?
+    
     init(
         school: SchoolOfMagic = .arcaneStudies,
         totalMana: Int = 0
+        lastLevelUpdate: Date? = nil
     ) {
         self.schoolRaw = school.rawValue
         self.totalMana = totalMana
+        self.lastLevelUpdate = lastLevelUpdate
     }
 }

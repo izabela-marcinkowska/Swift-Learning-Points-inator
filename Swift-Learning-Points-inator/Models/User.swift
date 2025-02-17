@@ -141,6 +141,7 @@ extension User {
             
             let newLevel = progress.currentLevel
             if newLevel != currentLevel {
+                progress.lastLevelUpdate = Date()
                 print("Level up! Now you're \(school.titleForLevel(newLevel))")
             }
         }

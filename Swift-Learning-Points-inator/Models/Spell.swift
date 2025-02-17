@@ -139,6 +139,7 @@ class Spell {
     var investedMana: Int
     var icon: String
     var categoryRaw: String
+    var lastLevelUpdate: Date?
     
     /// The current level of the spell based on invested mana
     var currentSpellLevel: SpellLevel {
@@ -166,12 +167,14 @@ class Spell {
         category: SpellCategory = .focus,
         icon: String,
         investedMana: Int = 0
+        lastLevelUpdate: Date? = nil
     ) {
         self.name = name
         self.spellDescription = spellDescription
         self.investedMana = investedMana
         self.icon = icon
         self.categoryRaw = category.rawValue
+        self.lastLevelUpdate = lastLevelUpdate
     }
     
     /// Function is used to remove users collected mana and spend it on selected Spell.
@@ -182,8 +185,14 @@ class Spell {
     func investMana(amount: Int, from user: User) -> Bool {
         guard amount <= user.mana else { return false }
         
+        let currentLevel = currentSpellLevel
+        
         user.mana -= amount
         investedMana += amount
+        
+        if currentSpellLevel != currentLevel {
+            lastLevelUpdate = Date()
+        }
         
         return true
     }
