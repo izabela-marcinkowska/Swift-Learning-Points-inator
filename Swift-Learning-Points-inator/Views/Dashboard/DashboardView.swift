@@ -15,6 +15,9 @@ struct DashboardView: View {
     @Query private var spells: [Spell]
     @Query private var tasks: [Task]
     
+    /// Recently completed tasks, limited to the 2 most recent.
+    /// Tasks are sorted by completion date, with most recent first.
+    /// Only includes tasks that have a completion date.
     private var recentTasks: [Task] {
         tasks.filter {$0.lastCompletedDate != nil}
             .sorted { ($0.lastCompletedDate ?? .distantPast) > ($1.lastCompletedDate ?? .distantPast) }
@@ -25,18 +28,16 @@ struct DashboardView: View {
     var body: some View {
         NavigationStack {
             ZStack(alignment: .top) {
-                // Cyan background only extends to the top safe area.
+
                 Color.cyan
                     .ignoresSafeArea(edges: .top)
                 
                 VStack(spacing: 0) {
-                    // Your top image.
                     Image("witchexample")
                         .resizable()
                         .scaledToFit()
                         .frame(maxHeight: 180)
                     
-                    // Sheet-like content with only the top corners rounded.
                     VStack(spacing: 20) {
                         HStack {
                             Text("Welcome, \(user?.name ?? "Apprentice")")

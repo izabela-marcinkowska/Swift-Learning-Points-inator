@@ -158,6 +158,11 @@ extension Task {
 }
 
 extension Task {
+    /// Retrieves a list of recently completed tasks, sorted by completion date.
+    /// - Parameters:
+    ///   - context: The SwiftData context to fetch tasks from
+    ///   - limit: Maximum number of tasks to return (defaults to 2)
+    /// - Returns: Array of tasks, sorted with most recently completed first
     static func recentlyCompleted(context: ModelContext, limit: Int = 2) -> [Task] {
         var descriptor = FetchDescriptor<Task>(
             predicate: #Predicate<Task> { task in
