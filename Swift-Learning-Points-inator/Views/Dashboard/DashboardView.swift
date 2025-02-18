@@ -27,65 +27,65 @@ struct DashboardView: View {
     
     var body: some View {
         NavigationStack {
-                VStack(spacing: 0) {
-                    ZStack {
-                        Image("dashboard-background")
-                            .resizable()
-                            .scaledToFill()
-                            .ignoresSafeArea()
-                        
-                        // White glow shape
-                        Circle()
-                            .fill(.white)
-                            .frame(width: 220, height: 220)
-                            .blur(radius: 20)
-                            .opacity(0.3)
-                        
-                        // Main witch image
-                        Image("witchexample")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(maxHeight: 180)
-                    }
-                    .frame(maxHeight: 180)
+            VStack(spacing: 0) {
+                ZStack {
+                    Image("dashboard-background")
+                        .resizable()
+                        .scaledToFill()
+                        .ignoresSafeArea()
                     
-                    VStack(spacing: 20) {
-                        HStack {
-                            Text("Welcome, \(user?.name ?? "Apprentice")")
-                                .font(.title)
-                            Spacer()
-                        }
-                        AffirmationWindow()
-                            .fixedSize(horizontal: false, vertical: true)
-                        
-                        if let user = user,
-                           let achievement = user.getMostRecentAchievement(spells: spells) {
-                            RecentAchievementView(achievement: achievement)
-                        }
-                        
-                        if !recentTasks.isEmpty {
-                            RecentTasksView(tasks: recentTasks)
-                        }
-                        
+                    // White glow shape
+                    Circle()
+                        .fill(.white)
+                        .frame(width: 220, height: 220)
+                        .blur(radius: 20)
+                        .opacity(0.3)
+                    
+                    // Main witch image
+                    Image("witchexample")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxHeight: 180)
+                }
+                .frame(maxHeight: 180)
+                
+                VStack(spacing: 20) {
+                    HStack {
+                        Text("Welcome, \(user?.name ?? "Apprentice")")
+                            .font(.title)
                         Spacer()
                     }
-                    .padding()
-                    .background(
-                        LinearGradient(
-                                gradient: Gradient(colors: [
-                                    Color("card-background"),
-                                    Color("card-background").opacity(0.9),
-                                    Color.black
-                                ]),
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                    )
-                    .clipShape(
-                        RoundedCorner(radius: 30, corners: [.topLeft, .topRight])
-                    )
+                    AffirmationWindow()
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    if let user = user,
+                       let achievement = user.getMostRecentAchievement(spells: spells) {
+                        RecentAchievementView(achievement: achievement)
+                    }
+                    
+                    if !recentTasks.isEmpty {
+                        RecentTasksView(tasks: recentTasks)
+                    }
+                    
+                    Spacer()
                 }
-                
+                .padding()
+                .background(
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            Color("card-background"),
+                            Color("card-background").opacity(0.9),
+                            Color.black
+                        ]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
+                .clipShape(
+                    RoundedCorner(radius: 30, corners: [.topLeft, .topRight])
+                )
+            }
+            
             
             
             .toolbar {
@@ -98,14 +98,32 @@ struct DashboardView: View {
                         Text("\(user?.mana ?? 0)")
                             .foregroundColor(.black)
                     }
+                    .padding()
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    
-                    HStack(spacing: 4) {
-                        Image(systemName: "flame")
-                            .foregroundStyle(.black)
+                    HStack(spacing: 0) {
+
+                        ZStack {
+                            Circle()
+                                .fill(.white)
+                                .frame(width: 46, height: 46)
+                                .blur(radius: 8)
+                                .opacity(0.8)
+                                
+                            Image("red-streak-icon")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                        }
                         Text("\(user?.streak ?? 0)")
-                            .foregroundColor(.black)
+                            .font(.system(size: 22, weight: .black, design: .rounded))
+                                .monospacedDigit()
+                                .foregroundColor(.red)
+                                .shadow(color: .orange.opacity(0.3), radius: 1, x: 1, y: 1)
+                                .frame(maxHeight: .infinity, alignment: .center)
+                            .offset(y: 3)
+                        
+                        
                     }
                 }
             }
