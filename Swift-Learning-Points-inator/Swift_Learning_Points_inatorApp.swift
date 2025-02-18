@@ -29,11 +29,7 @@ struct Swift_Learning_Points_inatorApp: App {
             let modelContext = container.mainContext
             
             let userDescriptor = FetchDescriptor<User>()
-            if let user = try? modelContext.fetch(userDescriptor).first {
-                configureTabBarAppearance(for: user.themePreference)
-            } else {
-                configureTabBarAppearance(for: .system)
-            }
+            configureTabBarAppearance()
             
             
             TaskResetManager.shared.checkAndResetTasks(modelContext: modelContext)
@@ -137,30 +133,18 @@ struct Swift_Learning_Points_inatorApp: App {
         }
     }
     
-    private func configureTabBarAppearance(for theme: ThemePreference) {
+    private func configureTabBarAppearance() {
         let appearance = UITabBarAppearance()
         appearance.configureWithDefaultBackground()
         appearance.shadowColor = .clear
         appearance.shadowImage = UIImage()
         
-        // Set colors based on theme
-        switch theme {
-        case .dark:
-            appearance.backgroundColor = .black
-            appearance.stackedLayoutAppearance.normal.iconColor = .white
-            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
-        case .light:
-            appearance.backgroundColor = .systemBackground
-            // Using a softer color instead of pure black
-            appearance.stackedLayoutAppearance.normal.iconColor = .gray
-            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.gray]
-        case .system:
-            appearance.backgroundColor = .systemBackground
-            appearance.stackedLayoutAppearance.normal.iconColor = .gray
-            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.gray]
-        }
+        // Always use dark appearance
+        appearance.backgroundColor = .black
+        appearance.stackedLayoutAppearance.normal.iconColor = .white
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
         
-        // Selected state is always blue for contrast
+        // Selected state is blue for contrast
         appearance.stackedLayoutAppearance.selected.iconColor = .systemBlue
         appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
         
