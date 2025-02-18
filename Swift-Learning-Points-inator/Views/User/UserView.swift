@@ -46,26 +46,6 @@ struct UserView: View {
                         Text("Streak: \(user?.streak ?? 0)")
                     }
                 }
-                
-                if let user = user {
-                    
-                    HStack {
-                        Image(systemName: "circle.lefthalf.filled")
-                        Picker("Theme", selection: Binding(
-                            get: { user.themePreference },
-                            set: {
-                                user.themePreference = $0
-                                try? modelContext.save()
-                            }
-                        )) {
-                            ForEach(ThemePreference.allCases, id: \.self) {theme in
-                                Text(theme.rawValue)
-                                    .tag(theme)
-                            }
-                        }
-                    }
-                }
-                
             }
             .padding()
             .navigationTitle("Profile")

@@ -17,51 +17,17 @@ class User {
     var streak: Int
     var lastStreakDate: Date?
     var schoolProgress: [SchoolProgress]
-    var themePreferenceRaw: String
-    
-    // MARK: - Theme preference
-    /// Setting raw value name of the theme.
-    var themePreference: ThemePreference {
-        get {
-            ThemePreference(rawValue: themePreferenceRaw) ?? .system
-        } set {
-            themePreferenceRaw = newValue.rawValue
-        }
-    }
-    
-    /// Based on the all existing themes, gives ColorScheme or nil to use inside `preferredColorScheme`.
-    var swiftUIColorScheme: ColorScheme? {
-        switch themePreference {
-        case .light:
-            return .light
-        case .dark:
-            return .dark
-        case .system:
-            return nil
-        }
-    }
     
     
-    init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil, themePreference: ThemePreference = .system) {
+    init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil) {
         self.name = name
         self.mana = mana
         self.streak = streak
         self.lastStreakDate = lastStreakDate
-        self.themePreferenceRaw = themePreference.rawValue
         self.schoolProgress = SchoolOfMagic.allCases.map { school in
             SchoolProgress(school: school)
         }
     }
-}
-
-/// Defines the available theme options for the application's appearance.
-/// - light: Forces light mode regardless of system settings
-/// - dark: Forces dark mode regardless of system settings
-/// - system: Follows the device's appearance settings
-enum ThemePreference: String, CaseIterable {
-    case light = "Light Mode"
-    case dark = "Dark Mode"
-    case system = "System Default"
 }
 
 // MARK: - Streak Management
