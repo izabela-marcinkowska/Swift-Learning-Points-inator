@@ -37,22 +37,7 @@ struct TasksView: View {
         NavigationStack {
             VStack(spacing: 0) {
                 if showingFilters {
-                    HStack(spacing: 16) {
-                        FilterButton(title: "Schools", icon: "books.vertical", isSelected: viewMode == .bySchool) {
-                            viewMode = .bySchool
-                        }
-                        
-                        FilterButton(title: "Level", icon: "chart.bar", isSelected: viewMode == .byLevel) {
-                            viewMode = .byLevel
-                        }
-                        
-                        FilterButton(title: "All", icon: "list.bullet", isSelected: viewMode == .allTasks) {
-                            viewMode = .allTasks
-                        }
-                    }
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .background(.gray.opacity(0.1))
+                    TasksFilterBar(viewMode: $viewMode)
                 }
             
             if viewMode == .allTasks {
@@ -114,24 +99,7 @@ struct TasksView: View {
 }
 }
 
-struct FilterButton: View {
-    let title: String
-    let icon: String
-    let isSelected: Bool
-    let action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            Image(systemName: icon)
-            Text(title)
-        }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 8)
-        .background(isSelected ? Color.blue : Color.clear)
-        .foregroundColor(isSelected ? .white : .primary)
-        .cornerRadius(8)
-    }
-}
+
 
 #Preview {
     let config = ModelConfiguration(isStoredInMemoryOnly: true)
