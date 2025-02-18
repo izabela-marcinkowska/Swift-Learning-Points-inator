@@ -22,7 +22,7 @@ struct TasksView: View {
     @State private var showingFilters = false
     
     let columns = [
-        GridItem(.adaptive(minimum: 150, maximum: 200), spacing: 16)
+        GridItem(.flexible(), spacing: 16)
     ]
     
     private var schoolGroups: Dictionary<SchoolOfMagic, [Task]> {
@@ -44,27 +44,11 @@ struct TasksView: View {
                 TaskListContainer(tasks: tasks)
             } else {
                 ScrollView {
-                    LazyVGrid(columns: columns, spacing: 20) {
+                    VStack(spacing: 20) {
                         if viewMode == .bySchool {
-                            ForEach(SchoolOfMagic.allCases, id: \.self) { school in
-                                let schoolTasks = schoolGroups[school] ?? []
-                                TaskCategoryGridItem(
-                                    title: school.rawValue,
-                                    icon: school.icon,
-                                    count: schoolTasks.count,
-                                    tasks: schoolTasks
-                                )
-                            }
+                            TaskSchoolGrid(columns: columns, schoolGroups: schoolGroups)
                         } else {
-                            ForEach(TaskDifficulty.allCases, id: \.self) { difficulty in
-                                let difficultyTasks = difficultyGroups[difficulty] ?? []
-                                TaskCategoryGridItem(
-                                    title: difficulty.rawValue,
-                                    icon: difficulty.icon,
-                                    count: difficultyTasks.count,
-                                    tasks: difficultyTasks
-                                )
-                            }
+                            TaskDifficultyGrid(columns: columns, difficultyGroups: difficultyGroups)
                         }
                     }
                     .padding()

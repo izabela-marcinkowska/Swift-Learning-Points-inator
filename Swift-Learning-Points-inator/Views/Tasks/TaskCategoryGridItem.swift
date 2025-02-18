@@ -30,7 +30,7 @@ struct TaskCategoryGridItem: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding()
             .frame(height: 120)
-            .background(.gray.opacity(0.1))
+            .background(Color("card-background"))
             .cornerRadius(10)
         }
         .buttonStyle(.plain)
