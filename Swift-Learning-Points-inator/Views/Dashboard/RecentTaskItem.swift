@@ -42,10 +42,10 @@ struct RecentTaskItem: View {
             Spacer()
             
             HStack(spacing: 4) {
-                Image("mana-diamond")
+                Image("purple-mana-gem")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 16, height: 16)
+                    .frame(width: 26, height: 26)
                 Text("\(task.mana)")
                     .font(.subheadline)
             }

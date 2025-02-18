@@ -90,19 +90,21 @@ struct DashboardView: View {
             
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    HStack (spacing: 4) {
-                        Image("mana-diamond")
+                    HStack (spacing: 1) {
+                        Image("purple-mana-gem")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 30, height: 30)
+                            .frame(width: 42, height: 42)
                         Text("\(user?.mana ?? 0)")
-                            .foregroundColor(.black)
+                            .font(.system(size: 22, weight: .black, design: .rounded))
+                                .monospacedDigit()
+                                .foregroundColor(.purple)
+                                .shadow(color: .pink.opacity(0.3), radius: 1, x: 1, y: 1)
+                                .frame(maxHeight: .infinity, alignment: .center)
                     }
-                    .padding()
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     HStack(spacing: 0) {
-
                         ZStack {
                             Circle()
                                 .fill(.white)
