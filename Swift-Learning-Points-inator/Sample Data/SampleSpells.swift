@@ -9,124 +9,136 @@ import Foundation
 
 
 enum SampleSpells {
-    static let focusSpells: [Spell] = [
-        // Focus Enhancement Spells
+    // Steady Practice Spells
+    static let steadyPracticeSpells: [Spell] = [
         Spell(
-            name: "Mind Sharpening Charm",
-            spellDescription: "A fundamental spell that enhances your ability to concentrate during coding sessions. As you upgrade it, your focus periods become more effective.",
-            category: .focus,
-            icon: "brain.fill",
-            investedMana: 150
+            name: "Spell of Consistent Effort",
+            spellDescription: "If you need a boost in keeping up with your daily SwiftUI practice, try this spell to help maintain your momentum.",
+            category: .steadyPractice,
+            icon: "clock.fill",
+            investedMana: 0
         ),
         Spell(
-            name: "Distraction Ward",
-            spellDescription: "Creates a magical barrier against distractions while you're deep in code. Higher levels strengthen this protective enchantment.",
-            category: .focus,
-            icon: "shield.fill",
-            investedMana: 560
+            name: "Charm of Daily Discipline",
+            spellDescription: "When you feel your focus slipping, use this charm to reinforce a regular coding schedule and stay on track.",
+            category: .steadyPractice,
+            icon: "calendar",
+            investedMana: 0
         ),
         Spell(
-            name: "Time Dilation Spell",
-            spellDescription: "Makes your study time feel more productive by helping you enter a state of flow. Upgrading deepens this temporal enhancement.",
-            category: .focus,
-            icon: "hourglass.circle.fill"
-        )]
-    static let restorationSpells: [Spell] = [
-        
-        // Restoration Spells
-        Spell(
-            name: "Energy Renewal Charm",
-            spellDescription: "Enhances the effectiveness of your coding breaks. Higher levels provide more rejuvenation during rest periods.",
-            category: .restoration,
-            icon: "bolt.circle.fill"
-        ),
-        Spell(
-            name: "Rest Ritual",
-            spellDescription: "Establishes magical patterns for regular breaks. Upgrading helps create better rest habits.",
-            category: .restoration,
-            icon: "moon.stars.fill"
-        ),
-        Spell(
-            name: "Refreshment Enchantment",
-            spellDescription: "Quick energy restoration between coding sessions. More powerful versions provide deeper refreshment.",
-            category: .restoration,
-            icon: "leaf.fill"
-        )]
-        
-    static let balanceSpells: [Spell] = [
-        // Balance Spells
-        Spell(
-            name: "Harmony Weaver",
-            spellDescription: "Helps maintain balance between coding practice and rest. Higher levels create stronger harmony.",
-            category: .balance,
-            icon: "yin.yang"
-        ),
-        Spell(
-            name: "Boundary Guardian",
-            spellDescription: "Assists in setting healthy limits on coding sessions. Upgrading strengthens your time boundaries.",
-            category: .balance,
-            icon: "clock.badge.checkmark.fill"
-        ),
-        Spell(
-            name: "Flow Stabilizer",
-            spellDescription: "Maintains steady progress in your learning journey. Enhanced versions provide more stable progress patterns.",
-            category: .balance,
-            icon: "waveform.path"
-        )]
-        
-    static let claritySpells: [Spell] = [
-        // Clarity Spells
-        Spell(
-            name: "Concept Crystallization",
-            spellDescription: "Makes complex coding concepts easier to grasp. Higher levels enhance your understanding.",
-            category: .clarity,
-            icon: "sparkles.square.filled.on.square"
-        ),
-        Spell(
-            name: "Error Insight Charm",
-            spellDescription: "Improves your ability to understand and fix bugs. Upgrading deepens your debugging intuition.",
-            category: .clarity,
-            icon: "magnifyingglass.circle.fill"
-        ),
-        Spell(
-            name: "Pattern Recognition Spell",
-            spellDescription: "Helps identify common coding patterns. More powerful versions enhance pattern recognition.",
-            category: .clarity,
-            icon: "square.grid.3x3.fill"
-        )]
-        
-    static let perseveranceSpells: [Spell] = [
-        // Perseverance Spells
-        Spell(
-            name: "Debug Fortitude",
-            spellDescription: "Strengthens your resilience during debugging sessions. Higher levels provide greater endurance.",
-            category: .perseverance,
-            icon: "hammer.circle.fill"
-        ),
-        Spell(
-            name: "Challenge Crusher",
-            spellDescription: "Boosts confidence when facing difficult coding tasks. Upgrading enhances your problem-solving spirit.",
-            category: .perseverance,
-            icon: "mountain.2.fill"
-        ),
-        Spell(
-            name: "Progress Momentum",
-            spellDescription: "Helps maintain motivation in your coding journey. More powerful versions create stronger momentum.",
-            category: .perseverance,
-            icon: "arrow.up.forward.circle.fill"
-        )]
+            name: "Incantation of Routine Resilience",
+            spellDescription: "If you ever struggle to stick with your tasks, cast this incantation to strengthen your resolve and keep your routine strong.",
+            category: .steadyPractice,
+            icon: "flame.fill",
+            investedMana: 0
+        )
+    ]
     
-    static let seasonalSpells: [Spell] = [
-        // Seasonal Spell Example
+    // Focused Clarity Spells
+    static let focusedClaritySpells: [Spell] = [
         Spell(
-            name: "Winter's Focus",
-            spellDescription: "A seasonal enchantment that brings the clarity of winter frost to your coding practice. Available during winter months.",
-            category: .seasonal,
-            icon: "snowflake"
+            name: "Charm of Clear Vision",
+            spellDescription: "When you need to see the finer details in your code, let this charm clear your mind and enhance your focus.",
+            category: .focusedClarity,
+            icon: "eye.fill",
+            investedMana: 0
+        ),
+        Spell(
+            name: "Ritual of Insightful Focus",
+            spellDescription: "If you’re tackling a tricky concept, this ritual will help illuminate the path forward and boost your understanding.",
+            category: .focusedClarity,
+            icon: "lightbulb.fill",
+            investedMana: 0
+        ),
+        Spell(
+            name: "Beacon of Lucid Thought",
+            spellDescription: "Cast this beacon when you need guidance through challenging coding problems, lighting up the way with clarity.",
+            category: .focusedClarity,
+            icon: "sparkles",
+            investedMana: 0
+        )
+    ]
+    
+    // Mindful Renewal Spells
+    static let mindfulRenewalSpells: [Spell] = [
+        Spell(
+            name: "Elixir of Refreshment",
+            spellDescription: "If you’re feeling drained, sip on this elixir to refresh your mind and boost your energy for more SwiftUI adventures.",
+            category: .mindfulRenewal,
+            icon: "leaf.fill",
+            investedMana: 0
+        ),
+        Spell(
+            name: "Brew of Restorative Calm",
+            spellDescription: "When the pressure builds up, this brew can help you find calm and balance, easing your way back to productivity.",
+            category: .mindfulRenewal,
+            icon: "cup.and.saucer",
+            investedMana: 0
+        ),
+        Spell(
+            name: "Potion of Rejuvenated Spirit",
+            spellDescription: "For those moments when you need to recharge after a tough session, this potion will lift your spirits and get you back in the game.",
+            category: .mindfulRenewal,
+            icon: "drop.fill",
+            investedMana: 0
+        )
+    ]
+    
+    // Balanced Harmony Spells
+    static let balancedHarmonySpells: [Spell] = [
+        Spell(
+            name: "Talisman of Equilibrium",
+            spellDescription: "If you’re struggling to juggle your work and downtime, let this talisman help you find balance in your daily routine.",
+            category: .balancedHarmony,
+            icon: "circle.grid.cross.fill",
+            investedMana: 0
+        ),
+        Spell(
+            name: "Amulet of Serenity",
+            spellDescription: "When stress creeps in, wear this amulet to restore your calm and keep you centered throughout your coding journey.",
+            category: .balancedHarmony,
+            icon: "sun.max.fill",
+            investedMana: 0
+        ),
+        Spell(
+            name: "Sigil of Harmonious Flow",
+            spellDescription: "If you need a smoother ride through your SwiftUI tasks, cast this sigil to encourage a natural, steady flow of progress.",
+            category: .balancedHarmony,
+            icon: "waveform.path",
+            investedMana: 0
+        )
+    ]
+    
+    // Resilient Resolve Spells
+    static let resilientResolveSpells: [Spell] = [
+        Spell(
+            name: "Charm of Unyielding Will",
+            spellDescription: "When you’re faced with tough problems, this charm can empower you with the determination to keep pushing forward.",
+            category: .resilientResolve,
+            icon: "shield.fill",
+            investedMana: 0
+        ),
+        Spell(
+            name: "Incantation of Persistent Courage",
+            spellDescription: "If the obstacles seem insurmountable, recite this incantation to ignite your inner strength and courage.",
+            category: .resilientResolve,
+            icon: "bolt.fill",
+            investedMana: 0
+        ),
+        Spell(
+            name: "Blessing of Steadfast Fortitude",
+            spellDescription: "For those moments when you need a burst of resilience, this blessing will reinforce your spirit and keep you on course.",
+            category: .resilientResolve,
+            icon: "tree.fill",
+            investedMana: 0
         )
     ]
     
     static var allSpells: [Spell] {
-        return focusSpells + restorationSpells + balanceSpells + claritySpells + perseveranceSpells + seasonalSpells
+        return steadyPracticeSpells +
+               focusedClaritySpells +
+               mindfulRenewalSpells +
+               balancedHarmonySpells +
+               resilientResolveSpells
     }
 }
