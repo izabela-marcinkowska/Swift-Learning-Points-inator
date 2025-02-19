@@ -27,12 +27,16 @@ struct DashboardView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
+            VStack(spacing: -5) {
                 ZStack {
-                    Image("dashboard-background")
-                        .resizable()
-                        .scaledToFill()
-                        .ignoresSafeArea()
+                    GeometryReader { geometry in
+                        Image("background-valley")
+                            .resizable()
+                            .scaledToFill()
+                            .frame(width: geometry.size.width, height: geometry.size.height)
+                            .position(x: geometry.size.width/2, y: geometry.size.height/2)
+                    }
+                    .ignoresSafeArea()
                     
                     // White glow shape
                     Circle()
