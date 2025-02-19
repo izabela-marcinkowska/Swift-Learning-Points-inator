@@ -10,50 +10,76 @@ import Foundation
 /// Represents the different schools of magic in the learning system.
 /// Each school focuses on a different aspect of programming, themed as magical disciplines.
 enum SchoolOfMagic: String, CaseIterable {
-    /// Focuses on UI/UX development and interface design
-    case interfaceEnchantments = "Interface Enchantments"
-    
-    /// Concentrates on data management and persistence
-    case dataSorcery = "Data Sorcery"
-    
-    /// Deals with async programming and timing operations
-    case temporalMagic = "Temporal Magic"
-    
-    /// Covers view modifications and transformations
-    case transformationSpells = "Transformation Spells"
-    
-    /// Encompasses fundamental programming concepts
-    case arcaneStudies = "Arcane Studies"
+    case viewAlchemy = "View Alchemy"
+    case stateSorcery = "State Sorcery"
+    case temporalConjurations = "Temporal Conjurations"
+    case dataIncantations = "Data Incantations"
+    case xcodeArcana = "Xcode Arcana"
+    case animationEnchantments = "Animation Enchantments"
+    case gestureMysticism = "Gesture Mysticism"
+    case layoutLegends = "Layout Legends"
+    case accessibilityArcanum = "Accessibility Arcanum"
+    case qualityConjurations = "Quality Conjurations"
+    case fileDivination = "File Divination"
+    case everydayEndeavors = "Everyday Endeavors"
     
     /// SF Symbol icon representing this school of magic
     var icon: String {
         switch self {
-        case .interfaceEnchantments:
-            return "wand.and.rays"
-        case .dataSorcery:
-            return "cylinder.split.1x2.fill"
-        case .temporalMagic:
+        case .viewAlchemy:
+            return "wand.and.stars"
+        case .stateSorcery:
+            return "link"
+        case .temporalConjurations:
             return "hourglass"
-        case .transformationSpells:
-            return "sparkles.square.filled.on.square"
-        case .arcaneStudies:
-            return "books.vertical.fill"
+        case .dataIncantations:
+            return "tray.fill"
+        case .xcodeArcana:
+            return "hammer.fill"
+        case .animationEnchantments:
+            return "sparkles"
+        case .gestureMysticism:
+            return "hand.point.up.left.fill"
+        case .layoutLegends:
+            return "square.grid.2x2.fill"
+        case .accessibilityArcanum:
+            return "figure.wave"
+        case .qualityConjurations:
+            return "checkmark.seal.fill"
+        case .fileDivination:
+            return "doc.text.fill"
+        case .everydayEndeavors:
+            return "star.circle.fill"
         }
     }
     
     /// Detailed description of what this school of magic teaches
     var description: String {
         switch self {
-        case .interfaceEnchantments:
-            return "Master the art of crafting beautiful and intuitive magical interfaces"
-        case .dataSorcery:
-            return "Learn to manipulate and store magical data with powerful spells"
-        case .temporalMagic:
-            return "Control the flow of time in your applications"
-        case .transformationSpells:
-            return "Transform views with powerful modification enchantments"
-        case .arcaneStudies:
-            return "Explore the fundamental theories of magical programming"
+        case .viewAlchemy:
+            return "Transform your ideas into beautiful interfaces with SwiftUI views."
+        case .stateSorcery:
+            return "Master the flow of data to create dynamic, reactive apps."
+        case .temporalConjurations:
+            return "Harness concurrency and async operations to command time."
+        case .dataIncantations:
+            return "Delve into data modeling, persistence, and networking."
+        case .xcodeArcana:
+            return "Unlock Xcode’s secrets to streamline development."
+        case .animationEnchantments:
+            return "Bring your interfaces to life with captivating animations."
+        case .gestureMysticism:
+            return "Create intuitive user interactions with SwiftUI gestures."
+        case .layoutLegends:
+            return "Design adaptive, responsive layouts that shine on every device."
+        case .accessibilityArcanum:
+            return "Ensure your apps are accessible and inclusive for all."
+        case .qualityConjurations:
+            return "Test and refine your code to build robust, maintainable apps."
+        case .fileDivination:
+            return "Learn to handle file operations and decode data formats with ease."
+        case .everydayEndeavors:
+            return "Tackle your personal projects and day-to-day tasks beyond SwiftUI."
         }
     }
     
@@ -103,16 +129,30 @@ enum SchoolOfMagic: String, CaseIterable {
     /// - Returns: A formatted string like "Archmage of Data Sorcery"
     func titleForLevel(_ level: AchievementLevel) -> String {
         switch self {
-        case .interfaceEnchantments:
-            return "\(level.title) of Interface Magic"
-        case .dataSorcery:
-            return "\(level.title) of Data Sorcery"
-        case .temporalMagic:
-            return "\(level.title) of Time"
-        case .transformationSpells:
-            return "\(level.title) of Transformation"
-        case .arcaneStudies:
-            return "\(level.title) of Arcane Knowledge"
+        case .viewAlchemy:
+            return "\(level.title) of UI Crafting"
+        case .stateSorcery:
+            return "\(level.title) of Data Flow"
+        case .temporalConjurations:
+            return "\(level.title) of Time Mastery"
+        case .dataIncantations:
+            return "\(level.title) of Data Mastery"
+        case .xcodeArcana:
+            return "\(level.title) of Xcode Mastery"
+        case .animationEnchantments:
+            return "\(level.title) of Motion Magic"
+        case .gestureMysticism:
+            return "\(level.title) of Touch Mastery"
+        case .layoutLegends:
+            return "\(level.title) of Design Wisdom"
+        case .accessibilityArcanum:
+            return "\(level.title) of Inclusive Design"
+        case .qualityConjurations:
+            return "\(level.title) of Code Perfection"
+        case .fileDivination:
+            return "\(level.title) of Data Handling"
+        case .everydayEndeavors:
+            return "\(level.title) of Daily Mastery"
         }
     }
     

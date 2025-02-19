@@ -114,6 +114,6 @@ struct DetailSchoolView: View {
 }
 #Preview {
     NavigationStack {
-        DetailSchoolView(school: .dataSorcery)
+        DetailSchoolView(school: .everydayEndeavors)
     }
 }

@@ -37,5 +37,5 @@ struct SpellCategoryGridItem: View {
 }
 
 #Preview {
-    SpellCategoryGridItem(category: .focus)
+    SpellCategoryGridItem(category: .steadyPractice)
 }

@@ -51,7 +51,7 @@ struct TaskRowItem: View {
         TaskRowItem(task: Task(
             name: "Learn SwiftUI Animations",
             mana: 60,
-            school: .interfaceEnchantments,
+            school: .everydayEndeavors,
             difficulty: .medium
         ))
         .padding()

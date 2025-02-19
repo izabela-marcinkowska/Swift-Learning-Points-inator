@@ -21,7 +21,7 @@ class SchoolProgress {
     /// Uses a computed property to convert between the raw stored string and the SchoolOfMagic enum.
     var school: SchoolOfMagic {
         get {
-            SchoolOfMagic(rawValue: schoolRaw) ?? .arcaneStudies
+            SchoolOfMagic(rawValue: schoolRaw) ?? .everydayEndeavors
         }
         set {
             schoolRaw = newValue.rawValue
@@ -38,7 +38,7 @@ class SchoolProgress {
     var lastLevelUpdate: Date?
     
     init(
-        school: SchoolOfMagic = .arcaneStudies,
+        school: SchoolOfMagic = .everydayEndeavors,
         totalMana: Int = 0,
         lastLevelUpdate: Date? = nil
     ) {

@@ -199,20 +199,17 @@ class Spell {
 }
 
 extension Spell {
-    /// Returns the School of Magic that this spell provides bonuses for.
-    /// For example, a Focus Enhancement spell might affect the Arcane Studies school.
-    /// - Returns: The associated SchoolOfMagic if one exists, nil if the spell category has no associated school.
-    var affectedSchool: SchoolOfMagic? {
-        SpellConfiguration.SchoolMapping.getAffectedSchool(for: category)
+    /// Returns the Schools of Magic that this spell provides bonuses for.
+    /// For example, a Focused Clarity spell might affect multiple schools.
+    var affectedSchools: [SchoolOfMagic] {
+        SpellConfiguration.SchoolMapping.getAffectedSchools(for: category) ?? []
     }
-}
-
-extension Spell {
-    /// Provides a human-readable description of the spell's current bonus effect.
-    /// For example: "+10% for Data Sorcery" or "No bonus" if the spell has no associated school.
-    /// - Returns: A formatted string describing the bonus percentage and affected school.
+    
+    /// A user-friendly bonus description for the spell.
+    /// Combines the bonus multiplier and names of affected schools.
     var bonusDescription: String {
-        guard let school = affectedSchool else { return "No bonus" }
-        return "\(currentSpellLevel.bonusDescription) for \(school.rawValue)"
+        let bonus = currentSpellLevel.bonusDescription
+        let schools = affectedSchools.map { $0.rawValue }.joined(separator: ", ")
+        return bonus.isEmpty ? "No bonus" : "\(bonus) for \(schools)"
     }
 }

@@ -87,5 +87,5 @@ struct SchoolGridItem: View {
 }
 
 #Preview {
-    SchoolGridItem(school: .dataSorcery)
+    SchoolGridItem(school: .everydayEndeavors)
 }

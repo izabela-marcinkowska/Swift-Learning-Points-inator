@@ -62,7 +62,7 @@ class Task: Identifiable {
     
     var school: SchoolOfMagic {
         get {
-            SchoolOfMagic(rawValue: schoolRaw) ?? .arcaneStudies
+            SchoolOfMagic(rawValue: schoolRaw) ?? .everydayEndeavors
         }
         set {
             schoolRaw = newValue.rawValue
@@ -70,7 +70,7 @@ class Task: Identifiable {
     }
     
     
-    init(id: UUID = UUID(), name: String, mana: Int, school: SchoolOfMagic = .arcaneStudies, isCompleted: Bool = false, isRepeatable: Bool = false, difficulty: TaskDifficulty = .easy) {
+    init(id: UUID = UUID(), name: String, mana: Int, school: SchoolOfMagic = .everydayEndeavors, isCompleted: Bool = false, isRepeatable: Bool = false, difficulty: TaskDifficulty = .easy) {
         self.id = id
         self.name = name
         self.mana = mana

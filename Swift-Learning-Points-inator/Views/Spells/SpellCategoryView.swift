@@ -42,7 +42,7 @@ struct SpellCategoryView: View {
 
 #Preview {
     NavigationStack {
-        SpellCategoryView(category: .focus)
+        SpellCategoryView(category: .steadyPractice)
     }
     .modelContainer(for: [Spell.self, User.self], inMemory: true)
 }

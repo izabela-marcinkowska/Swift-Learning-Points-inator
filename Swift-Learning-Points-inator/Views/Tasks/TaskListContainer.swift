@@ -26,10 +26,10 @@ struct TaskListContainer: View {
 #Preview {
     NavigationStack {
         TaskListContainer(tasks: [
-            Task(name: "Learn SwiftUI Animations", mana: 60, school: .interfaceEnchantments),
-            Task(name: "Master SwiftData", mana: 80, school: .dataSorcery),
-            Task(name: "Practice with async/await", mana: 40, school: .temporalMagic),
-            Task(name: "Build custom modifiers", mana: 50, school: .transformationSpells)
+            Task(name: "Learn SwiftUI Animations", mana: 60, school: .everydayEndeavors),
+            Task(name: "Master SwiftData", mana: 80, school: .everydayEndeavors),
+            Task(name: "Practice with async/await", mana: 40, school: .everydayEndeavors),
+            Task(name: "Build custom modifiers", mana: 50, school: .everydayEndeavors)
         ])
     }
 }
