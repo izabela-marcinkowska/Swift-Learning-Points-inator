@@ -30,9 +30,9 @@ enum SpellLevel: Int, CaseIterable {
     var manaCost: Int {
         switch self {
         case .novice: return 0
-        case .adept: return 200
-        case .expert: return 500
-        case .master: return 1000
+        case .adept: return 500
+        case .expert: return 1500
+        case .master: return 4000
         }
     }
     
