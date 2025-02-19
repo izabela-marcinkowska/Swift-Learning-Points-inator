@@ -17,26 +17,26 @@ enum SpellConfiguration {
         /// Defines which school of magic is enhanced by each spell category.
         /// For example, Focus spells enhance Arcane Studies tasks.
         static let categoryToSchools: [SpellCategory: [SchoolOfMagic]] = [
-                    .steadyPractice: [.stateSorcery, .xcodeArcana],
-                    .focusedClarity: [.viewAlchemy, .accessibilityArcanum],
-                    .mindfulRenewal: [.temporalConjurations, .fileDivination],
-                    .balancedHarmony: [.everydayEndeavors, .layoutLegends],
-                    .resilientResolve: [.qualityConjurations, .animationEnchantments, .gestureMysticism]
-                ]
+            .steadyPractice: [.stateSorcery, .xcodeArcana],
+            .focusedClarity: [.viewAlchemy, .accessibilityArcanum],
+            .mindfulRenewal: [.temporalConjurations, .fileDivination],
+            .balancedHarmony: [.everydayEndeavors, .layoutLegends],
+            .resilientResolve: [.qualityConjurations, .animationEnchantments, .gestureMysticism]
+        ]
         
         /// Finds which school of magic is enhanced by a given spell category.
         /// - Parameter category: The spell category to check
         /// - Returns: The school of magic that receives bonuses from this category, if any
         static func getAffectedSchools(for category: SpellCategory) -> [SchoolOfMagic]? {
-                    return categoryToSchools[category]
-                }
+            return categoryToSchools[category]
+        }
         
         /// Finds all spell categories that enhance a specific school of magic.
         /// - Parameter school: The school of magic to check
         /// - Returns: Array of spell categories that provide bonuses to this school
         static func getAffectingCategories(for school: SchoolOfMagic) -> [SpellCategory] {
-                    return categoryToSchools.filter { $0.value.contains(school) }.map { $0.key }
-                }
+            return categoryToSchools.filter { $0.value.contains(school) }.map { $0.key }
+        }
     }
 }
 
@@ -48,8 +48,8 @@ extension SpellConfiguration {
         static let levelBonuses: [SpellLevel: Double] = [
             .novice: 0.0,
             .adept: 0.10,
-            .expert: 0.20,
-            .master: 0.35
+            .expert: 0.15,
+            .master: 0.20
         ]
         
         /// Retrieves the bonus multiplier for a given spell level.
