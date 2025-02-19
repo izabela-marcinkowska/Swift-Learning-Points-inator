@@ -49,7 +49,7 @@ struct SpellGridItem: View {
     SpellGridItem(spell: Spell(
         name: "Test Spell",
         spellDescription: "A test spell",
-        category: .focus,
+        category: .steadyPractice,
         icon: "wand.and.rays"
     ))
     .modelContainer(for: [Spell.self, User.self], inMemory: true)

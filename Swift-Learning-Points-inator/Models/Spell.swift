@@ -66,11 +66,11 @@ extension SpellLevel {
 }
 
 enum SpellCategory: String, CaseIterable {
-    case focus = "Focus Enhancement"
-    case restoration = "Restoration"
-    case balance = "Balance"
-    case clarity = "Clarity"
-    case perseverance = "Perseverance"
+    case steadyPractice = "Steady Practice"
+    case focusedClarity = "Focused Clarity"
+    case mindfulRenewal = "Mindful Renewal"
+    case balancedHarmony = "Balanced Harmony"
+    case resilientResolve = "Resilient Resolve"
     
     
     case seasonal = "Seasonal Spells"
@@ -79,7 +79,7 @@ enum SpellCategory: String, CaseIterable {
     
     /// Categories that are always avaliable to the user, creating core categories of the spells.
     static let coreCategories: Set<SpellCategory> = [
-        .focus, .restoration, .balance, .clarity, .perseverance
+        .steadyPractice, .focusedClarity, .mindfulRenewal, .balancedHarmony, .resilientResolve
     ]
     
     var isPermanent: Bool {
@@ -88,16 +88,16 @@ enum SpellCategory: String, CaseIterable {
     
     var icon: String {
         switch self {
-        case .focus:
-            return "brain.filled.head.profile"
-        case .restoration:
-            return "battery.50percent"
-        case .balance:
-            return "scale.3d"
-        case .clarity:
-            return "light.beacon.max.fill"
-        case .perseverance:
-            return "figure.climbing"
+        case .steadyPractice:
+            return "clock.fill"
+        case .focusedClarity:
+            return "eye.fill"
+        case .mindfulRenewal:
+            return "leaf.fill"
+        case .balancedHarmony:
+            return "circle.grid.cross.fill"
+        case .resilientResolve:
+            return "shield.fill"
         case .seasonal:
             return "snowflake"
         case .event:
@@ -109,16 +109,16 @@ enum SpellCategory: String, CaseIterable {
     
     var description: String {
         switch self {
-        case .focus:
-            return "Master spells that enhance your learning focus and concentration"
-        case .restoration:
-            return "Learn the art of taking breaks and recharging your magical energy"
-        case .balance:
-            return "Maintain harmony between coding practice and rest"
-        case .clarity:
-            return "Enhance your understanding of magical coding concepts"
-        case .perseverance:
-            return "Overcome challenges and build resilience in your magical journey"
+        case .steadyPractice:
+            return "If you need a boost to keep up your daily SwiftUI practice, these spells will help you stay consistent."
+        case .focusedClarity:
+            return "When you need help zeroing in on tricky details, these spells will clear your mind and sharpen your focus."
+        case .mindfulRenewal:
+            return "If you’re feeling drained, these spells will invite you to take a restorative break and recharge."
+        case .balancedHarmony:
+            return "Struggling to balance work and rest? These spells support a steady, healthy work-life flow."
+        case .resilientResolve:
+            return "When challenges arise, these spells will fortify your determination and keep you moving forward."
         case .seasonal:
             return "Limited-time spells that change with the seasons"
         case .event:
@@ -154,7 +154,7 @@ class Spell {
     
     var category: SpellCategory {
         get {
-            SpellCategory(rawValue: categoryRaw) ?? .focus
+            SpellCategory(rawValue: categoryRaw) ?? .steadyPractice
         }
         set {
             categoryRaw = newValue.rawValue
@@ -164,7 +164,7 @@ class Spell {
     init(
         name: String,
         spellDescription: String,
-        category: SpellCategory = .focus,
+        category: SpellCategory = .steadyPractice,
         icon: String,
         investedMana: Int = 0,
         lastLevelUpdate: Date? = nil
@@ -199,20 +199,17 @@ class Spell {
 }
 
 extension Spell {
-    /// Returns the School of Magic that this spell provides bonuses for.
-    /// For example, a Focus Enhancement spell might affect the Arcane Studies school.
-    /// - Returns: The associated SchoolOfMagic if one exists, nil if the spell category has no associated school.
-    var affectedSchool: SchoolOfMagic? {
-        SpellConfiguration.SchoolMapping.getAffectedSchool(for: category)
+    /// Returns the Schools of Magic that this spell provides bonuses for.
+    /// For example, a Focused Clarity spell might affect multiple schools.
+    var affectedSchools: [SchoolOfMagic] {
+        SpellConfiguration.SchoolMapping.getAffectedSchools(for: category) ?? []
     }
-}
-
-extension Spell {
-    /// Provides a human-readable description of the spell's current bonus effect.
-    /// For example: "+10% for Data Sorcery" or "No bonus" if the spell has no associated school.
-    /// - Returns: A formatted string describing the bonus percentage and affected school.
+    
+    /// A user-friendly bonus description for the spell.
+    /// Combines the bonus multiplier and names of affected schools.
     var bonusDescription: String {
-        guard let school = affectedSchool else { return "No bonus" }
-        return "\(currentSpellLevel.bonusDescription) for \(school.rawValue)"
+        let bonus = currentSpellLevel.bonusDescription
+        let schools = affectedSchools.map { $0.rawValue }.joined(separator: ", ")
+        return bonus.isEmpty ? "No bonus" : "\(bonus) for \(schools)"
     }
 }

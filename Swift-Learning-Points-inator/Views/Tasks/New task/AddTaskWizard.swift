@@ -13,7 +13,7 @@ struct TaskFormData {
     var difficulty: TaskDifficulty = .easy
     var mana: Int = 0
     var isRepeatable: Bool = false
-    var school: SchoolOfMagic = .arcaneStudies
+    var school: SchoolOfMagic = .everydayEndeavors
 }
 
 struct AddTaskWizard: View {

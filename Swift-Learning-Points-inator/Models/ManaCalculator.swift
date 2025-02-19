@@ -65,10 +65,9 @@ enum ManaCalculator {
     ///   - baseMana: The base mana value to calculate the bonus from
     /// - Returns: The amount of bonus mana this spell provides, or 0 if the spell doesn't affect this school
     private static func calculateSpellBonus(spell: Spell, forSchool school: SchoolOfMagic, baseMana: Int) -> Int {
-        guard spell.affectedSchool == school else { return 0 }
+        guard spell.affectedSchools.contains(school) else { return 0 }
         
         let multiplier = spell.currentSpellLevel.bonusMultiplier
-        
         let bonusAsDouble = Double(baseMana) * multiplier
         return Int(bonusAsDouble.rounded())
     }

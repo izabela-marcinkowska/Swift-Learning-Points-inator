@@ -15,7 +15,7 @@ struct TaskFormView: View {
     
     @State var title = ""
     @State var mana = 0
-    @State private var selectedSchool: SchoolOfMagic = .arcaneStudies
+    @State private var selectedSchool: SchoolOfMagic = .everydayEndeavors
     @State private var isRepeatable = false
     
     init(task: Task? = nil) {
