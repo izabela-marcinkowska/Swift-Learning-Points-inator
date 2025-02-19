@@ -104,9 +104,9 @@ enum SchoolOfMagic: String, CaseIterable {
         var manaThreshold: Int {
             switch self {
             case .apprentice: return 0
-            case .mage: return 300
-            case .archmage: return 1000
-            case .grandSorcerer: return 2500
+            case .mage: return 500
+            case .archmage: return 2000
+            case .grandSorcerer: return 6000
             }
         }
         
