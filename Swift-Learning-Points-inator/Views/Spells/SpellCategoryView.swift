@@ -11,32 +11,40 @@ import SwiftData
 struct SpellCategoryView: View {
     let category: SpellCategory
     
-    let columns = [
-        GridItem(.adaptive(minimum: 150, maximum: 200), spacing: 16)
-    ]
-    
     @Query private var allSpells: [Spell]
-
+    @State private var showInvestSheet = false
+    @State private var selectedSpell: Spell?
+    
     var spells: [Spell] {
         allSpells.filter { $0.category == category }
     }
     
     var body: some View {
         ScrollView {
-            LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(spells) { spell in
-                    NavigationLink {
-                        SpellDetailView(spell: spell)
-                    } label: {
-                        SpellGridItem(spell: spell)
-                            .frame(height: 200)
-                            .foregroundColor(.primary)
+            VStack(spacing: 24) {
+                // Category header
+                CategoryHeaderView(category: category)
+                
+                // Spells list
+                VStack(spacing: 16) {
+                    ForEach(spells) { spell in
+                        NavigationLink {
+                            SpellDetailView(spell: spell)
+                        } label: {
+                            SpellCardView(spell: spell, showInvestSheet: $showInvestSheet)
+                                .foregroundColor(.primary)
+                        }
                     }
                 }
+                .padding(.horizontal)
             }
-            .padding()
         }
-        .navigationTitle(category.rawValue)
+        .background(Color("background-color"))
+        .sheet(isPresented: $showInvestSheet) {
+            if let spell = selectedSpell {
+                AddManaSheet(spell: spell)
+            }
+        }
     }
 }
 
