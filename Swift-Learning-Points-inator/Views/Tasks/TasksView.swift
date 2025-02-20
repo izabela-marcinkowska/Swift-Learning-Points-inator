@@ -39,48 +39,49 @@ struct TasksView: View {
                 if showingFilters {
                     TasksFilterBar(viewMode: $viewMode)
                 }
-            
-            if viewMode == .allTasks {
-                TaskListContainer(tasks: tasks)
-            } else {
-                ScrollView {
-                    VStack(spacing: 20) {
-                        if viewMode == .bySchool {
-                            TaskSchoolGrid(columns: columns, schoolGroups: schoolGroups)
-                        } else {
-                            TaskDifficultyGrid(columns: columns, difficultyGroups: difficultyGroups)
+                
+                if viewMode == .allTasks {
+                    TaskListContainer(tasks: tasks)
+                } else {
+                    ScrollView {
+                        VStack(spacing: 20) {
+                            if viewMode == .bySchool {
+                                TaskSchoolGrid(columns: columns, schoolGroups: schoolGroups)
+                            } else {
+                                TaskDifficultyGrid(columns: columns, difficultyGroups: difficultyGroups)
+                            }
                         }
+                        .padding()
                     }
-                    .padding()
                 }
             }
-        }
-        .navigationTitle("Tasks")
-        .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                Button {
-                    withAnimation {
-                        showingFilters.toggle()
+            .navigationTitle("Tasks")
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        withAnimation {
+                            showingFilters.toggle()
+                        }
+                    } label: {
+                        Image(systemName: showingFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                     }
-                } label: {
-                    Image(systemName: showingFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
+                }
+                
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showingSheet.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
             }
-            
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showingSheet.toggle()
-                } label: {
-                    Image(systemName: "plus")
-                }
+            .sheet(isPresented: $showingSheet) {
+                AddTaskWizard()
+                    .presentationDetents([.height(450)])
             }
-        }
-        .sheet(isPresented: $showingSheet) {
-            AddTaskWizard()
-                .presentationDetents([.height(450)])
+            .background(Color("background-color"))
         }
     }
-}
 }
 
 

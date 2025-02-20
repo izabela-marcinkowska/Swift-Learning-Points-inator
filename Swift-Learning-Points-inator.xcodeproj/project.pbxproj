@@ -6,14 +6,7 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		173199E92D647CA200E8B6B2 /* TaskSchoolGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173199E82D647CA200E8B6B2 /* TaskSchoolGrid.swift */; };
-		173199EB2D647D1900E8B6B2 /* TaskDifficultyGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173199EA2D647D1900E8B6B2 /* TaskDifficultyGrid.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		173199E82D647CA200E8B6B2 /* TaskSchoolGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskSchoolGrid.swift; sourceTree = "<group>"; };
-		173199EA2D647D1900E8B6B2 /* TaskDifficultyGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TaskDifficultyGrid.swift; sourceTree = "<group>"; };
 		17FFC5962D0C329D0018D26F /* Swift-Learning-Points-inator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift-Learning-Points-inator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -39,8 +32,6 @@
 		17FFC58D2D0C329D0018D26F = {
 			isa = PBXGroup;
 			children = (
-				173199EA2D647D1900E8B6B2 /* TaskDifficultyGrid.swift */,
-				173199E82D647CA200E8B6B2 /* TaskSchoolGrid.swift */,
 				17FFC5982D0C329D0018D26F /* Swift-Learning-Points-inator */,
 				17FFC5972D0C329D0018D26F /* Products */,
 			);
@@ -128,8 +119,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				173199E92D647CA200E8B6B2 /* TaskSchoolGrid.swift in Sources */,
-				173199EB2D647D1900E8B6B2 /* TaskDifficultyGrid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

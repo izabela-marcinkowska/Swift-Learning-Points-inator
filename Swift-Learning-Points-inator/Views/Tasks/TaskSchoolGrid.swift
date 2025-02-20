@@ -12,14 +12,15 @@ struct TaskSchoolGrid: View {
     let schoolGroups: [SchoolOfMagic: [Task]]
     
     var body: some View {
-        LazyVGrid(columns: columns, spacing: 20) {
+        LazyVGrid(columns: columns, spacing: 10) {
             ForEach(SchoolOfMagic.allCases, id: \.self) { school in
                 let schoolTasks = schoolGroups[school] ?? []
                 TaskCategoryGridItem(
                     title: school.rawValue,
                     icon: school.icon,
                     count: schoolTasks.count,
-                    tasks: schoolTasks
+                    tasks: schoolTasks,
+                    imageName: school.imageName
                 )
             }
             .frame(maxWidth: .infinity)
