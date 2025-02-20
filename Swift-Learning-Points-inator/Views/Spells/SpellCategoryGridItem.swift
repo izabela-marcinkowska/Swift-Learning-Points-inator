@@ -13,10 +13,9 @@ struct SpellCategoryGridItem: View {
     
     var body: some View {
         VStack(alignment: .center, spacing: 16) {
-            Image(systemName: category.icon)
-                .font(.system(size: 32))
-                .foregroundColor(.blue)
-                .padding(.top, 8)
+            Image(category.imageName)
+                .resizable()
+                .scaledToFit()
             
             VStack(spacing: 8) {
                 Text(category.rawValue)
@@ -31,8 +30,13 @@ struct SpellCategoryGridItem: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.gray.opacity(0.1))
+        .background(Color("card-background"))
         .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.purple.opacity(0.15), lineWidth: 1)
+        )
+        .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
     }
 }
 

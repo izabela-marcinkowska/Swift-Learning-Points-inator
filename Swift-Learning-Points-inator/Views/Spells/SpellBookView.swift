@@ -33,6 +33,7 @@ struct SpellBookView: View {
                 .padding()
             }
         .navigationTitle("Book of Spells")
+        .background(Color("background-color"))
         }
     }
 }

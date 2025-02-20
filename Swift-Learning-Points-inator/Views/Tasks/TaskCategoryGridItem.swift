@@ -44,12 +44,12 @@ struct TaskCategoryGridItem: View {
                     Image(systemName: icon)
                         .resizable()
                         .scaledToFit()
-                        .padding(22)
+                        .padding(15)
                         .foregroundStyle(.white.opacity(0.8))
                         .frame(maxHeight: .infinity)
                 }
             }
-            .frame(height: 120)
+            .frame(height: 140)
             .background(
                 LinearGradient(
                     gradient: Gradient(colors: [
