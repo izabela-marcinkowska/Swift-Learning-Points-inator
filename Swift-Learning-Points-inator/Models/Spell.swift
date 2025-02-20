@@ -107,6 +107,19 @@ enum SpellCategory: String, CaseIterable {
         }
     }
     
+    var imageName: String {
+        switch self {
+        case .steadyPractice: return "steady-practice"
+        case .focusedClarity: return "focused-clarity"
+        case .mindfulRenewal: return "mindful-renewal"
+        case .balancedHarmony: return "balanced-harmony"
+        case .resilientResolve: return "resilient-resolve"
+        case .seasonal: return "seasonal"
+        case .event: return "event"
+        case .achievement: return "achievement"
+        }
+    }
+    
     var description: String {
         switch self {
         case .steadyPractice:

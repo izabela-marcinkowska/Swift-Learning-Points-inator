@@ -53,6 +53,25 @@ enum SchoolOfMagic: String, CaseIterable {
         }
     }
     
+    /// 3D icon representing this school of magic
+    var imageName: String {
+        switch self {
+        case .viewAlchemy: return "view-alchemy"
+        case .stateSorcery: return "state-sorcery"
+        case .temporalConjurations: return "temporal-conjurations"
+        case .dataIncantations: return "data-incantations"
+        case .xcodeArcana: return "xcode-arcana"
+        case .animationEnchantments: return "animation-enchantments"
+        case .gestureMysticism: return "gesture-mysticism"
+        case .layoutLegends: return "layout-legends"
+        case .accessibilityArcanum: return "accessibility-arcanum"
+        case .qualityConjurations: return "quality-conjurations"
+        case .fileDivination: return "file-divination"
+        case .everydayEndeavors: return "everyday-endeavors"
+        }
+    }
+
+    
     /// Detailed description of what this school of magic teaches
     var description: String {
         switch self {
