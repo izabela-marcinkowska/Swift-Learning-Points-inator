@@ -95,10 +95,10 @@ struct DashboardView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     HStack (spacing: 1) {
-                        Image("purple-mana-gem")
+                        Image("diamond")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 42, height: 42)
+                            .frame(width: 46, height: 46)
                         Text("\(user?.mana ?? 0)")
                             .font(.system(size: 22, weight: .black, design: .rounded))
                                 .monospacedDigit()

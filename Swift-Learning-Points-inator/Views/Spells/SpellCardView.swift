@@ -38,52 +38,64 @@ struct SpellCardView: View {
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 16) {
-            Image(spell.imageName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 60, height: 60)
-                .clipShape(Circle())
-            
-            VStack(alignment: .leading, spacing: 8) {
+        VStack (alignment: .leading, spacing: 20) {
+            HStack {
+                
                 Text(spell.name)
                     .font(.headline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .multilineTextAlignment(.leading)
+                    .padding(.horizontal, 2)
                 
-                Text(spell.currentSpellLevel.title)
-                    .font(.subheadline)
-                
-                HStack {
-                    ProgressView(value: progressToNextLevel)
-                        .progressViewStyle(.linear)
-                    
-                    Text("\(spell.investedMana)/\(nextLevelMana)")
-                        .font(.caption)
-                        .foregroundStyle(.secondary)
+                Button {
+                    selectedSpell = spell
+                    showInvestSheet = true
+                } label: {
+                    Image("diamond-add")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 44, height: 44)
                 }
                 
-                if !spell.bonusDescription.isEmpty {
-                    Text(spell.bonusDescription)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
-            
-            Button {
-                selectedSpell = spell
-                showInvestSheet = true
-            } label: {
-                Text("Invest")
-                    .font(.callout.bold())
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+            HStack(alignment: .top, spacing: 16) {
+                Image(spell.imageName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 45, height: 45)
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(spell.currentSpellLevel.title)
+                        .font(.caption)
+                        .multilineTextAlignment(.center)
+                    
+                    HStack {
+                        ProgressView(value: progressToNextLevel)
+                            .progressViewStyle(.linear)
+                        
+                        Text("\(spell.investedMana)/\(nextLevelMana)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+            }
+            if !spell.bonusDescription.isEmpty {
+                Text(spell.bonusDescription)
+                    .font(.caption2)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .multilineTextAlignment(.center)
             }
         }
         .padding()
         .background(Color("card-background"))
         .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.purple.opacity(0.1), lineWidth: 1)
+        )
+        .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
     }
 }
