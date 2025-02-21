@@ -153,6 +153,7 @@ class Spell {
     var icon: String
     var categoryRaw: String
     var lastLevelUpdate: Date?
+    var imageName: String
     
     /// The current level of the spell based on invested mana
     var currentSpellLevel: SpellLevel {
@@ -180,7 +181,8 @@ class Spell {
         category: SpellCategory = .steadyPractice,
         icon: String,
         investedMana: Int = 0,
-        lastLevelUpdate: Date? = nil
+        lastLevelUpdate: Date? = nil,
+        imageName: String = ""
     ) {
         self.name = name
         self.spellDescription = spellDescription
@@ -188,6 +190,7 @@ class Spell {
         self.icon = icon
         self.categoryRaw = category.rawValue
         self.lastLevelUpdate = lastLevelUpdate
+        self.imageName = imageName
     }
     
     /// Function is used to remove users collected mana and spend it on selected Spell.

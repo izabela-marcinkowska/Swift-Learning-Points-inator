@@ -39,9 +39,9 @@ struct SpellCardView: View {
     
     var body: some View {
         HStack(alignment: .top, spacing: 16) {
-            Image(systemName: spell.icon)
-                .font(.system(size: 36))
-                .foregroundStyle(.blue)
+            Image(spell.imageName)
+                .resizable()
+                .scaledToFit()
                 .frame(width: 60, height: 60)
                 .clipShape(Circle())
             
