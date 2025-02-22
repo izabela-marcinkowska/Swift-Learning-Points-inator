@@ -9,8 +9,6 @@ import SwiftUI
 
 struct SpellCardView: View {
     let spell: Spell
-    @Binding var showInvestSheet: Bool
-    @State private var selectedSpell: Spell?
     
     private var progressToNextLevel: Double {
         guard spell.currentLevel < SpellLevel.master.rawValue else {
@@ -46,17 +44,6 @@ struct SpellCardView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .multilineTextAlignment(.leading)
                     .padding(.horizontal, 2)
-                
-                Button {
-                    selectedSpell = spell
-                    showInvestSheet = true
-                } label: {
-                    Image("diamond-add")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 44, height: 44)
-                }
-                
             }
             HStack(alignment: .top, spacing: 16) {
                 Image(spell.imageName)

@@ -12,8 +12,6 @@ struct SpellCategoryView: View {
     let category: SpellCategory
     
     @Query private var allSpells: [Spell]
-    @State private var showInvestSheet = false
-    @State private var selectedSpell: Spell?
     
     var spells: [Spell] {
         allSpells.filter { $0.category == category }
@@ -31,7 +29,7 @@ struct SpellCategoryView: View {
                         NavigationLink {
                             SpellDetailView(spell: spell)
                         } label: {
-                            SpellCardView(spell: spell, showInvestSheet: $showInvestSheet)
+                            SpellCardView(spell: spell)
                                 .foregroundColor(.primary)
                         }
                     }
@@ -40,11 +38,6 @@ struct SpellCategoryView: View {
             }
         }
         .background(Color("background-color"))
-        .sheet(isPresented: $showInvestSheet) {
-            if let spell = selectedSpell {
-                AddManaSheet(spell: spell)
-            }
-        }
     }
 }
 
