@@ -12,10 +12,11 @@ struct TaskCategoryGridItem: View {
     let icon: String
     let count: Int
     let tasks: [Task]
+    let school: SchoolOfMagic
     var imageName: String? = nil
     
     var body: some View {
-        NavigationLink(destination: TaskCategoryDetailView(title: title, tasks: tasks)) {
+        NavigationLink(destination: TaskCategoryDetailView(school: school, tasks: tasks)) {
             HStack (spacing: 0) {
                 VStack (alignment: .leading, spacing: 8) {
                     Text(title)
@@ -72,16 +73,3 @@ struct TaskCategoryGridItem: View {
     }
 }
 
-#Preview {
-    TaskCategoryGridItem(
-        title: "Data Sorcery",
-        icon: "wand.and.rays",
-        count: 2,
-        tasks: [  // Add sample tasks for preview
-            Task(name: "Learn SwiftData", mana: 60),
-            Task(name: "Practice Queries", mana: 40)
-        ]
-    )
-    .frame(width: 170)
-    .padding()
-}

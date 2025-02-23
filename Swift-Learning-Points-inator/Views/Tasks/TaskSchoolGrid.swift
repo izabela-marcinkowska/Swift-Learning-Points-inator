@@ -20,6 +20,7 @@ struct TaskSchoolGrid: View {
                     icon: school.icon,
                     count: schoolTasks.count,
                     tasks: schoolTasks,
+                    school: school,
                     imageName: school.imageName
                 )
             }
