@@ -15,9 +15,8 @@ struct TaskDifficultyGrid: View {
         LazyVGrid(columns: columns, spacing: 20) {
             ForEach(TaskDifficulty.allCases, id: \.self) { difficulty in
                 let difficultyTasks = difficultyGroups[difficulty] ?? []
-                TaskCategoryGridItem(
-                    title: difficulty.rawValue,
-                    icon: difficulty.icon,
+                TaskDifficultyGridItem(
+                    difficulty: difficulty,
                     count: difficultyTasks.count,
                     tasks: difficultyTasks
                 )
