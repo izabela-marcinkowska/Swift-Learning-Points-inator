@@ -14,9 +14,9 @@ struct TaskDifficultyDetailView: View {
     var body: some View {
         VStack (spacing: 0) {
             
-        DifficultyHeaderView(difficulty: difficulty)
-        
-        TaskListContainer(tasks: tasks, showIcon: true, showSchoolName: true)
+            DifficultyHeaderView(difficulty: difficulty)
+            
+            TaskListContainer(tasks: tasks, showIcon: true, showSchoolName: true)
         }
         .background(Color("background-color"))
     }
