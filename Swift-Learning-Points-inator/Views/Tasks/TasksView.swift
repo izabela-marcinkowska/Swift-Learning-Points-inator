@@ -41,7 +41,7 @@ struct TasksView: View {
                 }
                 
                 if viewMode == .allTasks {
-                    TaskListContainer(tasks: tasks)
+                    TaskListContainer(tasks: tasks, showIcon: true)
                 } else {
                     ScrollView {
                         VStack(spacing: 20) {

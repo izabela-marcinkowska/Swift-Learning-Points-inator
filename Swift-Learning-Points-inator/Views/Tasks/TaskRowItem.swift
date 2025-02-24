@@ -9,6 +9,7 @@ import SwiftUI
 
 struct TaskRowItem: View {
     let task: Task
+    let showIcon: Bool
     
     var dateFormatter: DateFormatter = {
             let formatter = DateFormatter()
@@ -21,29 +22,32 @@ struct TaskRowItem: View {
         NavigationLink(destination: DetailTaskView(task: task)) {
             VStack(spacing: 8) {
                 HStack {
-                    Image(systemName: task.school.icon)
-                        .font(.title2)
-                        .foregroundStyle(.blue)
-                        .frame(width: 40)
-                    
                     VStack(alignment: .leading, spacing: 4) {
                         Text(task.name)
                             .font(.headline)
                         
-                        Text(task.school.rawValue)
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
+                        HStack {
+                            if showIcon {
+                            Image(task.school.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 32, height: 32)
+                            }
+                            Text(task.school.rawValue)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
                     }
                     
                     Spacer()
                     
-                    HStack(spacing: 4) {
-                        Image("mana-diamond")
+                    HStack(spacing: 2) {
+                        Image("diamond")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 20, height: 20)
+                            .frame(width: 42, height: 42)
                         Text("\(task.mana)")
-                            .font(.headline)
+                            .font(.subheadline)
                     }
                 }
                 
@@ -61,17 +65,5 @@ struct TaskRowItem: View {
             .cornerRadius(10)
         }
         .buttonStyle(.plain)
-    }
-}
-
-#Preview {
-    NavigationStack {
-        TaskRowItem(task: Task(
-            name: "Learn SwiftUI Animations",
-            mana: 60,
-            school: .everydayEndeavors,
-            difficulty: .medium
-        ))
-        .padding()
     }
 }

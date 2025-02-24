@@ -13,7 +13,7 @@ struct TaskDifficultyGridItem: View {
     let tasks: [Task]
     
     var body: some View {
-        NavigationLink(destination: TaskListContainer(tasks: tasks)) {
+        NavigationLink(destination: TaskListContainer(tasks: tasks, showIcon: true)) {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(difficulty.rawValue)

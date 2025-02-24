@@ -15,7 +15,7 @@ struct TaskCategoryDetailView: View {
         VStack(spacing: 0) {
             SchoolHeaderView(school: school)
             
-            TaskListContainer(tasks: tasks)
+            TaskListContainer(tasks: tasks, showIcon: false)
         }
         .background(Color("card-background"))
     }

@@ -9,12 +9,13 @@ import SwiftUI
 
 struct TaskListContainer: View {
     let tasks: [Task]
+    let showIcon: Bool
     
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
                 ForEach(tasks) { task in
-                    TaskRowItem(task: task)
+                    TaskRowItem(task: task, showIcon: showIcon)
                         .padding(.horizontal)
                 }
             }
@@ -23,13 +24,3 @@ struct TaskListContainer: View {
     }
 }
 
-#Preview {
-    NavigationStack {
-        TaskListContainer(tasks: [
-            Task(name: "Learn SwiftUI Animations", mana: 60, school: .everydayEndeavors),
-            Task(name: "Master SwiftData", mana: 80, school: .everydayEndeavors),
-            Task(name: "Practice with async/await", mana: 40, school: .everydayEndeavors),
-            Task(name: "Build custom modifiers", mana: 50, school: .everydayEndeavors)
-        ])
-    }
-}
