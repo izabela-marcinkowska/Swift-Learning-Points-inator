@@ -10,12 +10,13 @@ import SwiftUI
 struct TaskListContainer: View {
     let tasks: [Task]
     let showIcon: Bool
+    let showSchoolName: Bool
     
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
                 ForEach(tasks) { task in
-                    TaskRowItem(task: task, showIcon: showIcon)
+                    TaskRowItem(task: task, showIcon: showIcon, showSchoolName: showSchoolName)
                         .padding(.horizontal)
                 }
             }

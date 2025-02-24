@@ -10,6 +10,7 @@ import SwiftUI
 struct TaskRowItem: View {
     let task: Task
     let showIcon: Bool
+    let showSchoolName: Bool
     
     var dateFormatter: DateFormatter = {
             let formatter = DateFormatter()
@@ -33,9 +34,12 @@ struct TaskRowItem: View {
                                 .scaledToFit()
                                 .frame(width: 32, height: 32)
                             }
+                            if showSchoolName {
+                                
                             Text(task.school.rawValue)
                                 .font(.subheadline)
                                 .foregroundStyle(.secondary)
+                            }
                         }
                     }
                     
