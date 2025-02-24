@@ -192,9 +192,9 @@ enum TaskDifficulty: String, CaseIterable {
     
     var icon: String {
         switch self {
-        case .easy: return "1.circle"
-        case .medium: return "2.circle"
-        case .hard: return "3.circle"
+        case .easy: return "easy"
+        case .medium: return "medium"
+        case .hard: return "hard"
         }
     }
     

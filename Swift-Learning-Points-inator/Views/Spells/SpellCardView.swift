@@ -38,7 +38,6 @@ struct SpellCardView: View {
     var body: some View {
         VStack (alignment: .leading, spacing: 20) {
             HStack {
-                
                 Text(spell.name)
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
