@@ -192,9 +192,20 @@ enum TaskDifficulty: String, CaseIterable {
     
     var icon: String {
         switch self {
-        case .easy: return "1.circle"
-        case .medium: return "2.circle"
-        case .hard: return "3.circle"
+        case .easy: return "easy"
+        case .medium: return "medium"
+        case .hard: return "hard"
+        }
+    }
+    
+    var description: String {
+        switch self {
+        case .easy:
+            return "Perfect for apprentice mages beginning their journey. These foundational tasks help build your magical confidence."
+        case .medium:
+            return "For practiced spellcasters ready to expand their abilities. These tasks require focus and growing expertise."
+        case .hard:
+            return "Challenges worthy of an advanced mage. These complex tasks will test your mastery and magical prowess."
         }
     }
     

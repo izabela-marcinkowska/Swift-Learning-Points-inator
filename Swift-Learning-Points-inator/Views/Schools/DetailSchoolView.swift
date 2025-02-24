@@ -96,7 +96,7 @@ struct DetailSchoolView: View {
             if !uncompletedTasks.isEmpty {
                 Section("Uncompleted Tasks") {
                     ForEach(uncompletedTasks) { task in
-                        TaskRowItem(task: task)
+                        TaskRowItem(task: task, showIcon: true, showSchoolName: true)
                     }
                 }
             }
@@ -104,7 +104,7 @@ struct DetailSchoolView: View {
             if !completedTasks.isEmpty {
                 Section("Completed Tasks") {
                     ForEach(completedTasks) { task in
-                        TaskRowItem(task: task)
+                        TaskRowItem(task: task, showIcon: true, showSchoolName: true)
                     }
                 }
             }

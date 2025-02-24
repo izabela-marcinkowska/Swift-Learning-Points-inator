@@ -26,6 +26,5 @@ struct TasksFilterBar: View {
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .background(.gray.opacity(0.1))
     }
 }

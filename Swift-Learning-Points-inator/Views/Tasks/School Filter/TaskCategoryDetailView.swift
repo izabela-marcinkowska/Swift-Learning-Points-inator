@@ -13,15 +13,10 @@ struct TaskCategoryDetailView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // The picture will be showed here
-            Image(school.imageName)
-                .resizable()
-                .scaledToFit()
-                .frame(height: 120)
+            SchoolHeaderView(school: school)
             
-            TaskListContainer(tasks: tasks)
+            TaskListContainer(tasks: tasks, showIcon: false, showSchoolName: false)
         }
-        .navigationTitle(school.rawValue)
-        .background(Color("card-background"))
+        .background(Color("background-color"))
     }
 }

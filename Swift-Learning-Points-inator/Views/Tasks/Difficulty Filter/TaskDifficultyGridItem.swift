@@ -13,26 +13,51 @@ struct TaskDifficultyGridItem: View {
     let tasks: [Task]
     
     var body: some View {
-        NavigationLink(destination: TaskListContainer(tasks: tasks)) {
+        NavigationLink(destination: TaskDifficultyDetailView(tasks: tasks, difficulty: difficulty)) {
             HStack(spacing: 0) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(difficulty.rawValue)
                         .font(.headline)
                         .foregroundStyle(.white)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                    
+                    Spacer()
                     
                     Text("\(count) tasks")
                         .font(.subheadline)
+                        .foregroundStyle(.white.opacity(0.7))
                 }
+                .padding()
+                .frame(width: UIScreen.main.bounds.width * 0.55, alignment: .leading)
                 
-                Spacer()
-                
-                Image(systemName: difficulty.icon)
-                    .font(.system(size: 32))
+
+                Image(difficulty.icon)
+                    .resizable()
+                    .scaledToFit()
+                    .padding(22)
+                    .frame(maxWidth: .infinity)
             }
-            .padding()
             .frame(height: 140)
-            .background(Color.gray.opacity(0.1))
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color("card-background"),
+                        Color("card-background").opacity(0.9),
+                        Color.black
+                    ]),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+            )
+            
             .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.purple.opacity(0.15), lineWidth: 1)
+            )
+            .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
         }
     }
 }
