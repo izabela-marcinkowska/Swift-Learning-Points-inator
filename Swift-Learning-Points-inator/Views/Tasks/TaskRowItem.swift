@@ -13,11 +13,11 @@ struct TaskRowItem: View {
     let showSchoolName: Bool
     
     var dateFormatter: DateFormatter = {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-            return formatter
-        }()
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
     
     var body: some View {
         NavigationLink(destination: DetailTaskView(task: task)) {
@@ -29,16 +29,16 @@ struct TaskRowItem: View {
                         
                         HStack {
                             if showIcon {
-                            Image(task.school.imageName)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 32, height: 32)
+                                Image(task.school.imageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 32, height: 32)
                             }
                             if showSchoolName {
                                 
-                            Text(task.school.rawValue)
-                                .font(.subheadline)
-                                .foregroundStyle(.secondary)
+                                Text(task.school.rawValue)
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
                             }
                         }
                     }
@@ -57,16 +57,22 @@ struct TaskRowItem: View {
                 
                 if task.isCompleted, let completedDate = task.lastCompletedDate {
                     HStack {
-                        Spacer()
                         Text("Completed: \(completedDate, formatter: dateFormatter)")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .multilineTextAlignment(.leading)
                 }
             }
             .padding()
-            .background(.gray.opacity(0.1))
+            .background(Color("card-background"))
             .cornerRadius(10)
+            .overlay(
+                RoundedRectangle(cornerRadius: 10)
+                    .stroke(Color.purple.opacity(0.1), lineWidth: 1)
+            )
+            .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
         }
         .buttonStyle(.plain)
     }
