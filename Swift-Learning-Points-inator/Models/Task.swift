@@ -198,6 +198,17 @@ enum TaskDifficulty: String, CaseIterable {
         }
     }
     
+    var description: String {
+        switch self {
+        case .easy:
+            return "Perfect for apprentice mages beginning their journey. These foundational tasks help build your magical confidence."
+        case .medium:
+            return "For practiced spellcasters ready to expand their abilities. These tasks require focus and growing expertise."
+        case .hard:
+            return "Challenges worthy of an advanced mage. These complex tasks will test your mastery and magical prowess."
+        }
+    }
+    
     // TODO: Implement this in Step 2 Wizard on Add new task view
     var suggestedManaRange: String {
         switch self {

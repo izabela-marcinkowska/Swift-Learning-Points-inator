@@ -16,6 +16,14 @@ struct DifficultyHeaderView: View {
                 .resizable()
                 .scaledToFit()
                 .frame(height: 120)
+            
+            Text(difficulty.rawValue)
+                .font(.title2.bold())
+            
+            Text(difficulty.description)
+                .font(.body)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
         }
         .padding(.vertical)
         .frame(maxWidth: .infinity)
