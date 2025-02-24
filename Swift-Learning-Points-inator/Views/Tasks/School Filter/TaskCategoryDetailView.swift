@@ -17,6 +17,6 @@ struct TaskCategoryDetailView: View {
             
             TaskListContainer(tasks: tasks, showIcon: false, showSchoolName: false)
         }
-        .background(Color("card-background"))
+        .background(Color("background-color"))
     }
 }
