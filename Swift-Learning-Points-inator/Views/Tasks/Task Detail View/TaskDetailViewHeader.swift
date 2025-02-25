@@ -16,8 +16,10 @@ struct TaskDetailViewHeader: View {
                 .resizable()
                 .scaledToFit()
                 .frame(height: 120)
+                
             Text(task.name)
                 .font(.title2.bold())
+                .multilineTextAlignment(.center)
         }
         .padding(.vertical)
         .frame(maxWidth: .infinity)
