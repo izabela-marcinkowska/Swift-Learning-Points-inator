@@ -26,18 +26,17 @@ struct DetailTaskView: View {
     }()
     
     var body: some View {
-        VStack(spacing: 20) {
-            Text(task.name)
-                .font(.largeTitle)
-                .multilineTextAlignment(.center)
-            
-            HStack {
-                Image(systemName: task.school.icon)
-                    .font(.title2)
-                Text(task.school.rawValue)
-                    .font(.title3)
+        VStack(spacing: 24) {
+            VStack (spacing: 16) {
+                Image(task.school.imageName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 120)
+                Text(task.name)
+                    .font(.title2.bold())
             }
-            .padding(.vertical, 8)
+            .padding(.vertical)
+            .frame(maxWidth: .infinity)
             
             TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
             
