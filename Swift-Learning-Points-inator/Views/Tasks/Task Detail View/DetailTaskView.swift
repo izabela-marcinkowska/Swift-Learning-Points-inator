@@ -27,16 +27,7 @@ struct DetailTaskView: View {
     
     var body: some View {
         VStack(spacing: 24) {
-            VStack (spacing: 16) {
-                Image(task.school.imageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 120)
-                Text(task.name)
-                    .font(.title2.bold())
-            }
-            .padding(.vertical)
-            .frame(maxWidth: .infinity)
+            TaskDetailViewHeader(task: task)
             
             TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
             
