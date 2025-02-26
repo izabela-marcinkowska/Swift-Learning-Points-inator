@@ -26,24 +26,73 @@ struct DetailTaskView: View {
     }()
     
     var body: some View {
-        VStack(spacing: 24) {
+        VStack(spacing: 0) {
+            // Fixed header
             TaskDetailViewHeader(task: task)
-                .padding(.bottom, 8)
+                .padding(.bottom, 4)
+                .padding(.horizontal)
             
-            VStack (spacing: 16) {
-                
-                TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
-                
-                TaskManaBreakdownView(task: task, user: user, spells: spells)
+            // Scrollable middle section (cards only)
+            ScrollView {
+                VStack(spacing: 12) {
+                    TaskInfoCard(title: "Status") {
+                        TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
+                    }
+                    
+                    TaskInfoCard(title: "Mana Rewards") {
+                        TaskManaBreakdownView(task: task, user: user, spells: spells)
+                    }
+                    
+                    TaskInfoCard(title: "Details") {
+                        HStack {
+                            // School
+                            HStack(spacing: 4) {
+                                Image(systemName: task.school.icon)
+                                    .foregroundColor(.blue)
+                                Text(task.school.rawValue)
+                                    .font(.caption)
+                            }
+                            
+                            Spacer()
+                            
+                            // Difficulty
+                            HStack(spacing: 4) {
+                                Text("Difficulty:")
+                                    .font(.caption)
+                                Text(task.difficulty.rawValue)
+                                    .font(.caption)
+                                    .foregroundColor(.orange)
+                            }
+                        }
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
             }
+            
+            Spacer()
+            
+            // Fixed button at the bottom
+            Button {
+                if let user = user {
+                    if task.isCompleted {
+                        task.unmarkTask(for: user, spells: spells)
+                    } else {
+                        task.completeTaskWithBonus(for: user, spells: spells)
+                    }
+                    try? modelContext.save()
+                }
+            } label: {
+                Text(task.isCompleted ? "Unmark Task" : "Complete Task")
+                    .font(.headline)
+                    .padding(.vertical, 10)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(TaskCompletionButtonStyle(isCompleted: task.isCompleted))
             .padding(.horizontal)
-            Spacer(minLength: 30)
-            
-            completionButton
-                .padding(.top, 12)
-            
+            .padding(.bottom, 8)
         }
-        .padding()
+        .padding(.vertical)
         .frame(maxWidth: .infinity)
         .background(Color("background-color"))
         .toolbar {
@@ -85,6 +134,7 @@ struct TaskCompletionButtonStyle: ButtonStyle {
             .font(.headline)
             .padding()
             .frame(maxWidth: .infinity)
+            .frame(height: 50)
             .background(
                 isCompleted ?
                     LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.7), Color.red]), startPoint: .leading, endPoint: .trailing) :

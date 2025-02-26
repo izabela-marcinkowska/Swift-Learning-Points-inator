@@ -12,22 +12,44 @@ struct TaskCompletionStatusView: View {
     let dateFormatter: DateFormatter
     
     var body: some View {
-        VStack {
-            Text("Task is \(task.isCompleted ? "completed" : "not completed")")
-                .foregroundColor(task.isCompleted ? .green : .blue)
-            
-            if task.isCompleted, let completedDate = task.lastCompletedDate {
-                    VStack(spacing: 8) {
-                    Text("Completed:")
-                        .font(.headline)
-                        .padding(.top, 8)
-                    Text(completedDate, formatter: dateFormatter)
-                        .foregroundColor(.green)
+        HStack(spacing: 16) {
+            // Status and repeatable info
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 4) {
+                    Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
+                        .foregroundColor(task.isCompleted ? .green : .blue)
+                        .font(.title3)
+                    
+                    Text(task.isCompleted ? "Completed" : "Not Completed")
+                        .foregroundColor(task.isCompleted ? .green : .blue)
                 }
-                    .padding()
-                    .background(RoundedRectangle(cornerRadius: 10)
-                        .fill(Color.gray.opacity(0.1)))
+                
+                if task.isRepeatable {
+                    HStack(spacing: 4) {
+                        Image(systemName: "arrow.triangle.2.circlepath")
+                            .foregroundColor(.blue)
+                            .font(.subheadline)
+                        Text("Repeatable")
+                            .font(.subheadline)
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
+            
+            Spacer()
+            
+            // Date info (if completed)
+            if task.isCompleted, let completedDate = task.lastCompletedDate {
+                VStack(alignment: .trailing) {
+                    Text("Completed on:")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                    Text(completedDate, formatter: dateFormatter)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
             }
         }
+        .padding(.vertical, 6)
     }
 }
