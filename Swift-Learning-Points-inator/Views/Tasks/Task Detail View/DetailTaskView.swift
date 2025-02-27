@@ -67,7 +67,7 @@ struct DetailTaskView: View {
                                     .frame(width: 20, height: 20)
                                 Text(task.difficulty.rawValue)
                                     .font(.caption)
-                                    .foregroundColor(.orange)
+                                    .foregroundColor(task.difficulty.textColor)
                             }
                         }
                     }
