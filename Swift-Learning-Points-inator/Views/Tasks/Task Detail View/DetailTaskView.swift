@@ -47,8 +47,10 @@ struct DetailTaskView: View {
                         HStack {
                             // School
                             HStack(spacing: 4) {
-                                Image(systemName: task.school.icon)
-                                    .foregroundColor(.blue)
+                                Image(task.school.imageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
                                 Text(task.school.rawValue)
                                     .font(.caption)
                             }
@@ -59,6 +61,10 @@ struct DetailTaskView: View {
                             HStack(spacing: 4) {
                                 Text("Difficulty:")
                                     .font(.caption)
+                                Image(task.difficulty.icon)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
                                 Text(task.difficulty.rawValue)
                                     .font(.caption)
                                     .foregroundColor(.orange)

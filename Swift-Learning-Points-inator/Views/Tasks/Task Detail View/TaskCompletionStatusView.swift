@@ -17,21 +17,21 @@ struct TaskCompletionStatusView: View {
             VStack(alignment: .leading, spacing: 8) {
                 HStack(spacing: 4) {
                     Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                        .foregroundColor(task.isCompleted ? .green : .blue)
+                        .foregroundColor(task.isCompleted ? .green : Color("accent-color"))
                         .font(.title3)
                     
                     Text(task.isCompleted ? "Completed" : "Not Completed")
-                        .foregroundColor(task.isCompleted ? .green : .blue)
+                        .foregroundColor(task.isCompleted ? .green : Color("accent-color"))
                 }
                 
                 if task.isRepeatable {
                     HStack(spacing: 4) {
                         Image(systemName: "arrow.triangle.2.circlepath")
-                            .foregroundColor(.blue)
+                            .foregroundColor(Color("accent-color"))
                             .font(.subheadline)
                         Text("Repeatable")
                             .font(.subheadline)
-                            .foregroundColor(.blue)
+                            .foregroundColor(Color("accent-color"))
                     }
                 }
             }
