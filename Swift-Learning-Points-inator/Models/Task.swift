@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 /// A learning activity that users can complete to earn mana and progress in Schools of Magic.
 /// Tasks have specific schools, difficulty levels, and can be either one-time or repeatable daily.
@@ -195,6 +196,14 @@ enum TaskDifficulty: String, CaseIterable {
         case .easy: return "easy"
         case .medium: return "medium"
         case .hard: return "hard"
+        }
+    }
+    
+    var textColor: Color {
+        switch self {
+        case .easy: return .green
+        case .medium: return .orange
+        case .hard: return .red
         }
     }
     

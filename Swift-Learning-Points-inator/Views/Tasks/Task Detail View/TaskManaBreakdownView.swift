@@ -13,39 +13,55 @@ struct TaskManaBreakdownView: View {
     let spells: [Spell]
     
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Points:")
-                .font(.title2)
+        if let user = user {
+            let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
             
-            if let user = user {
-                let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
-                VStack(spacing: 8) {
-                    Text("\(breakdown.baseMana)")
-                        .font(.largeTitle)
+            VStack(alignment: .leading, spacing: 8) {
+                // Base mana
+                HStack {
+                    Image("diamond")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 24, height: 24)
                     
-                    if !breakdown.bonuses.isEmpty {
-                        VStack(spacing: 8) {
-                            ForEach(breakdown.bonuses, id: \.spell.id) { bonus in
-                                HStack {
-                                    Image(systemName: bonus.spell.icon)
-                                    Text("+\(bonus.amount)")
-                                    Text("from \(bonus.spell.name)")
-                                }
-                                .foregroundStyle(.green)
-                                .font(.subheadline)
-                            }
+                    Text("\(breakdown.baseMana) base mana")
+                        .font(.subheadline)
+                }
+                
+                // Bonuses (if any)
+                if !breakdown.bonuses.isEmpty {
+                    ForEach(breakdown.bonuses, id: \.spell.id) { bonus in
+                        HStack {
+                            Image(systemName: bonus.spell.icon)
+                                .foregroundColor(.green)
+                                .font(.caption)
                             
-                            Divider()
-                                .padding(.vertical, 4)
-                            
-                            Text("Total: \(breakdown.total)")
-                                .font(.headline)
+                            Text("+\(bonus.amount) from \(bonus.spell.name)")
+                                .font(.caption)
+                                .foregroundColor(.green)
                         }
+                    }
+                    
+                    Divider()
+                        .padding(.vertical, 4)
+                    
+                    // Total with highlight
+                    HStack {
+                        Spacer()
+                        Text("Total:")
+                            .font(.subheadline)
+                        
+                        Image("diamond")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 20, height: 20)
+                        
+                        Text("\(breakdown.total)")
+                            .font(.headline)
+                            .foregroundColor(.purple)
                     }
                 }
             }
         }
-        .padding()
     }
 }
-

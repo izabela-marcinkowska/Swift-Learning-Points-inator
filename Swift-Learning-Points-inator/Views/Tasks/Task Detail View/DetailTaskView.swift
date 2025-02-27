@@ -26,47 +26,81 @@ struct DetailTaskView: View {
     }()
     
     var body: some View {
-        VStack(spacing: 20) {
-            Text(task.name)
-                .font(.largeTitle)
-                .multilineTextAlignment(.center)
+        VStack(spacing: 0) {
+            // Fixed header
+            TaskDetailViewHeader(task: task)
+                .padding(.bottom, 4)
+                .padding(.horizontal)
             
-            HStack {
-                Image(systemName: task.school.icon)
-                    .font(.title2)
-                Text(task.school.rawValue)
-                    .font(.title3)
-            }
-            .padding(.vertical, 8)
-            
-            TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
-            
-            TaskManaBreakdownView(task: task, user: user, spells: spells)
-            
-            VStack(spacing: 12) {
-                if !task.isCompleted {
-                    Button("Complete Task") {
-                        if let user = user {
-                            task.completeTaskWithBonus(for: user, spells: spells)
-                            try? modelContext.save()
+            // Scrollable middle section (cards only)
+            ScrollView {
+                VStack(spacing: 12) {
+                    TaskInfoCard(title: "Status") {
+                        TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
+                    }
+                    
+                    TaskInfoCard(title: "Mana Rewards") {
+                        TaskManaBreakdownView(task: task, user: user, spells: spells)
+                    }
+                    
+                    TaskInfoCard(title: "Details") {
+                        HStack {
+                            // School
+                            HStack(spacing: 4) {
+                                Image(task.school.imageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                Text(task.school.rawValue)
+                                    .font(.caption)
+                            }
+                            
+                            Spacer()
+                            
+                            // Difficulty
+                            HStack(spacing: 4) {
+                                Text("Difficulty:")
+                                    .font(.caption)
+                                Image(task.difficulty.icon)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 20, height: 20)
+                                Text(task.difficulty.rawValue)
+                                    .font(.caption)
+                                    .foregroundColor(task.difficulty.textColor)
+                            }
                         }
                     }
-                    .buttonStyle(.borderedProminent)
-                } else {
-                    Button("Unmark Task", role: .destructive) {
-                        if let user = user {
-                            task.unmarkTask(for: user, spells: spells)
-                            try? modelContext.save()
-                        }
-                    }
-                    .buttonStyle(.borderedProminent)
                 }
+                .padding(.horizontal)
+                .padding(.vertical, 8)
             }
-            .padding()
             
             Spacer()
+            
+            // Fixed button at the bottom
+            Button {
+                if let user = user {
+                    if task.isCompleted {
+                        task.unmarkTask(for: user, spells: spells)
+                    } else {
+                        task.completeTaskWithBonus(for: user, spells: spells)
+                    }
+                    try? modelContext.save()
+                }
+            } label: {
+                Text(task.isCompleted ? "Unmark Task" : "Complete Task")
+                    .font(.headline)
+                    .padding(.vertical, 10)
+                    .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(TaskCompletionButtonStyle(isCompleted: task.isCompleted))
+            .padding(.horizontal)
+            .padding(.bottom, 8)
         }
-        .padding()
+        .padding(.vertical)
+        .frame(maxWidth: .infinity)
+        .background(Color("background-color"))
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Edit") {
@@ -78,11 +112,44 @@ struct DetailTaskView: View {
             TaskFormView(task: task)
         }
     }
+    
+    private var completionButton: some View {
+        VStack {
+            Button(task.isCompleted ? "Unmark Task" : "Complete Task") {
+                if let user = user {
+                    if task.isCompleted {
+                        task.unmarkTask(for: user, spells: spells)
+                    } else {
+                        task.completeTaskWithBonus(for: user, spells: spells)
+                    }
+                    try? modelContext.save()
+                }
+            }
+            .buttonStyle(TaskCompletionButtonStyle(isCompleted: task.isCompleted))
+            .frame(maxWidth: .infinity, minHeight: 55)
+        }
+        .padding(.horizontal)
+    }
 }
 
-#Preview {
-    NavigationStack {
-        DetailTaskView(task: Task(name: "Just random example", mana: 75))
+struct TaskCompletionButtonStyle: ButtonStyle {
+    let isCompleted: Bool
+    
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.headline)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(
+                isCompleted ?
+                    LinearGradient(gradient: Gradient(colors: [Color.red.opacity(0.7), Color.red]), startPoint: .leading, endPoint: .trailing) :
+                    LinearGradient(gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]), startPoint: .leading, endPoint: .trailing)
+            )
+            .foregroundColor(.white)
+            .cornerRadius(12)
+            .shadow(color: isCompleted ? Color.red.opacity(0.4) : Color("button-color").opacity(0.4), radius: 4, x: 0, y: 2)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
     }
-    .modelContainer(for: [Task.self, User.self], inMemory: true)
 }
