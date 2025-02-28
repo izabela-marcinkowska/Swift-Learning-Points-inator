@@ -17,6 +17,7 @@ struct TaskFormView: View {
     @State var mana = 0
     @State private var selectedSchool: SchoolOfMagic = .everydayEndeavors
     @State private var isRepeatable = false
+    @State private var selectedDifficulty: TaskDifficulty = .easy
     
     init(task: Task? = nil) {
         self.task = task
@@ -66,7 +67,40 @@ struct TaskFormView: View {
                     .tint(Color("progress-color"))
                     
                     Section {
-                        TextField("Mana", value: $mana, format: .number)
+                        Picker("Difficulty", selection: $selectedDifficulty) {
+                            ForEach(TaskDifficulty.allCases, id: \.self) { difficulty in
+                                Text(difficulty.rawValue).tag(difficulty)
+                            }
+                        }
+                        .onChange(of: selectedDifficulty) { oldValue, newValue in
+                            let minValue = Int(newValue.suggestedManaRange.split(separator: "-")[0]) ?? 20
+                            mana = minValue
+                        }
+                    } header: {
+                        Text("Difficulty")
+                    } footer: {
+                        Text("Task difficulty affects mana range")
+                    }
+                    .listRowBackground(Color("card-background"))
+                    
+                    Section {
+                        VStack {
+                            HStack {
+                                Text("\(mana)")
+                                    .font(.headline)
+                                    .frame(width: 50, alignment: .leading)
+                                
+                                Spacer()
+                                
+                                Text(selectedDifficulty.suggestedManaRange)
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                
+                            }
+                            
+                            Slider(value: Binding(get: { Double(mana) }, set: { mana = Int($0) }), in: sliderRange(), step: 1)
+                                .tint(selectedDifficulty.textColor)
+                        }
                     } header: {
                         Text("Mana")
                     } footer: {
@@ -140,6 +174,18 @@ struct TaskFormView: View {
             }
             .navigationTitle("Edit task")
         }
+    }
+    
+    // Helper function to determine slider range based on difficulty
+    private func sliderRange() -> ClosedRange<Double> {
+        let rangeString = selectedDifficulty.suggestedManaRange
+        let components = rangeString.split(separator: "-")
+        guard components.count == 2,
+              let min = Double(components[0]),
+              let max = Double(components[1]) else {
+            return 1...100
+        }
+        return min...max
     }
 }
 
