@@ -15,6 +15,7 @@ struct DetailTaskView: View {
     @Query private var users: [User]
     @Query private var spells: [Spell]
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.dismiss) var dismiss
     private var user: User? { users.first }
     @State private var showingEditSheet = false
     
@@ -109,7 +110,9 @@ struct DetailTaskView: View {
             }
         }
         .sheet(isPresented: $showingEditSheet) {
-            TaskFormView(task: task)
+            TaskFormView(task: task, onDelete: {
+                dismiss()
+            })
         }
     }
     

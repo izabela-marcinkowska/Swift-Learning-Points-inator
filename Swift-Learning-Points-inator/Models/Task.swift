@@ -221,9 +221,9 @@ enum TaskDifficulty: String, CaseIterable {
     // TODO: Implement this in Step 2 Wizard on Add new task view
     var suggestedManaRange: String {
         switch self {
-        case .easy: return "20-40"
+        case .easy: return "5-40"
         case .medium: return "41-80"
-        case .hard: return "81-120"
+        case .hard: return "81-200"
         }
     }
 }
