@@ -67,6 +67,33 @@ struct TaskFormView: View {
                     Text("Select which school this task belongs to")
                 }
             }
+            
+            Button ("Update task") {
+                if let existingTask = task {
+                    existingTask.name = title
+                    existingTask.mana = mana
+                    existingTask.school = selectedSchool
+                    existingTask.isRepeatable = isRepeatable
+                    do {
+                        try modelContext.save()
+                    } catch {
+                        print("Error saving context: \(error)")
+                    }
+                } else {
+                    let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable)
+                    modelContext.insert(newTask)
+                    do {
+                        try modelContext.save()
+                    } catch {
+                        print("Error saving context: \(error)")
+                    }
+                }
+                dismiss()
+            }
+            .buttonStyle(TaskUpdateButtonStyle())
+            .frame(maxWidth: .infinity, minHeight: 55)
+            .disabled(!isFormValid)
+            
             .navigationTitle(task == nil ? "Add new task" : "Edit task")
             .onAppear {
                 if let task = task {
@@ -77,40 +104,31 @@ struct TaskFormView: View {
                 }
             }
             .toolbar {
-                ToolbarItem (placement: .topBarLeading) {
+                ToolbarItem (placement: .topBarTrailing) {
                     Button("Cancel") {
                         dismiss()
                     }
                 }
-                ToolbarItem {
-                    Button(task == nil ? "Add" : "Update") {
-                        if let existingTask = task {
-                            existingTask.name = title
-                            existingTask.mana = mana
-                            existingTask.school = selectedSchool
-                            existingTask.isRepeatable = isRepeatable
-                            do {
-                                try modelContext.save()
-                            } catch {
-                                print("Error saving context: \(error)")
-                            }
-                        } else {
-                            let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable)
-                            modelContext.insert(newTask)
-                            do {
-                                try modelContext.save()
-                            } catch {
-                                print("Error saving context: \(error)")
-                            }
-                        }
-                        dismiss()
-                    }
-                    .disabled(!isFormValid)
-                }
+                
             }
         }
     }
 }
 
-#Preview {
+struct TaskUpdateButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.headline)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(
+                    LinearGradient(gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]), startPoint: .leading, endPoint: .trailing)
+            )
+            .foregroundColor(.white)
+            .cornerRadius(12)
+            .shadow(color: Color("button-color").opacity(0.4), radius: 4, x: 0, y: 2)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
+    }
 }
