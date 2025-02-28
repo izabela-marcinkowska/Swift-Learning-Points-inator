@@ -28,73 +28,79 @@ struct TaskFormView: View {
     
     var body: some View {
         NavigationStack {
-            Form {
-                Section {
-                    TextField("Title", text: $title)
-                } header: {
-                    Text("Title")
-                } footer: {
-                    Text("Add title to your new task.")
+            VStack {
+                Form {
+                    Section {
+                        TextField("Title", text: $title)
+                    } header: {
+                        Text("Title")
+                    } footer: {
+                        Text("Add title to your new task.")
+                    }
+                    
+                    Section {
+                        TextField("Mana", value: $mana, format: .number)
+                    } header: {
+                        Text("Mana")
+                    } footer: {
+                        Text("How much mana is this task worth?")
+                    }
+                    
+                    Section {
+                        Toggle("Repeatable", isOn: $isRepeatable)
+                    } footer: {
+                        Text("Repeatable tasks can be completed once per day")
+                    }
+                    
+                    Section {
+                        Picker("School of magic", selection: $selectedSchool) {
+                            ForEach(SchoolOfMagic.allCases, id: \.self) { school in
+                                HStack {
+                                    Image(systemName: school.icon)
+                                    Text(school.rawValue)
+                                }.tag(school)
+                                
+                            }
+                        }
+                    } header: {
+                        Text("School of magic")
+                    } footer: {
+                        Text("Select which school this task belongs to")
+                    }
                 }
-
-                Section {
-                    TextField("Mana", value: $mana, format: .number)
-                } header: {
-                    Text("Mana")
-                } footer: {
-                    Text("How much mana is this task worth?")
-                }
+                .scrollContentBackground(.hidden)
+                .background(Color("background-color"))
                 
-                Section {
-                    Toggle("Repeatable", isOn: $isRepeatable)
-                } footer: {
-                    Text("Repeatable tasks can be completed once per day")
-                }
-                
-                Section {
-                    Picker("School of magic", selection: $selectedSchool) {
-                        ForEach(SchoolOfMagic.allCases, id: \.self) { school in
-                            HStack {
-                                Image(systemName: school.icon)
-                                Text(school.rawValue)
-                            }.tag(school)
-                            
+                Button ("Update task") {
+                    if let existingTask = task {
+                        existingTask.name = title
+                        existingTask.mana = mana
+                        existingTask.school = selectedSchool
+                        existingTask.isRepeatable = isRepeatable
+                        do {
+                            try modelContext.save()
+                        } catch {
+                            print("Error saving context: \(error)")
+                        }
+                    } else {
+                        let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable)
+                        modelContext.insert(newTask)
+                        do {
+                            try modelContext.save()
+                        } catch {
+                            print("Error saving context: \(error)")
                         }
                     }
-                } header: {
-                    Text("School of magic")
-                } footer: {
-                    Text("Select which school this task belongs to")
+                    dismiss()
                 }
+                .buttonStyle(TaskUpdateButtonStyle())
+                .frame(maxWidth: .infinity, minHeight: 55)
+                .disabled(!isFormValid)
+                .padding(.horizontal)
+                
+                
             }
-            
-            Button ("Update task") {
-                if let existingTask = task {
-                    existingTask.name = title
-                    existingTask.mana = mana
-                    existingTask.school = selectedSchool
-                    existingTask.isRepeatable = isRepeatable
-                    do {
-                        try modelContext.save()
-                    } catch {
-                        print("Error saving context: \(error)")
-                    }
-                } else {
-                    let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable)
-                    modelContext.insert(newTask)
-                    do {
-                        try modelContext.save()
-                    } catch {
-                        print("Error saving context: \(error)")
-                    }
-                }
-                dismiss()
-            }
-            .buttonStyle(TaskUpdateButtonStyle())
-            .frame(maxWidth: .infinity, minHeight: 55)
-            .disabled(!isFormValid)
-            
-            .navigationTitle(task == nil ? "Add new task" : "Edit task")
+            .background(Color("background-color"))
             .onAppear {
                 if let task = task {
                     title = task.name
@@ -103,6 +109,7 @@ struct TaskFormView: View {
                     isRepeatable = task.isRepeatable
                 }
             }
+            
             .toolbar {
                 ToolbarItem (placement: .topBarTrailing) {
                     Button("Cancel") {
@@ -111,6 +118,7 @@ struct TaskFormView: View {
                 }
                 
             }
+            .navigationTitle("Edit task")
         }
     }
 }
@@ -123,7 +131,7 @@ struct TaskUpdateButtonStyle: ButtonStyle {
             .frame(maxWidth: .infinity)
             .frame(height: 50)
             .background(
-                    LinearGradient(gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]), startPoint: .leading, endPoint: .trailing)
+                LinearGradient(gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]), startPoint: .leading, endPoint: .trailing)
             )
             .foregroundColor(.white)
             .cornerRadius(12)
