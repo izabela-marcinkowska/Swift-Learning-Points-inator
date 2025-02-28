@@ -77,14 +77,25 @@ struct TaskFormView: View {
                     .tint(Color("progress-color"))
                     
                     Section {
-                        Picker("Difficulty", selection: $selectedDifficulty) {
-                            ForEach(TaskDifficulty.allCases, id: \.self) { difficulty in
-                                Text(difficulty.rawValue).tag(difficulty)
+                        HStack {
+                            Spacer()
+                            Image(selectedDifficulty.icon)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 25, height: 25)
+                            
+                            Picker("", selection: $selectedDifficulty) {
+                                ForEach(TaskDifficulty.allCases, id: \.self) { difficulty in
+                                    Text(difficulty.rawValue).tag(difficulty)
+                                }
                             }
-                        }
-                        .onChange(of: selectedDifficulty) { oldValue, newValue in
-                            let minValue = Int(newValue.suggestedManaRange.split(separator: "-")[0]) ?? 20
-                            mana = minValue
+                            .onChange(of: selectedDifficulty) { oldValue, newValue in
+                                let minValue = Int(newValue.suggestedManaRange.split(separator: "-")[0]) ?? 20
+                                mana = minValue
+                            }
+                            .labelsHidden()
+                            .pickerStyle(MenuPickerStyle())
+                            Spacer()
                         }
                     } header: {
                         Text("Difficulty")
@@ -92,6 +103,7 @@ struct TaskFormView: View {
                         Text("Task difficulty affects mana range")
                     }
                     .listRowBackground(Color("card-background"))
+                    .tint(selectedDifficulty.textColor)
                     
                     Section {
                         VStack {
