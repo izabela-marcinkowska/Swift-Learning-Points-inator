@@ -51,23 +51,7 @@ struct TaskFormView: View {
                     .listRowBackground(Color("card-background"))
                     
                     Section {
-                        HStack {
-                            Spacer()
-                            Image(selectedSchool.imageName)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 25, height: 25)
-                            
-                            Picker("", selection: $selectedSchool) {
-                                ForEach(SchoolOfMagic.allCases, id: \.self) { school in
-                                    Text(school.rawValue)
-                                        .tag(school)
-                                }
-                            }
-                            .labelsHidden()
-                            .pickerStyle(MenuPickerStyle())
-                            Spacer()
-                        }
+                        SchoolPickerView(selectedSchool: $selectedSchool)
                     } header: {
                         Text("School of magic")
                     } footer: {
@@ -77,26 +61,7 @@ struct TaskFormView: View {
                     .tint(Color("progress-color"))
                     
                     Section {
-                        HStack {
-                            Spacer()
-                            Image(selectedDifficulty.icon)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 25, height: 25)
-                            
-                            Picker("", selection: $selectedDifficulty) {
-                                ForEach(TaskDifficulty.allCases, id: \.self) { difficulty in
-                                    Text(difficulty.rawValue).tag(difficulty)
-                                }
-                            }
-                            .onChange(of: selectedDifficulty) { oldValue, newValue in
-                                let minValue = Int(newValue.suggestedManaRange.split(separator: "-")[0]) ?? 20
-                                mana = minValue
-                            }
-                            .labelsHidden()
-                            .pickerStyle(MenuPickerStyle())
-                            Spacer()
-                        }
+                        DifficultyPickerView(selectedDifficulty: $selectedDifficulty, mana: $mana)
                     } header: {
                         Text("Difficulty")
                     } footer: {
@@ -106,23 +71,7 @@ struct TaskFormView: View {
                     .tint(selectedDifficulty.textColor)
                     
                     Section {
-                        VStack {
-                            HStack {
-                                Text("\(mana)")
-                                    .font(.headline)
-                                    .frame(width: 50, alignment: .leading)
-                                
-                                Spacer()
-                                
-                                Text(selectedDifficulty.suggestedManaRange)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                
-                            }
-                            
-                            Slider(value: Binding(get: { Double(mana) }, set: { mana = Int($0) }), in: sliderRange(), step: 1)
-                                .tint(selectedDifficulty.textColor)
-                        }
+                        ManaSliderView(mana: $mana, difficulty: selectedDifficulty)
                     } header: {
                         Text("Mana")
                     } footer: {
@@ -194,6 +143,7 @@ struct TaskFormView: View {
                     mana = task.mana
                     selectedSchool = task.school
                     isRepeatable = task.isRepeatable
+                    selectedDifficulty = task.difficulty
                 }
             }
             
@@ -221,34 +171,23 @@ struct TaskFormView: View {
             }
         }
     }
-        // Helper function to determine slider range based on difficulty
-       private func sliderRange() -> ClosedRange<Double> {
-            let rangeString = selectedDifficulty.suggestedManaRange
-            let components = rangeString.split(separator: "-")
-            guard components.count == 2,
-                  let min = Double(components[0]),
-                  let max = Double(components[1]) else {
-                return 1...100
-            }
-            return min...max
-        }
+}
+
+struct TaskUpdateButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .font(.headline)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
+            .background(
+                LinearGradient(gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]), startPoint: .leading, endPoint: .trailing)
+            )
+            .foregroundColor(.white)
+            .cornerRadius(12)
+            .shadow(color: Color("button-color").opacity(0.4), radius: 4, x: 0, y: 2)
+            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
     }
-    
-    struct TaskUpdateButtonStyle: ButtonStyle {
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .font(.headline)
-                .padding()
-                .frame(maxWidth: .infinity)
-                .frame(height: 50)
-                .background(
-                    LinearGradient(gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]), startPoint: .leading, endPoint: .trailing)
-                )
-                .foregroundColor(.white)
-                .cornerRadius(12)
-                .shadow(color: Color("button-color").opacity(0.4), radius: 4, x: 0, y: 2)
-                .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
-                .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
-        }
-    }
+}
 
