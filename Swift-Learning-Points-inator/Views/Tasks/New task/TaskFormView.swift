@@ -40,6 +40,32 @@ struct TaskFormView: View {
                     .listRowBackground(Color("card-background"))
                     
                     Section {
+                        HStack {
+                            Spacer()
+                            Image(selectedSchool.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 25, height: 25)
+                            
+                            Picker("", selection: $selectedSchool) {
+                                ForEach(SchoolOfMagic.allCases, id: \.self) { school in
+                                    Text(school.rawValue)
+                                        .tag(school)
+                                }
+                            }
+                            .labelsHidden()
+                            .pickerStyle(MenuPickerStyle())
+                            Spacer()
+                        }
+                    } header: {
+                        Text("School of magic")
+                    } footer: {
+                        Text("Select which school this task belongs to")
+                    }
+                    .listRowBackground(Color("card-background"))
+                    .tint(Color("progress-color"))
+                    
+                    Section {
                         TextField("Mana", value: $mana, format: .number)
                     } header: {
                         Text("Mana")
@@ -55,24 +81,7 @@ struct TaskFormView: View {
                     }
                     .listRowBackground(Color("card-background"))
                     .tint(Color("progress-color"))
-                    
-                    Section {
-                        Picker("School of magic", selection: $selectedSchool) {
-                            ForEach(SchoolOfMagic.allCases, id: \.self) { school in
-                                HStack {
-                                    Image(systemName: school.icon)
-                                    Text(school.rawValue)
-                                }.tag(school)
-                                
-                            }
-                        }
-                    } header: {
-                        Text("School of magic")
-                    } footer: {
-                        Text("Select which school this task belongs to")
-                    }
-                    .listRowBackground(Color("card-background"))
-                    .tint(Color("progress-color"))
+                   
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color("background-color"))
