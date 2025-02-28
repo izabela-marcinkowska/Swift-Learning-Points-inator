@@ -37,6 +37,7 @@ struct TaskFormView: View {
                     } footer: {
                         Text("Add title to your new task.")
                     }
+                    .listRowBackground(Color("card-background"))
                     
                     Section {
                         TextField("Mana", value: $mana, format: .number)
@@ -45,12 +46,15 @@ struct TaskFormView: View {
                     } footer: {
                         Text("How much mana is this task worth?")
                     }
+                    .listRowBackground(Color("card-background"))
                     
                     Section {
                         Toggle("Repeatable", isOn: $isRepeatable)
                     } footer: {
                         Text("Repeatable tasks can be completed once per day")
                     }
+                    .listRowBackground(Color("card-background"))
+                    .tint(Color("progress-color"))
                     
                     Section {
                         Picker("School of magic", selection: $selectedSchool) {
@@ -67,6 +71,8 @@ struct TaskFormView: View {
                     } footer: {
                         Text("Select which school this task belongs to")
                     }
+                    .listRowBackground(Color("card-background"))
+                    .tint(Color("progress-color"))
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color("background-color"))
@@ -112,9 +118,14 @@ struct TaskFormView: View {
             
             .toolbar {
                 ToolbarItem (placement: .topBarTrailing) {
-                    Button("Cancel") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundStyle(Color("progress-color"))
+                            .font(.title2)
                     }
+                    .padding(.top, 3)
                 }
                 
             }
