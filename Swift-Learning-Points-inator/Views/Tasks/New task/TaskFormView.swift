@@ -12,15 +12,27 @@ struct TaskFormView: View {
     @Environment(\.modelContext) var modelContext
     @Environment(\.dismiss) var dismiss
     let task: Task?
+    var onDelete: (() -> Void)? = nil
     
     @State var title = ""
     @State var mana = 0
     @State private var selectedSchool: SchoolOfMagic = .everydayEndeavors
     @State private var isRepeatable = false
     @State private var selectedDifficulty: TaskDifficulty = .easy
+    @State private var showDeleteAlert = false
     
-    init(task: Task? = nil) {
+    init(task: Task? = nil, onDelete: (() -> Void)? = nil) {
         self.task = task
+        self.onDelete = onDelete
+    }
+    
+    private func deleteTask() {
+        if let task = task {
+            modelContext.delete(task)
+            try? modelContext.save()
+            dismiss()
+            onDelete?()
+        }
     }
     
     private var isFormValid: Bool {
@@ -35,8 +47,6 @@ struct TaskFormView: View {
                         TextField("Title", text: $title)
                     } header: {
                         Text("Title")
-                    } footer: {
-                        Text("Add title to your new task.")
                     }
                     .listRowBackground(Color("card-background"))
                     
@@ -115,7 +125,22 @@ struct TaskFormView: View {
                     }
                     .listRowBackground(Color("card-background"))
                     .tint(Color("progress-color"))
-                   
+                    
+                    if task != nil {
+                        Section {
+                            Button(role: .destructive) {
+                                showDeleteAlert = true
+                            } label: {
+                                HStack {
+                                    Spacer()
+                                    Text("Delete task")
+                                    Spacer()
+                                }
+                            }
+                        }
+                        .listRowBackground(Color("card-background"))
+                    }
+                    
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color("background-color"))
@@ -126,6 +151,7 @@ struct TaskFormView: View {
                         existingTask.mana = mana
                         existingTask.school = selectedSchool
                         existingTask.isRepeatable = isRepeatable
+                        existingTask.difficulty = selectedDifficulty
                         do {
                             try modelContext.save()
                         } catch {
@@ -173,36 +199,44 @@ struct TaskFormView: View {
                 
             }
             .navigationTitle("Edit task")
+            .alert("Delete Task", isPresented: $showDeleteAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Delete", role: .destructive) {
+                    deleteTask()
+                }
+            } message: {
+                Text("Are you sure you want to delete this task? This action cannot be undone.")
+            }
+        }
+    }
+        // Helper function to determine slider range based on difficulty
+       private func sliderRange() -> ClosedRange<Double> {
+            let rangeString = selectedDifficulty.suggestedManaRange
+            let components = rangeString.split(separator: "-")
+            guard components.count == 2,
+                  let min = Double(components[0]),
+                  let max = Double(components[1]) else {
+                return 1...100
+            }
+            return min...max
         }
     }
     
-    // Helper function to determine slider range based on difficulty
-    private func sliderRange() -> ClosedRange<Double> {
-        let rangeString = selectedDifficulty.suggestedManaRange
-        let components = rangeString.split(separator: "-")
-        guard components.count == 2,
-              let min = Double(components[0]),
-              let max = Double(components[1]) else {
-            return 1...100
+    struct TaskUpdateButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .font(.headline)
+                .padding()
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+                .background(
+                    LinearGradient(gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]), startPoint: .leading, endPoint: .trailing)
+                )
+                .foregroundColor(.white)
+                .cornerRadius(12)
+                .shadow(color: Color("button-color").opacity(0.4), radius: 4, x: 0, y: 2)
+                .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
+                .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
         }
-        return min...max
     }
-}
 
-struct TaskUpdateButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.headline)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
-            .background(
-                LinearGradient(gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]), startPoint: .leading, endPoint: .trailing)
-            )
-            .foregroundColor(.white)
-            .cornerRadius(12)
-            .shadow(color: Color("button-color").opacity(0.4), radius: 4, x: 0, y: 2)
-            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
-            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
-    }
-}
