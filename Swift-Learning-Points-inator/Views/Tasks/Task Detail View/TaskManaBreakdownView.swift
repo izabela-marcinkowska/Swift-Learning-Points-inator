@@ -18,7 +18,7 @@ struct TaskManaBreakdownView: View {
             
             VStack(alignment: .leading, spacing: 8) {
                 // Base mana
-                HStack {
+                HStack (spacing: 2) {
                     Image("diamond")
                         .resizable()
                         .scaledToFit()
@@ -33,12 +33,12 @@ struct TaskManaBreakdownView: View {
                     ForEach(breakdown.bonuses, id: \.spell.id) { bonus in
                         HStack {
                             Image(systemName: bonus.spell.icon)
-                                .foregroundColor(.green)
+                                .foregroundColor(Color("progress-color"))
                                 .font(.caption)
                             
                             Text("+\(bonus.amount) from \(bonus.spell.name)")
                                 .font(.caption)
-                                .foregroundColor(.green)
+                                .foregroundColor(Color("progress-color"))
                         }
                     }
                     
@@ -51,6 +51,8 @@ struct TaskManaBreakdownView: View {
                         Text("Total:")
                             .font(.subheadline)
                         
+                        HStack (spacing: 2) {
+                            
                         Image("diamond")
                             .resizable()
                             .scaledToFit()
@@ -59,6 +61,7 @@ struct TaskManaBreakdownView: View {
                         Text("\(breakdown.total)")
                             .font(.headline)
                             .foregroundColor(.purple)
+                        }
                     }
                 }
             }

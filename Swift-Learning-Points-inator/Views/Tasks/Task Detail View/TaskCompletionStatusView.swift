@@ -12,43 +12,24 @@ struct TaskCompletionStatusView: View {
     let dateFormatter: DateFormatter
     
     var body: some View {
-        HStack(spacing: 16) {
-            // Status and repeatable info
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 4) {
-                    Image(systemName: task.isCompleted ? "checkmark.circle.fill" : "circle")
-                        .foregroundColor(task.isCompleted ? .green : Color("accent-color"))
-                        .font(.title3)
-                    
-                    Text(task.isCompleted ? "Completed" : "Not Completed")
-                        .foregroundColor(task.isCompleted ? .green : Color("accent-color"))
-                }
+        VStack(alignment: .center) {
                 
-                if task.isRepeatable {
-                    HStack(spacing: 4) {
-                        Image(systemName: "arrow.triangle.2.circlepath")
-                            .foregroundColor(Color("accent-color"))
-                            .font(.subheadline)
-                        Text("Repeatable")
-                            .font(.subheadline)
-                            .foregroundColor(Color("accent-color"))
+                Text(task.isCompleted ? "Completed" : "Not Completed")
+                    .foregroundColor(task.isCompleted ? .green : Color("progress-color"))
+                
+                if task.isCompleted, let completedDate = task.lastCompletedDate {
+                    HStack {
+                        Text("Completed on:")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                        Text(completedDate, formatter: dateFormatter)
+                            .font(.caption)
+                            .foregroundColor(.secondary)
                     }
                 }
-            }
+                
             
-            Spacer()
             
-            // Date info (if completed)
-            if task.isCompleted, let completedDate = task.lastCompletedDate {
-                VStack(alignment: .trailing) {
-                    Text("Completed on:")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                    Text(completedDate, formatter: dateFormatter)
-                        .font(.caption)
-                        .foregroundColor(.secondary)
-                }
-            }
         }
         .padding(.vertical, 6)
     }

@@ -36,9 +36,11 @@ struct DetailTaskView: View {
             // Scrollable middle section (cards only)
             ScrollView {
                 VStack(spacing: 12) {
-                    TaskInfoCard(title: "Status") {
+                    TaskInfoCardWithoutTitle() {
                         TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
                     }
+                    
+                    
                     
                     TaskInfoCard(title: "Mana Rewards") {
                         TaskManaBreakdownView(task: task, user: user, spells: spells)
@@ -69,6 +71,17 @@ struct DetailTaskView: View {
                                 Text(task.difficulty.rawValue)
                                     .font(.caption)
                                     .foregroundColor(task.difficulty.textColor)
+                            }
+                        }
+                        
+                        if task.isRepeatable {
+                            HStack(spacing: 4) {
+                                Image(systemName: "arrow.triangle.2.circlepath")
+                                    .foregroundColor(Color("accent-color"))
+                                    .font(.subheadline)
+                                Text("Repeatable")
+                                    .font(.subheadline)
+                                    .foregroundColor(Color("accent-color"))
                             }
                         }
                     }
