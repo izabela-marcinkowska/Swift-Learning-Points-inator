@@ -36,7 +36,7 @@ struct DetailTaskView: View {
             // Scrollable middle section (cards only)
             ScrollView {
                 VStack(spacing: 12) {
-                    TaskInfoCardWithoutTitle() {
+                    TaskInfoCardWithoutTitle(task: task) {
                         TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
                     }
                     
