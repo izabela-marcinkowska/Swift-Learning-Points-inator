@@ -22,7 +22,7 @@ struct TaskManaBreakdownView: View {
                     Image("diamond")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 24, height: 24)
+                        .frame(width: 30, height: 30)
                     
                     Text("\(breakdown.baseMana) base mana")
                         .font(.subheadline)
@@ -32,14 +32,16 @@ struct TaskManaBreakdownView: View {
                 if !breakdown.bonuses.isEmpty {
                     ForEach(breakdown.bonuses, id: \.spell.id) { bonus in
                         HStack {
-                            Image(systemName: bonus.spell.icon)
-                                .foregroundColor(Color("progress-color"))
-                                .font(.caption)
+                            Image(bonus.spell.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
                             
                             Text("+\(bonus.amount) from \(bonus.spell.name)")
                                 .font(.caption)
                                 .foregroundColor(Color("progress-color"))
                         }
+                        .padding(.horizontal, 5)
                     }
                     
                     Divider()
