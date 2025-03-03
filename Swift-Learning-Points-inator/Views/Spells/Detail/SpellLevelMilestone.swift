@@ -35,7 +35,8 @@ struct SpellLevelMilestone: View {
             Image(level.imageName)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 36, height: 36)
+                .frame(width: 46, height: 46)
+                .grayscale(isArchieved || isCurrent ? 0.0 : 0.9)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(level.title)
@@ -46,6 +47,7 @@ struct SpellLevelMilestone: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
+                    .foregroundColor(isArchieved || isCurrent ? Color("accent-color") : Color.primary)
                 
                 Text(level == .novice ? "Starting level. No mana cost." :  "Requires \(level.manaCost) mana")
                     .font(.caption)
@@ -58,10 +60,10 @@ struct SpellLevelMilestone: View {
                         .padding(.top, 4)
                 }
             }
-            Spacer()
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(width: UIScreen.main.bounds.width * 0.90)
-        .padding(.vertical, 8)
+        Divider()
+        .padding(.vertical, 2)
         .frame(maxWidth: .infinity)
         
         
