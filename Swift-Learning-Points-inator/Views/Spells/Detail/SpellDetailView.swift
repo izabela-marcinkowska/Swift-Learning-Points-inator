@@ -48,17 +48,7 @@ struct SpellDetailView: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            Image(systemName: spell.icon)
-                .font(.system(size: 60))
-                .foregroundStyle(.blue)
-            
-            Text(spell.name)
-                .font(.title)
-                .multilineTextAlignment(.center)
-            
-            Text(spell.spellDescription)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal)
+            SpellDetailViewHeader(spell: spell)
             
             Text("Level \(spell.currentLevel)")
                 .font(.headline)
