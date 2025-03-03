@@ -110,6 +110,7 @@ struct SpellLevelMilestone: View {
                         .progressViewStyle(.linear)
                         .frame(maxWidth: .infinity)
                         .padding(.top, 4)
+                        .tint(Color("progress-color"))
                 }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
