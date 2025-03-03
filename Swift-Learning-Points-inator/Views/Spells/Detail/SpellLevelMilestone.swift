@@ -14,6 +14,10 @@ struct SpellLevelMilestone: View {
     let progressValue: Double
     let spell: Spell
     
+    private var manaNeededToUnlock: Int {
+        max(0, level.manaCost - spell.investedMana)
+    }
+    
     private var levelSpecificBonus: String {
         let bonusPercentage = level.bonusMultiplier * 100
         
@@ -43,17 +47,32 @@ struct SpellLevelMilestone: View {
                     .font(.subheadline)
                     .fontWeight(.medium)
                 
-                Text(levelSpecificBonus)
-                    .font(.caption)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .foregroundColor(isArchieved ? Color("accent-color") : Color.primary)
-                    .opacity(isArchieved || isCurrent ? 1.0 : 0.3)
+                if level.bonusMultiplier > 0 {
+                    let percentage = level.bonusMultiplier * 100
+                    BonusEffectView(
+                        percentage: percentage,
+                        schools: spell.affectedSchools,
+                        isActive: isArchieved || isCurrent
+                    )
+                } else {
+                    Text("No bonus")
+                        .font(.caption)
+                        .foregroundColor(isArchieved || isCurrent ? Color("accent-color") : Color.primary)
+                        .opacity(isArchieved || isCurrent ? 1.0 : 0.3)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 
                 if level == .novice {
                     Text("Starting level. No mana cost.")
                         .font(.caption)
                         .foregroundStyle(.secondary)
-                } else {
+                } else if isArchieved {
+                    // Only show "Level unlocked" for levels that are fully achieved
+                    Text("Level unlocked")
+                        .font(.caption)
+                        .foregroundStyle(.green)
+                } else if isCurrent {
+                    // For the current level, show progress info
                     HStack(spacing: 1) {
                         Text("Requires")
                             .font(.caption)
@@ -64,7 +83,23 @@ struct SpellLevelMilestone: View {
                             .scaledToFit()
                             .frame(width: 24, height: 24)
                         
-                        Text("\(level.manaCost) mana")
+                        Text("\(manaNeededToUnlock) more mana to unlock")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                } else {
+                    // For future levels
+                    HStack(spacing: 1) {
+                        Text("Requires")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        
+                        Image("diamond")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                        
+                        Text("\(manaNeededToUnlock) more mana to unlock")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
