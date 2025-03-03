@@ -51,19 +51,19 @@ struct SpellDetailView: View {
             SpellDetailViewHeader(spell: spell)
             ScrollView(.vertical, showsIndicators: false) {
                 let levels = Array(SpellLevel.allCases.enumerated())
-                    let nextLevelToAchieve = SpellLevel(rawValue: spell.currentLevel + 1) ?? .master
+                let nextLevelToAchieve = SpellLevel(rawValue: spell.currentLevel + 1) ?? .master
                 VStack(alignment: .leading, spacing: 16) {
-                                    ForEach(levels, id: \.element) { index, level in
-                                        SpellLevelRow(
-                                            level: level,
-                                            isAchieved: spell.investedMana >= level.manaCost,
-                                            isCurrent: level == nextLevelToAchieve,
-                                            progressValue: level == nextLevelToAchieve ? progressToNextLevel : 0,
-                                            spell: spell,
-                                            showDivider: index < levels.count - 1
-                                        )
-                                    }
-                                }
+                    ForEach(levels, id: \.element) { index, level in
+                        SpellLevelRow(
+                            level: level,
+                            isAchieved: spell.investedMana >= level.manaCost,
+                            isCurrent: level == nextLevelToAchieve,
+                            progressValue: level == nextLevelToAchieve ? progressToNextLevel : 0,
+                            spell: spell,
+                            showDivider: index < levels.count - 1
+                        )
+                    }
+                }
                 .padding()
                 .background(Color("card-background"))
                 .cornerRadius(10)
@@ -73,8 +73,10 @@ struct SpellDetailView: View {
                 )
                 .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
             }
+            InvestManaButton {
+                showingAddManaSheet.toggle()
+            }
             
-           
         }
         .navigationBarTitleDisplayMode(.inline)
         .padding()
@@ -95,4 +97,3 @@ struct SpellDetailView: View {
         }
     }
 }
-
