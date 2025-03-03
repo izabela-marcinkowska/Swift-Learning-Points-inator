@@ -10,6 +10,8 @@ import SwiftUI
 struct SpellLevelMilestone: View {
     let level: SpellLevel
     let isArchieved: Bool
+    let isCurrent: Bool
+    let progressValue: Double
     let spell: Spell
     
     private var levelSpecificBonus: String {
@@ -33,7 +35,7 @@ struct SpellLevelMilestone: View {
             Image(level.imageName)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 18, height: 18)
+                .frame(width: 36, height: 36)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(level.title)
@@ -43,14 +45,25 @@ struct SpellLevelMilestone: View {
                 Text(levelSpecificBonus)
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 Text("\(level.manaCost) mana")
                     .font(.caption)
                     .foregroundStyle(.secondary)
+                
+                if isCurrent {
+                    ProgressView(value: progressValue)
+                        .progressViewStyle(.linear)
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 4)
+                }
             }
             Spacer()
         }
+        .frame(width: UIScreen.main.bounds.width * 0.90)
         .padding(.vertical, 8)
         .frame(maxWidth: .infinity)
+        
+        
     }
 }

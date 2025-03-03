@@ -46,6 +46,14 @@ struct SpellDetailView: View {
         return min(max(Double(currentProgress) / Double(manaForNextLevel), 0), 1)
     }
     
+    private var currentProgressLevel: SpellLevel {
+        if spell.currentLevel >= SpellLevel.master.rawValue {
+            return .master
+        }
+        
+        return SpellLevel(rawValue: spell.currentLevel + 1) ?? .novice
+    }
+    
     var body: some View {
         VStack(spacing: 20) {
             SpellDetailViewHeader(spell: spell)
@@ -55,19 +63,6 @@ struct SpellDetailView: View {
             
             Text("Mana invested: \(spell.investedMana)")
             
-            HStack {
-                ProgressView(value: progressToNextLevel)
-                    .progressViewStyle(.linear)
-                    .frame(maxWidth: .infinity)
-                
-                Button {
-                    showingAddManaSheet.toggle()
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.title2)
-                }
-            }
-            .padding(.horizontal)
             
             VStack(alignment: .leading, spacing: 16) {
                 Text("Bonuses:")
@@ -75,7 +70,12 @@ struct SpellDetailView: View {
                     .padding(.bottom, 5)
                 
                 ForEach(SpellLevel.allCases, id: \.self) { level in
-                    SpellLevelMilestone(level: level, isArchieved: spell.investedMana >= level.manaCost, spell: spell)
+                    SpellLevelMilestone(
+                        level: level,
+                        isArchieved: spell.investedMana >= level.manaCost,
+                        isCurrent: level == currentProgressLevel,
+                        progressValue: level == currentProgressLevel ? progressToNextLevel : 0,
+                        spell: spell)
                 }
                 
             }
