@@ -46,35 +46,22 @@ struct SpellDetailView: View {
         return min(max(Double(currentProgress) / Double(manaForNextLevel), 0), 1)
     }
     
-    private var currentProgressLevel: SpellLevel {
-        if spell.currentLevel >= SpellLevel.master.rawValue {
-            return .master
-        }
-        
-        return SpellLevel(rawValue: spell.currentLevel + 1) ?? .novice
-    }
     
     var body: some View {
         VStack(spacing: 20) {
             SpellDetailViewHeader(spell: spell)
             
-            Text("Level: \(spell.currentSpellLevel.title)")
-                .font(.headline)
-            
             Text("Mana invested: \(spell.investedMana)")
             
             
-            VStack(alignment: .leading, spacing: 16) {
-                Text("Bonuses:")
-                    .font(.headline)
-                    .padding(.bottom, 5)
-                
+            VStack(alignment: .leading, spacing: 16) {                
                 ForEach(SpellLevel.allCases, id: \.self) { level in
+                    let nextLevelToAchieve = SpellLevel(rawValue: spell.currentLevel + 1) ?? .master
                     SpellLevelMilestone(
                         level: level,
                         isArchieved: spell.investedMana >= level.manaCost,
-                        isCurrent: level == currentProgressLevel,
-                        progressValue: level == currentProgressLevel ? progressToNextLevel : 0,
+                        isCurrent: level == nextLevelToAchieve,
+                        progressValue: level == nextLevelToAchieve ? progressToNextLevel : 0,
                         spell: spell)
                 }
                 

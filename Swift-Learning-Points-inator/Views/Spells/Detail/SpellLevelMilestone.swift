@@ -47,7 +47,7 @@ struct SpellLevelMilestone: View {
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
                 
-                Text("\(level.manaCost) mana")
+                Text(level == .novice ? "Starting level. No mana cost." :  "Requires \(level.manaCost) mana")
                     .font(.caption)
                     .foregroundStyle(.secondary)
                 
