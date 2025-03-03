@@ -30,9 +30,10 @@ struct SpellLevelMilestone: View {
     
     var body: some View {
         HStack(spacing: 16) {
-            Circle()
-                .fill(isArchieved ? Color.blue : Color.gray.opacity(0.3))
-                .frame(width: 20, height: 20)
+            Image(level.imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 18, height: 18)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(level.title)

@@ -26,6 +26,15 @@ enum SpellLevel: Int, CaseIterable {
         }
     }
     
+    var imageName: String {
+        switch self {
+        case .novice: return "novice"
+        case .adept: return "adept"
+        case .expert: return "expert"
+        case .master: return "master"
+        }
+    }
+    
     /// Amount of mana required to achieve this level
     var manaCost: Int {
         switch self {
