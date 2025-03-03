@@ -45,13 +45,30 @@ struct SpellLevelMilestone: View {
                 
                 Text(levelSpecificBonus)
                     .font(.caption)
-                    .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
-                    .foregroundColor(isArchieved || isCurrent ? Color("accent-color") : Color.primary)
+                    .foregroundColor(isArchieved ? Color("accent-color") : Color.primary)
+                    .opacity(isArchieved || isCurrent ? 1.0 : 0.3)
                 
-                Text(level == .novice ? "Starting level. No mana cost." :  "Requires \(level.manaCost) mana")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                if level == .novice {
+                    Text("Starting level. No mana cost.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    HStack(spacing: 1) {
+                        Text("Requires")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                        
+                        Image("diamond")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 24, height: 24)
+                        
+                        Text("\(level.manaCost) mana")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
                 
                 if isCurrent {
                     ProgressView(value: progressValue)
