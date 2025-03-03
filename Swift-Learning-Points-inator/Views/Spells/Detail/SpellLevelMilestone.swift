@@ -10,6 +10,23 @@ import SwiftUI
 struct SpellLevelMilestone: View {
     let level: SpellLevel
     let isArchieved: Bool
+    let spell: Spell
+    
+    private var levelSpecificBonus: String {
+        let bonusPercentage = level.bonusMultiplier * 100
+        
+        if bonusPercentage <= 0 {
+            return "No bonus"
+        }
+        
+        let affectedSchools = spell.affectedSchools
+        if affectedSchools.isEmpty {
+            return "No affected schools"
+        }
+        
+        let schoolNames = affectedSchools.map {$0.rawValue }.joined(separator: ", ")
+        return String(format: "+%.0f%% for %@", bonusPercentage, schoolNames)
+    }
     
     var body: some View {
         HStack(spacing: 16) {
@@ -22,7 +39,11 @@ struct SpellLevelMilestone: View {
                     .font(.subheadline)
                     .fontWeight(.medium)
                 
-                Text("\(level.manaCost) mana - \(level.bonusDescription)")
+                Text(levelSpecificBonus)
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+                
+                Text("\(level.manaCost) mana")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }

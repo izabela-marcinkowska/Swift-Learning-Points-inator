@@ -50,7 +50,7 @@ struct SpellDetailView: View {
         VStack(spacing: 20) {
             SpellDetailViewHeader(spell: spell)
             
-            Text("Level \(spell.currentLevel)")
+            Text("Level: \(spell.currentSpellLevel.title)")
                 .font(.headline)
             
             Text("Mana invested: \(spell.investedMana)")
@@ -75,7 +75,7 @@ struct SpellDetailView: View {
                     .padding(.bottom, 5)
                 
                 ForEach(SpellLevel.allCases, id: \.self) { level in
-                    SpellLevelMilestone(level: level, isArchieved: spell.investedMana >= level.manaCost)
+                    SpellLevelMilestone(level: level, isArchieved: spell.investedMana >= level.manaCost, spell: spell)
                 }
                 
             }
@@ -84,6 +84,7 @@ struct SpellDetailView: View {
             .cornerRadius(10)
         }
         .navigationBarTitleDisplayMode(.inline)
+        .background(Color("background-color"))
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack {
