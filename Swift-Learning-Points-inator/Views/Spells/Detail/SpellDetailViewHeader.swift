@@ -21,12 +21,10 @@ struct SpellDetailViewHeader: View {
                 .font(.title2.bold())
             
             Text(spell.spellDescription)
-                .font(.body)
+                .font(.subheadline)
                 .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal)
         }
-        .padding(.vertical)
         .frame(maxWidth: .infinity)
     }
 }

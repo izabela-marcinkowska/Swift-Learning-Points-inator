@@ -114,8 +114,7 @@ struct SpellLevelMilestone: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
         }
-        Divider()
-        .padding(.vertical, 2)
+        .padding(.vertical, 8)
         .frame(maxWidth: .infinity)
         
         

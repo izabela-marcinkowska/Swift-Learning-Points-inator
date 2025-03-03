@@ -43,38 +43,38 @@ struct SpellDetailView: View {
         let manaForNextLevel = nextLevelMana - currentLevelMana
         let currentProgress = spell.investedMana - currentLevelMana
         
-        return min(max(Double(currentProgress) / Double(manaForNextLevel), 0), 1)
+        return manaForNextLevel > 0 ? min(max(Double(currentProgress) / Double(manaForNextLevel), 0), 1) : 0
     }
-    
     
     var body: some View {
         VStack(spacing: 20) {
             SpellDetailViewHeader(spell: spell)
-            
-            Text("Mana invested: \(spell.investedMana)")
-            
-            
-            VStack(alignment: .leading, spacing: 16) {                
-                ForEach(SpellLevel.allCases, id: \.self) { level in
+            ScrollView(.vertical, showsIndicators: false) {
+                let levels = Array(SpellLevel.allCases.enumerated())
                     let nextLevelToAchieve = SpellLevel(rawValue: spell.currentLevel + 1) ?? .master
-                    SpellLevelMilestone(
-                        level: level,
-                        isArchieved: spell.investedMana >= level.manaCost,
-                        isCurrent: level == nextLevelToAchieve,
-                        progressValue: level == nextLevelToAchieve ? progressToNextLevel : 0,
-                        spell: spell)
-                    
-                }
-                
+                VStack(alignment: .leading, spacing: 16) {
+                                    ForEach(levels, id: \.element) { index, level in
+                                        SpellLevelRow(
+                                            level: level,
+                                            isAchieved: spell.investedMana >= level.manaCost,
+                                            isCurrent: level == nextLevelToAchieve,
+                                            progressValue: level == nextLevelToAchieve ? progressToNextLevel : 0,
+                                            spell: spell,
+                                            showDivider: index < levels.count - 1
+                                        )
+                                    }
+                                }
+                .padding()
+                .background(Color("card-background"))
+                .cornerRadius(10)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.purple.opacity(0.15), lineWidth: 1)
+                )
+                .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
             }
-            .padding()
-            .background(Color("card-background"))
-            .cornerRadius(10)
-            .overlay(
-                RoundedRectangle(cornerRadius: 10)
-                    .stroke(Color.purple.opacity(0.15), lineWidth: 1)
-            )
-            .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
+            
+           
         }
         .navigationBarTitleDisplayMode(.inline)
         .padding()
@@ -96,7 +96,3 @@ struct SpellDetailView: View {
     }
 }
 
-#Preview {
-    SpellDetailView(spell: Spell(name: "Example name", spellDescription: "This will be an example description", icon: "star.fill"))
-        .modelContainer(for: Spell.self, inMemory: true)
-}
