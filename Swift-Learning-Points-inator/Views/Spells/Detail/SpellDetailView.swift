@@ -30,7 +30,17 @@ struct SpellDetailView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .padding(8)
-        .background(Color("background-color"))
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color("background-color"),
+                    Color("background-color").opacity(0.9),
+                    Color.black
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 HStack (spacing: 1) {

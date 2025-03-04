@@ -32,8 +32,18 @@ struct SpellBookView: View {
                 }
                 .padding()
             }
-        .navigationTitle("Book of Spells")
-        .background(Color("background-color"))
+            .navigationTitle("Book of Spells")
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color("background-color"),
+                        Color("background-color").opacity(0.9),
+                        Color.black
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
         }
     }
 }
