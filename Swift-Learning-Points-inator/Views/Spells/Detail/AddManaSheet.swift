@@ -16,6 +16,7 @@ struct AddManaSheet: View {
     @Query private var users: [User]
     @State private var manaToInvest: Double = 0
     
+    
     private var user: User? {
         users.first
     }
@@ -37,6 +38,17 @@ struct AddManaSheet: View {
         
         let nextLevel = SpellLevel(rawValue: resultingLevel.rawValue + 1) ?? .master
         return nextLevel.manaCost - (spell.investedMana + Int(manaToInvest))
+    }
+    
+    private func investManaAction() {
+        if let user = user {
+                if spell.investMana(amount: Int(manaToInvest), from: user) {
+                    try? modelContext.save()
+                    dismiss()
+                } else {
+                    print("Failed to invest mana")
+                }
+            }
     }
     
     var body: some View {
@@ -86,25 +98,8 @@ struct AddManaSheet: View {
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .center)
                     .cornerRadius(8)
-
                 
-                Button {
-                    if let user = user {
-                        if spell.investMana(amount: Int(manaToInvest), from: user) {
-                            try? modelContext.save()
-                            dismiss()
-                        } else {
-                            print("Failed to invest mana")
-                        }
-                    }
-                } label: {
-                    Text("Invest \(Int(manaToInvest)) mana")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.gray.opacity(0.2))
-                        .cornerRadius(10)
-                }
-                .disabled(manaToInvest == 0)
+                InvestManaButton(text: "Invest \(Int(manaToInvest)) mana", action: investManaAction, isEnabled: manaToInvest > 0)
                 
             }
             .frame(maxHeight: .infinity)
@@ -115,6 +110,7 @@ struct AddManaSheet: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
+                            .tint(Color("button-color"))
                     }
                 }
             }
