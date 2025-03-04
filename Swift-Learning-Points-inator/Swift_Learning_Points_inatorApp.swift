@@ -145,8 +145,8 @@ struct Swift_Learning_Points_inatorApp: App {
         appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.white]
         
         // Selected state is blue for contrast
-        appearance.stackedLayoutAppearance.selected.iconColor = .systemBlue
-        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.systemBlue]
+        appearance.stackedLayoutAppearance.selected.iconColor = UIColor(named: "button-color")
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor(named: "progress-color") ?? .blue]
         
         let tabBar = UITabBar.appearance()
         tabBar.standardAppearance = appearance

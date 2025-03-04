@@ -17,27 +17,36 @@ struct ContentView: View {
         TabView {
             DashboardView()
                 .tabItem {
-                    Label("Dashboard", systemImage: "house.fill")
+                    VStack {
+                        ScaledImage(name: "dashboard", size: CGSize(width: 32, height: 32))
+                        Text("Dashboard")
+                    }
                 }
             
             SpellBookView()
                 .tabItem {
-                    Label("Spellbook", systemImage: "book.fill")
+                    VStack {
+                        ScaledImage(name: "magic-book", size: CGSize(width: 32, height: 32))
+                        Text("Spellbook")
+                    }
                 }
             
             TasksView()
                 .tabItem {
-                    Label("Tasks", systemImage: "list.bullet")
+                    ScaledImage(name: "tasks-icon", size: CGSize(width: 32, height: 32))
+                    Text("Tasks")
                 }
             
             SchoolsView()
                 .tabItem {
-                    Label("Schools", systemImage: "books.vertical.fill")
+                    ScaledImage(name: "schools", size: CGSize(width: 32, height: 32))
+                    Text("Schools")
                 }
             
             UserView()
                 .tabItem {
-                    Label("Profile", systemImage: "person.fill")
+                    ScaledImage(name: "profile", size: CGSize(width: 32, height: 32))
+                    Text("Profile")
                 }
         }
     }
@@ -45,4 +54,26 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+}
+
+struct ScaledImage: View {
+    let name: String
+    let size: CGSize
+    
+    var body: Image {
+        let uiImage = resizedImage(named: self.name, for: self.size) ?? UIImage()
+        
+        return Image(uiImage: uiImage.withRenderingMode(.alwaysOriginal))
+    }
+    
+    func resizedImage(named: String, for size: CGSize) -> UIImage? {
+        guard let image = UIImage(named: named) else {
+            return nil
+        }
+
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { (context) in
+            image.draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
 }
