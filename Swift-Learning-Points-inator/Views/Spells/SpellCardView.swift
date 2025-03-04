@@ -58,6 +58,7 @@ struct SpellCardView: View {
                     HStack {
                         ProgressView(value: progressToNextLevel)
                             .progressViewStyle(.linear)
+                            .tint(Color("progress-color"))
                         
                         Text("\(spell.investedMana)/\(nextLevelMana)")
                             .font(.caption)
