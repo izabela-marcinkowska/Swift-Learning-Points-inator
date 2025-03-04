@@ -14,10 +14,32 @@ struct SpellLevelMilestone: View {
     let progressValue: Double
     let spell: Spell
     
+    /// Calculates the amount of mana needed to unlock this spell level.
+    ///
+    /// The calculation determines how much more mana the user needs to invest
+    /// to reach the current level by comparing:
+    /// - The level's mana cost threshold
+    /// - The spell's current invested mana
+    ///
+    /// Returns:
+    /// - A positive value if more mana is needed to reach this level
+    /// - Zero if the level is already achieved
     private var manaNeededToUnlock: Int {
         max(0, level.manaCost - spell.investedMana)
     }
     
+    /// Generates a user-friendly description of the bonus provided by this spell level.
+    ///
+    /// The description includes:
+    /// - The percentage bonus (e.g., "+15%")
+    /// - The affected schools of magic (e.g., "for Data Sorcery, View Alchemy")
+    ///
+    /// Format examples:
+    /// - "+10% for Temporal Conjurations, Data Incantations"
+    /// - "No bonus" (if level provides no bonus)
+    /// - "No affected schools" (if spell doesn't affect any schools)
+    ///
+    /// This description is used in the UI to help users understand the benefits of each spell level.
     private var levelSpecificBonus: String {
         let bonusPercentage = level.bonusMultiplier * 100
         
