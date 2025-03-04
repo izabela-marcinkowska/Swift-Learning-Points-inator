@@ -24,26 +24,69 @@ struct AddManaSheet: View {
         user?.mana ?? 0
     }
     
+    private var resultingLevel: SpellLevel {
+        SpellLevel.level(for: spell.investedMana + Int(manaToInvest))
+    }
+    
+    private var willLevelUp: Bool {
+        resultingLevel.rawValue > spell.currentSpellLevel.rawValue
+    }
+    
+    private var remainingManaForNextLevel: Int {
+        guard resultingLevel != .master else { return 0 }
+        
+        let nextLevel = SpellLevel(rawValue: resultingLevel.rawValue + 1) ?? .master
+        return nextLevel.manaCost - (spell.investedMana + Int(manaToInvest))
+    }
+    
     var body: some View {
         NavigationStack { 
-            VStack(spacing: 24) {
-                Text("Invest mana in:")
-                    .font(.headline)
-                
-                Text(spell.name)
+            VStack(spacing: 12) {
+                Text("Invest mana in \(spell.name)")
                     .font(.title)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                
                 Spacer()
                 HStack {
                     Text("0")
                     Slider(value: $manaToInvest, in: 0...Double(maxInvestment))
                         .padding(.horizontal)
+                        .tint(Color("progress-color"))
                     Text("\(maxInvestment)")
                 }
                 
-                Text("\(Int(manaToInvest)) mana selected")
-                    .font(.headline)
-                
-                Spacer()
+
+                    VStack(alignment: .leading, spacing: 8) {
+                        if willLevelUp {
+                            HStack {
+                                Image(resultingLevel.imageName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 24, height: 24)
+                                
+                                Text("You will reach \(resultingLevel.title)!")
+                                    .foregroundStyle(Color("accent-color"))
+                                    .font(.subheadline)
+                            }
+                        } else if remainingManaForNextLevel > 0 {
+                            HStack {
+                                Image("diamond")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 24, height: 24)
+                                
+                                Text("Need \(remainingManaForNextLevel) more mana for next level")
+                                    .font(.subheadline)
+                                    .foregroundStyle(.secondary)
+                            }
+                        }
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .cornerRadius(8)
+
                 
                 Button {
                     if let user = user {
@@ -55,7 +98,7 @@ struct AddManaSheet: View {
                         }
                     }
                 } label: {
-                    Text("Use \(Int(manaToInvest)) mana")
+                    Text("Invest \(Int(manaToInvest)) mana")
                         .frame(maxWidth: .infinity)
                         .padding()
                         .background(Color.gray.opacity(0.2))
@@ -64,6 +107,7 @@ struct AddManaSheet: View {
                 .disabled(manaToInvest == 0)
                 
             }
+            .frame(maxHeight: .infinity)
             .padding()
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -75,8 +119,9 @@ struct AddManaSheet: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            .background(Color("background-color"))
         }
-        .presentationDetents([.height(450)])
+        .presentationDetents([.height(350)])
     }
 }
 
