@@ -45,7 +45,7 @@ struct RecentTaskItem: View {
                 Image("diamond")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 42, height: 42)
+                    .frame(width: 38, height: 38)
                 Text("\(task.mana)")
                     .font(.subheadline)
             }

@@ -19,8 +19,8 @@ struct TaskDetailViewHeader: View {
                     .scaledToFit()
                     .frame(height: 160) // Make space for the indicator
                 
-                ManaIndicator(amount: task.mana)
-                    .offset(x: 30, y: 25)
+//                ManaIndicator(amount: task.mana)
+//                    .offset(x: 30, y: 25)
             }
             
             

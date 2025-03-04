@@ -16,8 +16,7 @@ struct ManaIndicator: View {
                 Image("diamond")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 110, height: 110)
-                    .shadow(color: Color.black.opacity(0.3), radius: 4, x: 0, y: 2)
+                    .frame(width: 80, height: 80)
                 
                 // Content
                 VStack(spacing: 2) {

@@ -95,7 +95,7 @@ struct SpellLevelMilestone: View {
                         .foregroundStyle(.green)
                 } else if isCurrent {
                     // For the current level, show progress info
-                    HStack(spacing: 1) {
+                    HStack(spacing: 2) {
                         Text("Requires")
                             .font(.caption)
                             .foregroundStyle(.secondary)
@@ -105,7 +105,7 @@ struct SpellLevelMilestone: View {
                             .scaledToFit()
                             .frame(width: 24, height: 24)
                         
-                        Text("\(manaNeededToUnlock) more mana to unlock")
+                        Text(" \(manaNeededToUnlock) more mana to unlock")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
