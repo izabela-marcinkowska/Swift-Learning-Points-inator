@@ -57,19 +57,17 @@ struct SchoolGridItem: View {
                 .scaledToFit()
                 .frame(width: 46, height: 46)
             
-            VStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 8) {
                 
                 Text(school.rawValue)
-                    .font(.title2)
+                    .font(.headline)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: .infinity)
                 
                 Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
                     .font(.subheadline)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .frame(maxWidth: .infinity)
+                    .foregroundColor(.secondary)
+                
+                LevelProgressionBar(currentLevel: schoolProgress?.currentLevel ?? .apprentice)
                 
                 Text(manaProgress)
                     .font(.caption)

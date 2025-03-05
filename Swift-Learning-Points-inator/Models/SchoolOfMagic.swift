@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 /// Represents the different schools of magic in the learning system.
 /// Each school focuses on a different aspect of programming, themed as magical disciplines.
@@ -118,6 +119,15 @@ enum SchoolOfMagic: String, CaseIterable {
             case .grandSorcerer: return "Grand Sorcerer"
             }
         }
+        
+        var color: Color {
+                switch self {
+                case .apprentice: return .blue
+                case .mage: return .green
+                case .archmage: return .orange
+                case .grandSorcerer: return .purple
+                }
+            }
         
         /// The amount of mana required to reach this level
         var manaThreshold: Int {
