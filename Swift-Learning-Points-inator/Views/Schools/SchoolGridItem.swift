@@ -60,18 +60,18 @@ struct SchoolGridItem: View {
                     .font(.headline)
                     .fixedSize(horizontal: false, vertical: true)
                 
-                LevelProgressionBar(currentLevel: schoolProgress?.currentLevel ?? .apprentice)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                
-                Text(manaProgress)
-                    .font(.caption)
+                LevelProgressionBar(
+                    currentLevel: schoolProgress?.currentLevel ?? .apprentice,
+                    manaProgress: manaProgress
+                )
+
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
             Image(school.imageName)
                 .resizable()
                 .scaledToFit()
-                .opacity(0.69)
+                .opacity(0.80)
                 .frame(width: 150, height: 150)
                 .offset(x: 14)
             
