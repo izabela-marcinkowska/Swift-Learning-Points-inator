@@ -19,6 +19,12 @@ struct DetailSchoolView: View {
         users.first
     }
     
+    private var manaProgress: String {
+        let currentMana = schoolProgress?.totalMana ?? 0
+        let nextThreshold = nextLevel?.manaThreshold ?? currentMana
+        return "\(currentMana)/\(nextThreshold)"
+    }
+    
     /// Progress tracking for the current school
     private var schoolProgress: SchoolProgress? {
         user?.schoolProgress.first { $0.school == school}
@@ -83,25 +89,30 @@ struct DetailSchoolView: View {
             
             Spacer()
             
-//            List {
-//                Section {
-//                    if !uncompletedTasks.isEmpty {
-//                        Section("Uncompleted Tasks") {
-//                            ForEach(uncompletedTasks) { task in
-//                                TaskRowItem(task: task, showIcon: true, showSchoolName: true)
-//                            }
-//                        }
-//                    }
-//                    
-//                    if !completedTasks.isEmpty {
-//                        Section("Completed Tasks") {
-//                            ForEach(completedTasks) { task in
-//                                TaskRowItem(task: task, showIcon: true, showSchoolName: true)
-//                            }
-//                        }
-//                    }
-//                }
-//            }
+            LevelProgressionBar(
+                currentLevel: schoolProgress?.currentLevel ?? .apprentice,
+                manaProgress: manaProgress
+            )
+            
+            //            List {
+            //                Section {
+            //                    if !uncompletedTasks.isEmpty {
+            //                        Section("Uncompleted Tasks") {
+            //                            ForEach(uncompletedTasks) { task in
+            //                                TaskRowItem(task: task, showIcon: true, showSchoolName: true)
+            //                            }
+            //                        }
+            //                    }
+            //
+            //                    if !completedTasks.isEmpty {
+            //                        Section("Completed Tasks") {
+            //                            ForEach(completedTasks) { task in
+            //                                TaskRowItem(task: task, showIcon: true, showSchoolName: true)
+            //                            }
+            //                        }
+            //                    }
+            //                }
+            //            }
         }
         .background(
             LinearGradient(

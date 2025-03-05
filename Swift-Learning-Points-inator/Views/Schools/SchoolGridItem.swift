@@ -50,21 +50,48 @@ struct SchoolGridItem: View {
         return "\(currentMana)/\(nextThreshold)"
     }
     
+    // Calculate how much more mana is needed for next level
+        private var manaNeededForNextLevel: Int {
+            guard let nextLevel = nextLevel,
+                  let currentMana = schoolProgress?.totalMana else {
+                return 0
+            }
+            
+            return max(0, nextLevel.manaThreshold - currentMana)
+        }
+        
+        // Text to display about level progress
+        private var levelUpText: String {
+            guard let nextLevel = nextLevel else {
+                return "Maximum level achieved"
+            }
+            
+            return "For \(nextLevel.title), need \(manaNeededForNextLevel) more mana"
+        }
+    
     var body: some View {
         ZStack(alignment: .trailing) {
-           
+            
             
             VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 6) {
+                    Image(schoolProgress?.currentLevel.imageName ?? "apprentice")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 32, height: 32)
+                    
+                    Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
+                        .font(.headline)
+                        .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
                 
-                Text(school.rawValue)
-                    .font(.headline)
+                Text(levelUpText)
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
                 
-                LevelProgressionBar(
-                    currentLevel: schoolProgress?.currentLevel ?? .apprentice,
-                    manaProgress: manaProgress
-                )
-
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             
@@ -72,7 +99,7 @@ struct SchoolGridItem: View {
                 .resizable()
                 .scaledToFit()
                 .opacity(0.80)
-                .frame(width: 150, height: 150)
+                .frame(width: 80, height: 80)
                 .offset(x: 14)
             
             
