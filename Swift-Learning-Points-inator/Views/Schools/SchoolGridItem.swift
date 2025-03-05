@@ -78,6 +78,7 @@ struct SchoolGridItem: View {
             
         }
         .padding()
+        .frame(maxWidth: .infinity)
         .background(Color("card-background"))
         .cornerRadius(10)
         .overlay(

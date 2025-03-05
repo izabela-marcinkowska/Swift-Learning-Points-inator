@@ -120,6 +120,15 @@ enum SchoolOfMagic: String, CaseIterable {
             }
         }
         
+        var imageName: String {
+            switch self {
+            case .apprentice: return "apprentice"
+            case .mage: return "mage"
+            case .archmage: return "archmage"
+            case .grandSorcerer: return "grandSorcerer"
+            }
+        }
+        
         var color: Color {
                 switch self {
                 case .apprentice: return .blue
