@@ -51,11 +51,8 @@ struct SchoolGridItem: View {
     }
     
     var body: some View {
-        HStack() {
-            Image(school.imageName)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 46, height: 46)
+        ZStack(alignment: .trailing) {
+           
             
             VStack(alignment: .leading, spacing: 8) {
                 
@@ -63,23 +60,36 @@ struct SchoolGridItem: View {
                     .font(.headline)
                     .fixedSize(horizontal: false, vertical: true)
                 
-                Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-                
                 LevelProgressionBar(currentLevel: schoolProgress?.currentLevel ?? .apprentice)
+                    .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Text(manaProgress)
                     .font(.caption)
-                    .padding(.bottom, 8)
             }
-            .padding(.horizontal, 8)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            
+            Image(school.imageName)
+                .resizable()
+                .scaledToFit()
+                .opacity(0.69)
+                .frame(width: 150, height: 150)
+                .offset(x: 14)
             
             
         }
         .padding()
         .frame(maxWidth: .infinity)
-        .background(Color("card-background"))
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color("card-background"),
+                    Color("card-background").opacity(0.9),
+                    Color.black
+                ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
         .cornerRadius(10)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
