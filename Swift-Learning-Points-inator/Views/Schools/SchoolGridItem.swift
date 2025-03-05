@@ -51,38 +51,42 @@ struct SchoolGridItem: View {
     }
     
     var body: some View {
-        VStack(alignment: .center, spacing: 16) {
-            Image(systemName: school.icon)
-                .font(.system(size: 32))
-                .foregroundColor(.blue)
-                .padding(.top, 8)
+        HStack() {
+            Image(school.imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 46, height: 46)
             
             VStack(spacing: 8) {
                 
-            Text(school.rawValue)
-                .font(.headline)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity)
-            
-            Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
-                .font(.subheadline)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity)
+                Text(school.rawValue)
+                    .font(.title2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity)
+                
+                Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
+                    .font(.subheadline)
+                    .multilineTextAlignment(.center)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity)
+                
+                Text(manaProgress)
+                    .font(.caption)
+                    .padding(.bottom, 8)
             }
             .padding(.horizontal, 8)
             
-            Text(manaProgress)
-                .font(.caption)
-                .padding(.bottom, 8)
+            
         }
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.gray.opacity(0.1))
+        .background(Color("card-background"))
         .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.purple.opacity(0.15), lineWidth: 1)
+        )
+        .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
     }
 }
 
