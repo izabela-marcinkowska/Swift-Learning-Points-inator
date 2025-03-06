@@ -7,12 +7,25 @@
 
 import SwiftUI
 
-struct SchoolLevelDetailView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+//struct SchoolLevelDetailView: View {
+//    let currentLevel: SchoolOfMagic.AchievementLevel
+//    let manaProgress: String
+//    
+//    var body: some View {
+//        VStack(alignment: .leading, spacing: 4) {
+//            Text("Current level:")
+//                .font(.headline)
+//            ForEach(SchoolOfMagic.AchievementLevel.allCases, id: \.self) { level in
+//                
+//                let progressToShow = level == currentLevel ? manaProgress : nil
+//                LevelIndicator(
+//                    level: level,
+//                    isAchieved: level.rawValue <= currentLevel.rawValue,
+//                    progressText: progressToShow
+//                )
+//                .frame(maxWidth: .infinity, alignment: .leading)
+//            }
+//        }
+//    }
+//}
 
-#Preview {
-    SchoolLevelDetailView()
-}

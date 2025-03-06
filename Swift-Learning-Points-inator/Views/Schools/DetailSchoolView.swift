@@ -88,11 +88,10 @@ struct DetailSchoolView: View {
                 .padding(.horizontal)
             
             VStack (alignment: .leading){
-               
-                
                 LevelProgressionBar(
                     currentLevel: schoolProgress?.currentLevel ?? .apprentice,
-                    manaProgress: manaProgress
+                    manaProgress: manaProgress,
+                    totalMana: schoolProgress?.totalMana ?? 0
                 )
             }
             
