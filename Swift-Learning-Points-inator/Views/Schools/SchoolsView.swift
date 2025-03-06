@@ -13,8 +13,9 @@ struct SchoolsView: View {
     private var user: User? { users.first }
     
     let columns = [
-        GridItem(.adaptive(minimum: 150, maximum: 200), spacing: 16)
-    ]
+            GridItem(.flexible(), spacing: 16),
+            GridItem(.flexible(), spacing: 16)
+        ]
     
     var body: some View {
         NavigationStack {
@@ -25,14 +26,24 @@ struct SchoolsView: View {
                             DetailSchoolView(school: school)
                         } label: {
                             SchoolGridItem(school: school)
-                                .frame(height: 200)
                                 .foregroundColor(.primary)
                         }
                     }
                 }
                 .padding()
             }
-        .navigationTitle("Schools of Magic")
+            .navigationTitle("Schools of Magic")
+            .background(
+                LinearGradient(
+                    gradient: Gradient(colors: [
+                        Color("background-color"),
+                        Color("background-color").opacity(0.9),
+                        Color.black
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
         }
     }
 }

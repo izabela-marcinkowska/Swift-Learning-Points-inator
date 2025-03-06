@@ -50,39 +50,83 @@ struct SchoolGridItem: View {
         return "\(currentMana)/\(nextThreshold)"
     }
     
+    // Calculate how much more mana is needed for next level
+    private var manaNeededForNextLevel: Int {
+        guard let nextLevel = nextLevel,
+              let currentMana = schoolProgress?.totalMana else {
+            return 0
+        }
+        
+        return max(0, nextLevel.manaThreshold - currentMana)
+    }
+    
+    // Text to display about level progress
+    private var levelUpText: String {
+        guard let nextLevel = nextLevel else {
+            return "Maximum level achieved"
+        }
+        
+        return "For \(nextLevel.title), need \(manaNeededForNextLevel) more mana"
+    }
+    
     var body: some View {
-        VStack(alignment: .center, spacing: 16) {
-            Image(systemName: school.icon)
-                .font(.system(size: 32))
-                .foregroundColor(.blue)
-                .padding(.top, 8)
+        VStack(spacing: 8) {
             
-            VStack(spacing: 8) {
+            HStack(spacing: 6) {
+                Image(schoolProgress?.currentLevel.imageName ?? "apprentice")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 36, height: 36)
                 
-            Text(school.rawValue)
-                .font(.headline)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: .infinity)
+                Text(schoolProgress?.currentLevel.title ?? "apprentice")
+                    .font(.headline)
+                    .foregroundColor(Color("accent-color"))
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 5)
+                
+            }
+            .frame(height: 40)
             
-            Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
+            Image(school.imageName)
+                .resizable()
+                .scaledToFit()
+                .opacity(0.80)
+                .frame(width: 80, height: 80)
+            
+            Spacer(minLength: 4)
+            Text("of \(school.rawValue)")
                 .font(.subheadline)
                 .multilineTextAlignment(.center)
-                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+            
+            Spacer(minLength: 4)
+            
+            Text(levelUpText)
+                .font(.caption)
+                .foregroundColor(.secondary)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity)
-            }
-            .padding(.horizontal, 8)
             
-            Text(manaProgress)
-                .font(.caption)
-                .padding(.bottom, 8)
         }
         .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color.gray.opacity(0.1))
+        .frame(maxWidth: .infinity, maxHeight: 270)
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color("card-background"),
+                    Color("card-background").opacity(0.9),
+                    Color.black
+                ]),
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            )
+        )
         .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.purple.opacity(0.15), lineWidth: 1)
+        )
+        .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
     }
 }
 

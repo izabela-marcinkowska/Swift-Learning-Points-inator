@@ -14,9 +14,18 @@ struct DetailSchoolView: View {
     
     @Query private var users: [User]
     @Environment(\.modelContext) private var modelContext
+    @State private var showingTasks = false
     
     private var user: User? {
         users.first
+    }
+    
+    
+    
+    private var manaProgress: String {
+        let currentMana = schoolProgress?.totalMana ?? 0
+        let nextThreshold = nextLevel?.manaThreshold ?? currentMana
+        return "\(currentMana)/\(nextThreshold)"
     }
     
     /// Progress tracking for the current school
@@ -72,44 +81,36 @@ struct DetailSchoolView: View {
     }
     
     var body: some View {
-        List {
-            Section {
-                VStack(alignment: .center, spacing: 20) {
-                    Image(systemName: school.icon)
-                        .font(.system(size: 60))
-                        .foregroundColor(.blue)
-                    
-                    Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
-                    
-                    Text("Mana: \(schoolProgress?.totalMana ?? 0)")
-                    
-                    ProgressView(value: progressToNextLevel)
-                        .padding(.horizontal)
-                    
-                    Text(school.description)
-                        .multilineTextAlignment(.leading)
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.vertical)
-            }
+        VStack {
+            SchoolLevelHeaderView(school: school)
+                .padding()
+            Spacer()
             
-            if !uncompletedTasks.isEmpty {
-                Section("Uncompleted Tasks") {
-                    ForEach(uncompletedTasks) { task in
-                        TaskRowItem(task: task, showIcon: true, showSchoolName: true)
-                    }
-                }
+            VStack (alignment: .leading){
+                LevelProgressionBar(
+                    currentLevel: schoolProgress?.currentLevel ?? .apprentice,
+                    manaProgress: manaProgress,
+                    totalMana: schoolProgress?.totalMana ?? 0
+                )
             }
-            
-            if !completedTasks.isEmpty {
-                Section("Completed Tasks") {
-                    ForEach(completedTasks) { task in
-                        TaskRowItem(task: task, showIcon: true, showSchoolName: true)
-                    }
-                }
+            Spacer()
+            NavigationLink(destination: TaskCategoryDetailView(school: school, tasks: tasks.filter { $0.school == school })) {
+                Text("Show tasks")
             }
+            .buttonStyle(MagicalButtonStyle())
+            .padding()
         }
-        .navigationTitle(school.rawValue)
+        .background(
+            LinearGradient(
+                gradient: Gradient(colors: [
+                    Color("background-color"),
+                    Color("background-color").opacity(0.9),
+                    Color.black
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        )
     }
 }
 #Preview {
