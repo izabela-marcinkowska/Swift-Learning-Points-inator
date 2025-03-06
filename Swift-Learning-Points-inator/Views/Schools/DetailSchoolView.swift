@@ -14,10 +14,13 @@ struct DetailSchoolView: View {
     
     @Query private var users: [User]
     @Environment(\.modelContext) private var modelContext
+    @State private var showingTasks = false
     
     private var user: User? {
         users.first
     }
+    
+    
     
     private var manaProgress: String {
         let currentMana = schoolProgress?.totalMana ?? 0
@@ -81,11 +84,7 @@ struct DetailSchoolView: View {
         VStack {
             SchoolLevelHeaderView(school: school)
                 .padding()
-            
-            Text("Mana: \(schoolProgress?.totalMana ?? 0)")
-            
-            ProgressView(value: progressToNextLevel)
-                .padding(.horizontal)
+            Spacer()
             
             VStack (alignment: .leading){
                 LevelProgressionBar(
@@ -94,26 +93,12 @@ struct DetailSchoolView: View {
                     totalMana: schoolProgress?.totalMana ?? 0
                 )
             }
-            
-            //            List {
-            //                Section {
-            //                    if !uncompletedTasks.isEmpty {
-            //                        Section("Uncompleted Tasks") {
-            //                            ForEach(uncompletedTasks) { task in
-            //                                TaskRowItem(task: task, showIcon: true, showSchoolName: true)
-            //                            }
-            //                        }
-            //                    }
-            //
-            //                    if !completedTasks.isEmpty {
-            //                        Section("Completed Tasks") {
-            //                            ForEach(completedTasks) { task in
-            //                                TaskRowItem(task: task, showIcon: true, showSchoolName: true)
-            //                            }
-            //                        }
-            //                    }
-            //                }
-            //            }
+            Spacer()
+            NavigationLink(destination: TaskCategoryDetailView(school: school, tasks: tasks.filter { $0.school == school })) {
+                Text("Show tasks")
+            }
+            .buttonStyle(MagicalButtonStyle())
+            .padding()
         }
         .background(
             LinearGradient(
