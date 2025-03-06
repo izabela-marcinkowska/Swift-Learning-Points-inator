@@ -17,7 +17,7 @@ struct LevelIndicator: View {
             Image(level.imageName)
                 .resizable()
                 .scaledToFit()
-                .frame(width: 30, height: 30)
+                .frame(width: 50, height: 50)
                 .grayscale(isAchieved ? 0.0 : 0.9)
                 .opacity(isAchieved ? 1 : 0.7)
             
@@ -44,6 +44,8 @@ struct LevelProgressionBar: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
+            Text("Current level:")
+                .font(.headline)
             ForEach(SchoolOfMagic.AchievementLevel.allCases, id: \.self) { level in
                 
                 let progressToShow = level == currentLevel ? manaProgress : nil
@@ -55,6 +57,15 @@ struct LevelProgressionBar: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding()
+        .background(Color("card-background"))
+        .cornerRadius(12)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.purple.opacity(0.15), lineWidth: 1)
+        )
+        .shadow(color: Color("shadow-card").opacity(0.3), radius: 5, x: 0, y: 2)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 10)
     }
 }

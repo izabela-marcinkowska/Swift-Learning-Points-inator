@@ -87,12 +87,14 @@ struct DetailSchoolView: View {
             ProgressView(value: progressToNextLevel)
                 .padding(.horizontal)
             
-            Spacer()
-            
-            LevelProgressionBar(
-                currentLevel: schoolProgress?.currentLevel ?? .apprentice,
-                manaProgress: manaProgress
-            )
+            VStack (alignment: .leading){
+               
+                
+                LevelProgressionBar(
+                    currentLevel: schoolProgress?.currentLevel ?? .apprentice,
+                    manaProgress: manaProgress
+                )
+            }
             
             //            List {
             //                Section {
