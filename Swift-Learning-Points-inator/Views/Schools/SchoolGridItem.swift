@@ -51,61 +51,65 @@ struct SchoolGridItem: View {
     }
     
     // Calculate how much more mana is needed for next level
-        private var manaNeededForNextLevel: Int {
-            guard let nextLevel = nextLevel,
-                  let currentMana = schoolProgress?.totalMana else {
-                return 0
-            }
-            
-            return max(0, nextLevel.manaThreshold - currentMana)
+    private var manaNeededForNextLevel: Int {
+        guard let nextLevel = nextLevel,
+              let currentMana = schoolProgress?.totalMana else {
+            return 0
         }
         
-        // Text to display about level progress
-        private var levelUpText: String {
-            guard let nextLevel = nextLevel else {
-                return "Maximum level achieved"
-            }
-            
-            return "For \(nextLevel.title), need \(manaNeededForNextLevel) more mana"
+        return max(0, nextLevel.manaThreshold - currentMana)
+    }
+    
+    // Text to display about level progress
+    private var levelUpText: String {
+        guard let nextLevel = nextLevel else {
+            return "Maximum level achieved"
         }
+        
+        return "For \(nextLevel.title), need \(manaNeededForNextLevel) more mana"
+    }
     
     var body: some View {
-        ZStack(alignment: .trailing) {
+        VStack(spacing: 8) {
             
-            
-            VStack(alignment: .leading, spacing: 8) {
-                HStack(spacing: 6) {
-                    Image(schoolProgress?.currentLevel.imageName ?? "apprentice")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 32, height: 32)
-                    
-                    Text(school.titleForLevel(schoolProgress?.currentLevel ?? .apprentice))
-                        .font(.headline)
-                        .lineLimit(2)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+            HStack(spacing: 6) {
+                Image(schoolProgress?.currentLevel.imageName ?? "apprentice")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 36, height: 36)
                 
-                Text(levelUpText)
-                    .font(.caption)
-                    .foregroundColor(.secondary)
-                    .lineLimit(2)
-                    .fixedSize(horizontal: false, vertical: true)
+                Text(schoolProgress?.currentLevel.title ?? "apprentice")
+                    .font(.headline)
+                    .foregroundColor(Color("accent-color"))
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 5)
                 
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(height: 40)
             
             Image(school.imageName)
                 .resizable()
                 .scaledToFit()
                 .opacity(0.80)
                 .frame(width: 80, height: 80)
-                .offset(x: 14)
             
+            Spacer(minLength: 4)
+            Text("of \(school.rawValue)")
+                .font(.subheadline)
+                .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
+            
+            Spacer(minLength: 4)
+            
+            Text(levelUpText)
+                .font(.caption)
+                .foregroundColor(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity)
             
         }
         .padding()
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: 270)
         .background(
             LinearGradient(
                 gradient: Gradient(colors: [
