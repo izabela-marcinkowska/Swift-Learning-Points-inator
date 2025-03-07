@@ -34,6 +34,7 @@ struct TaskRowItem: View {
                                     .scaledToFit()
                                     .frame(width: 32, height: 32)
                             }
+                            
                             if showSchoolName {
                                 
                                 Text(task.school.rawValue)

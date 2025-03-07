@@ -33,7 +33,3 @@ struct SpellCategoryGridItem: View {
         .withCardStyle()
     }
 }
-
-#Preview {
-    SpellCategoryGridItem(category: .steadyPractice)
-}

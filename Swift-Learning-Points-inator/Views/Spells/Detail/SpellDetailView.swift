@@ -20,9 +20,11 @@ struct SpellDetailView: View {
     var body: some View {
         VStack(spacing: 20) {
             SpellDetailViewHeader(spell: spell)
+            
             ScrollView(.vertical, showsIndicators: false) {
                 SpellBonusesView(spell: spell)
             }
+            
             MagicalButton(
                 text: "Invest Mana",
                 isEnabled: true,
@@ -30,7 +32,6 @@ struct SpellDetailView: View {
                     showingAddManaSheet.toggle()
                 }
             )
-            
         }
         .navigationBarTitleDisplayMode(.inline)
         .padding(8)

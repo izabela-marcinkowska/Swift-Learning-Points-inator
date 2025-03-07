@@ -32,7 +32,6 @@ struct TaskDifficultyGridItem: View {
                 .padding()
                 .frame(width: UIScreen.main.bounds.width * 0.55, alignment: .leading)
                 
-
                 Image(difficulty.icon)
                     .resizable()
                     .scaledToFit()

@@ -39,17 +39,17 @@ struct AddManaSheet: View {
     
     private func investManaAction() {
         if let user = user {
-                if spell.investMana(amount: Int(manaToInvest), from: user) {
-                    try? modelContext.save()
-                    dismiss()
-                } else {
-                    print("Failed to invest mana")
-                }
+            if spell.investMana(amount: Int(manaToInvest), from: user) {
+                try? modelContext.save()
+                dismiss()
+            } else {
+                print("Failed to invest mana")
             }
+        }
     }
     
     var body: some View {
-        NavigationStack { 
+        NavigationStack {
             VStack(spacing: 12) {
                 Text("Invest mana in \(spell.name)")
                     .font(.title)
@@ -66,35 +66,35 @@ struct AddManaSheet: View {
                     Text("\(maxInvestment)")
                 }
                 
-
-                    VStack(alignment: .leading, spacing: 8) {
-                        if willLevelUp {
-                            HStack {
-                                Image(resultingLevel.imageName)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 24, height: 24)
-                                
-                                Text("You will reach \(resultingLevel.title)!")
-                                    .foregroundStyle(Color("accent-color"))
-                                    .font(.subheadline)
-                            }
-                        } else if remainingManaForNextLevel > 0 {
-                            HStack {
-                                Image("diamond")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 24, height: 24)
-                                
-                                Text("Need \(remainingManaForNextLevel) more mana for next level")
-                                    .font(.subheadline)
-                                    .foregroundStyle(.secondary)
-                            }
+                
+                VStack(alignment: .leading, spacing: 8) {
+                    if willLevelUp {
+                        HStack {
+                            Image(resultingLevel.imageName)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                            
+                            Text("You will reach \(resultingLevel.title)!")
+                                .foregroundStyle(Color("accent-color"))
+                                .font(.subheadline)
+                        }
+                    } else if remainingManaForNextLevel > 0 {
+                        HStack {
+                            Image("diamond")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                            
+                            Text("Need \(remainingManaForNextLevel) more mana for next level")
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
                         }
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .cornerRadius(8)
+                }
+                .padding()
+                .frame(maxWidth: .infinity, alignment: .center)
+                .cornerRadius(8)
                 
                 MagicalButton(
                     text: "Invest \(Int(manaToInvest)) mana",
@@ -120,9 +120,4 @@ struct AddManaSheet: View {
         }
         .presentationDetents([.height(350)])
     }
-}
-
-#Preview {
-    AddManaSheet(spell: Spell(name: "Example name", spellDescription: "This will be an example description", icon: "star.fill"))
-        .modelContainer(for: Spell.self, inMemory: true)
 }

@@ -42,6 +42,7 @@ struct DetailSchoolView: View {
         VStack {
             SchoolLevelHeaderView(school: school)
                 .padding()
+            
             Spacer()
             
             VStack (alignment: .leading){
@@ -51,7 +52,9 @@ struct DetailSchoolView: View {
                     totalMana: schoolProgress?.totalMana ?? 0
                 )
             }
+            
             Spacer()
+            
             NavigationLink(
                 destination: TaskCategoryDetailView(
                     school: school,
@@ -68,10 +71,5 @@ struct DetailSchoolView: View {
             .padding()
         }
         .withGradientBackground()
-    }
-}
-#Preview {
-    NavigationStack {
-        DetailSchoolView(school: .everydayEndeavors)
     }
 }

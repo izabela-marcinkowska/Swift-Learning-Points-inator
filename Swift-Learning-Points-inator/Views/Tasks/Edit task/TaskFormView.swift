@@ -172,22 +172,3 @@ struct TaskFormView: View {
         }
     }
 }
-
-struct TaskUpdateButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.headline)
-            .padding()
-            .frame(maxWidth: .infinity)
-            .frame(height: 50)
-            .background(
-                LinearGradient(gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]), startPoint: .leading, endPoint: .trailing)
-            )
-            .foregroundColor(.white)
-            .cornerRadius(12)
-            .shadow(color: Color("button-color").opacity(0.4), radius: 4, x: 0, y: 2)
-            .scaleEffect(configuration.isPressed ? 0.97 : 1.0)
-            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
-    }
-}
-

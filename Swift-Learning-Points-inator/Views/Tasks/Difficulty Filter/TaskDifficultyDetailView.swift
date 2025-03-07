@@ -13,23 +13,11 @@ struct TaskDifficultyDetailView: View {
     
     var body: some View {
         VStack (spacing: 0) {
-            
             DifficultyHeaderView(difficulty: difficulty)
             
             TaskListContainer(tasks: tasks, showIcon: true, showSchoolName: true)
         }
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color("background-color"),
-                    Color("background-color").opacity(0.9),
-                    Color.black
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .withGradientBackground()
     }
-    
 }
 

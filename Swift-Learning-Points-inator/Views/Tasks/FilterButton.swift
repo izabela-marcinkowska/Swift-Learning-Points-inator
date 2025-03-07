@@ -25,22 +25,3 @@ struct FilterButton: View {
         .cornerRadius(8)
     }
 }
-
-#Preview {
-    HStack {
-        FilterButton(
-            title: "Selected",
-            icon: "star.fill",
-            isSelected: true,
-            action: {}
-        )
-        
-        FilterButton(
-            title: "Not Selected",
-            icon: "star",
-            isSelected: false,
-            action: {}
-        )
-    }
-    .padding()
-}

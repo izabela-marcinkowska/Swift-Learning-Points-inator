@@ -68,7 +68,6 @@ struct SchoolGridItem: View {
                 .fixedSize(horizontal: false, vertical: true)
             
             Spacer(minLength: 4)
-            
             Text(levelUpText)
                 .font(.caption)
                 .foregroundColor(.secondary)
@@ -80,8 +79,4 @@ struct SchoolGridItem: View {
         .frame(maxWidth: .infinity, maxHeight: 270)
         .withCardStyle()
     }
-}
-
-#Preview {
-    SchoolGridItem(school: .everydayEndeavors)
 }

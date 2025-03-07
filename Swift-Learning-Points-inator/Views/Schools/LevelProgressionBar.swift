@@ -12,6 +12,16 @@ struct LevelProgressionBar: View {
     let manaProgress: String
     let totalMana: Int
     
+    /// Provides a human-readable status message for a given achievement level.
+    ///
+    /// This method determines the appropriate status text based on the relationship
+    /// between the specified level and the user's current achievement level:
+    /// - For past levels: Shows an "Achieved!" message
+    /// - For the current level: Shows progress toward the next level
+    /// - For future levels: Shows mana required to unlock
+    ///
+    /// - Parameter level: The achievement level to generate status text for
+    /// - Returns: A formatted status message appropriate for the level's state
     private func statusTextFor(level: SchoolOfMagic.AchievementLevel) -> String {
         if level.rawValue < currentLevel.rawValue {
             return "Achieved!"

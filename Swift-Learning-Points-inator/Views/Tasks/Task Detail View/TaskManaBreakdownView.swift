@@ -17,7 +17,6 @@ struct TaskManaBreakdownView: View {
             let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
             
             VStack(alignment: .leading, spacing: 8) {
-                // Base mana
                 HStack (spacing: 2) {
                     Image("diamond")
                         .resizable()
@@ -28,7 +27,6 @@ struct TaskManaBreakdownView: View {
                         .font(.subheadline)
                 }
                 
-                // Bonuses (if any)
                 if !breakdown.bonuses.isEmpty {
                     ForEach(breakdown.bonuses, id: \.spell.id) { bonus in
                         HStack {
@@ -47,7 +45,6 @@ struct TaskManaBreakdownView: View {
                     Divider()
                         .padding(.vertical, 4)
                     
-                    // Total with highlight
                     HStack {
                         Spacer()
                         Text("Total:")

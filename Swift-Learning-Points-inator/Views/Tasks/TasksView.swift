@@ -83,29 +83,3 @@ struct TasksView: View {
         }
     }
 }
-
-
-
-#Preview {
-    let config = ModelConfiguration(isStoredInMemoryOnly: true)
-    let container = try! ModelContainer(
-        for: Task.self,
-        User.self,
-        configurations: config
-    )
-    
-    let modelContext = container.mainContext
-    let sampleTasks = [
-        Task(name: "Learn SwiftUI Animations", mana: 60),
-        Task(name: "Master SwiftData Basics", mana: 80),
-        Task(name: "Build Custom Views", mana: 45),
-        Task(name: "Implement Error Handling", mana: 70)
-    ]
-    
-    sampleTasks.forEach { task in
-        modelContext.insert(task)
-    }
-    
-    return TasksView()
-        .modelContainer(container)
-}

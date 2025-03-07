@@ -12,15 +12,12 @@ struct ManaIndicator: View {
     
     var body: some View {
             ZStack {
-                // Background circle with gradient
                 Image("diamond")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 80, height: 80)
-                
-                // Content
+
                 VStack(spacing: 2) {
-                    
                     Text("\(amount)")
                         .font(.system(size: 22, weight: .bold, design: .rounded))
                         .foregroundColor(Color("mana-number-color"))
