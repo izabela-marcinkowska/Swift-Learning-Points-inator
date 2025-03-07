@@ -23,14 +23,6 @@ struct TaskInfoCardWithoutTitle<Content: View>: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(
-            RoundedRectangle(cornerRadius: 10)
-                .fill(task.isCompleted ? Color("card-background") : Color("card-background").opacity(0.3))
-        )
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(Color.purple.opacity(0.1), lineWidth: 1)
-        )
-        .shadow(color: task.isCompleted ? Color("shadow-card").opacity(0.3) : Color("shadow-card").opacity(0) , radius: 5, x: 0, y: 2)
+        .withCardStyle(useGradient: false)
     }
 }

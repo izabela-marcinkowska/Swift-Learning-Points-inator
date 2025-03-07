@@ -20,41 +20,25 @@ struct SpellDetailView: View {
     var body: some View {
         VStack(spacing: 20) {
             SpellDetailViewHeader(spell: spell)
+            
             ScrollView(.vertical, showsIndicators: false) {
                 SpellBonusesView(spell: spell)
             }
-            InvestManaButton(text: "Invest Mana", action: {
-                showingAddManaSheet.toggle()
-            }, isEnabled: true)
             
+            MagicalButton(
+                text: "Invest Mana",
+                isEnabled: true,
+                action: {
+                    showingAddManaSheet.toggle()
+                }
+            )
         }
         .navigationBarTitleDisplayMode(.inline)
         .padding(8)
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color("background-color"),
-                    Color("background-color").opacity(0.9),
-                    Color.black
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .withGradientBackground()
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
-                HStack (spacing: 1) {
-                    Image("diamond")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 46, height: 46)
-                    Text("\(user?.mana ?? 0)")
-                        .font(.system(size: 22, weight: .black, design: .rounded))
-                        .monospacedDigit()
-                        .foregroundColor(.purple)
-                        .shadow(color: .pink.opacity(0.3), radius: 1, x: 1, y: 1)
-                        .frame(maxHeight: .infinity, alignment: .center)
-                }
+                ManaDisplayView()
             }
         }
         .sheet(isPresented: $showingAddManaSheet) {

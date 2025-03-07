@@ -74,6 +74,25 @@ extension SpellLevel {
     }
 }
 
+extension SpellLevel {
+    /// Calculates the amount of mana needed to reach this level from the current mana amount.
+    /// Returns zero if the level has already been achieved.
+    ///
+    /// - Parameter currentMana: Current amount of mana invested
+    /// - Returns: Amount of additional mana needed to reach this level
+    func manaNeededFrom(currentMana: Int) -> Int {
+        return max(0, self.manaCost - currentMana)
+    }
+    
+    /// Determines if this level would be achieved with the given amount of mana.
+    ///
+    /// - Parameter mana: Amount of mana to check against this level's threshold
+    /// - Returns: True if the mana amount is sufficient to achieve this level
+    func isAchieved(withMana mana: Int) -> Bool {
+        return mana >= self.manaCost
+    }
+}
+
 enum SpellCategory: String, CaseIterable {
     case steadyPractice = "Steady Practice"
     case focusedClarity = "Focused Clarity"
@@ -236,5 +255,124 @@ extension Spell {
         let bonus = currentSpellLevel.bonusDescription
         let schools = affectedSchools.map { $0.rawValue }.joined(separator: ", ")
         return bonus.isEmpty ? "No bonus" : "\(bonus) for \(schools)"
+    }
+}
+
+extension Spell {
+    /// Returns the next level for this spell if it exists.
+    /// Returns nil if the spell is already at the maximum level (Master).
+    ///
+    /// For example, if current level is 'novice' (1), returns 'adept' (2).
+    /// If current level is 'master' (4), returns nil.
+    var nextSpellLevel: SpellLevel? {
+        guard currentLevel < SpellLevel.master.rawValue else {
+            return nil
+        }
+        return SpellLevel(rawValue: currentLevel + 1)
+    }
+    
+    /// Calculates the normalized progress (0-1) towards the next level.
+    /// This value is used for progress bar visualization.
+    ///
+    /// The calculation works as follows:
+    /// 1. Returns 1.0 if spell is already at master level (maximum)
+    /// 2. Determines current and next level mana thresholds
+    /// 3. Calculates progress by comparing current mana against the thresholds
+    /// 4. Normalizes the result to be between 0 and 1
+    ///
+    /// For example:
+    /// - If current level requires 200 mana and next level 500 mana:
+    /// - With 350 mana invested, progress would be 0.5 (halfway between levels)
+    var progressToNextLevel: Double {
+        guard let nextLevel = nextSpellLevel else {
+            return 1.0 // Already at max level
+        }
+        
+        let currentLevelObj = currentSpellLevel
+        let currentLevelMana = currentLevelObj.manaCost
+        let nextLevelMana = nextLevel.manaCost
+        
+        let manaForNextLevel = nextLevelMana - currentLevelMana
+        let currentProgress = investedMana - currentLevelMana
+        
+        return manaForNextLevel > 0 ?
+        min(max(Double(currentProgress) / Double(manaForNextLevel), 0), 1) : 0
+    }
+    
+    /// Calculates the amount of mana needed to reach the next level.
+    /// Returns zero if the spell is already at the maximum level.
+    var manaNeededForNextLevel: Int {
+        guard let nextLevel = nextSpellLevel else {
+            return 0 // Already at max level
+        }
+        
+        return max(0, nextLevel.manaCost - investedMana)
+    }
+    
+    /// Returns a formatted string showing progress towards the next level threshold.
+    /// Format: "currentMana/nextLevelThreshold"
+    ///
+    /// Examples:
+    /// - "150/500" (150 mana invested, need 500 for next level)
+    /// - "4200" (at max level, showing current mana)
+    var manaProgressText: String {
+        if let nextLevel = nextSpellLevel {
+            return "\(investedMana)/\(nextLevel.manaCost)"
+        } else {
+            return "\(investedMana)" // Already at max level
+        }
+    }
+    
+    /// Predicts the spell level that would be achieved after investing additional mana.
+    ///
+    /// - Parameter additionalMana: The amount of mana to be added hypothetically
+    /// - Returns: The spell level that would be achieved with the combined mana
+    func predictedLevel(withAdditionalMana additionalMana: Int) -> SpellLevel {
+        return SpellLevel.level(for: investedMana + additionalMana)
+    }
+    
+    /// Determines if investing additional mana would cause a level up.
+    ///
+    /// - Parameter additionalMana: The amount of mana to be added hypothetically
+    /// - Returns: True if the additional mana would result in a level increase
+    func wouldLevelUp(withAdditionalMana additionalMana: Int) -> Bool {
+        let newLevel = predictedLevel(withAdditionalMana: additionalMana)
+        return newLevel.rawValue > currentSpellLevel.rawValue
+    }
+    
+    /// Calculates how much more mana would be needed to reach the next level after a hypothetical investment.
+    ///
+    /// - Parameter additionalMana: The amount of mana to be added hypothetically
+    /// - Returns: The remaining mana needed after the investment to reach the next level
+    func remainingManaForNextLevel(afterInvesting additionalMana: Int) -> Int {
+        let predictedLvl = predictedLevel(withAdditionalMana: additionalMana)
+        guard predictedLvl != .master else { return 0 }
+        
+        let nextLevel = SpellLevel(rawValue: predictedLvl.rawValue + 1) ?? .master
+        return nextLevel.manaCost - (investedMana + additionalMana)
+    }
+    
+    /// Generates appropriate descriptive text about the status of a specific spell level.
+    /// Text varies based on whether the level is already achieved, current, or future.
+    ///
+    /// - Parameter level: The spell level to generate status text for
+    /// - Returns: Formatted string describing the level's status relative to current progress
+    func getLevelStatusText(for level: SpellLevel) -> String {
+        if level.rawValue < currentLevel {
+            return "Level unlocked"
+        } else if level.rawValue == currentLevel {
+            if level == .master {
+                return "Maximum level achieved"
+            } else if let nextLevel = nextSpellLevel {
+                let manaNeeded = manaNeededForNextLevel
+                return "For \(nextLevel.title), need \(manaNeeded) more mana"
+            }
+        } else {
+            // For future levels
+            let manaNeeded = level.manaNeededFrom(currentMana: investedMana)
+            return "Need \(manaNeeded) more mana to unlock"
+        }
+        
+        return ""
     }
 }

@@ -195,3 +195,22 @@ enum SchoolOfMagic: String, CaseIterable {
     }
     
 }
+
+extension SchoolOfMagic.AchievementLevel {
+    /// Calculates the amount of mana needed to reach this achievement level from the current mana amount.
+    /// Returns zero if the level has already been achieved.
+    ///
+    /// - Parameter currentMana: Current amount of mana earned for this school
+    /// - Returns: Amount of additional mana needed to reach this achievement level
+    func manaNeededFrom(currentMana: Int) -> Int {
+        return max(0, self.manaThreshold - currentMana)
+    }
+    
+    /// Determines if this achievement level would be reached with the given amount of mana.
+    ///
+    /// - Parameter mana: Amount of mana to check against this level's threshold
+    /// - Returns: True if the mana amount is sufficient to reach this achievement level
+    func isAchieved(withMana mana: Int) -> Bool {
+        return mana >= self.manaThreshold
+    }
+}

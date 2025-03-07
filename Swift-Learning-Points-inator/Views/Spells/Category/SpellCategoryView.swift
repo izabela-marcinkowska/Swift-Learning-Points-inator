@@ -20,10 +20,8 @@ struct SpellCategoryView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 24) {
-                // Category header
                 CategoryHeaderView(category: category)
                 
-                // Spells list
                 VStack(spacing: 16) {
                     ForEach(spells) { spell in
                         NavigationLink {
@@ -37,23 +35,7 @@ struct SpellCategoryView: View {
                 .padding(.horizontal)
             }
         }
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color("background-color"),
-                    Color("background-color").opacity(0.9),
-                    Color.black
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .withGradientBackground()
     }
 }
 
-#Preview {
-    NavigationStack {
-        SpellCategoryView(category: .steadyPractice)
-    }
-    .modelContainer(for: [Spell.self, User.self], inMemory: true)
-}

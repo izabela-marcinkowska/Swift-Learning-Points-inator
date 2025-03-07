@@ -28,19 +28,15 @@ struct DetailTaskView: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            // Fixed header
             TaskDetailViewHeader(task: task)
                 .padding(.bottom, 4)
                 .padding(.horizontal)
-            
-            // Scrollable middle section (cards only)
+
             ScrollView {
                 VStack(spacing: 12) {
                     TaskInfoCardWithoutTitle(task: task) {
                         TaskCompletionStatusView(task: task, dateFormatter: dateFormatter)
                     }
-                    
-                    
                     
                     TaskInfoCard(title: "Mana Rewards") {
                         TaskManaBreakdownView(task: task, user: user, spells: spells)
@@ -48,7 +44,6 @@ struct DetailTaskView: View {
                     
                     TaskInfoCard(title: "Details") {
                         HStack {
-                            // School
                             HStack(spacing: 4) {
                                 Image(task.school.imageName)
                                     .resizable()
@@ -60,14 +55,15 @@ struct DetailTaskView: View {
                             
                             Spacer()
                             
-                            // Difficulty
                             HStack(spacing: 4) {
                                 Text("Difficulty:")
                                     .font(.caption)
+                        
                                 Image(task.difficulty.icon)
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 20, height: 20)
+                                
                                 Text(task.difficulty.rawValue)
                                     .font(.caption)
                                     .foregroundColor(task.difficulty.textColor)
@@ -79,6 +75,7 @@ struct DetailTaskView: View {
                                 Image(systemName: "arrow.triangle.2.circlepath")
                                     .foregroundColor(Color("accent-color"))
                                     .font(.subheadline)
+                                
                                 Text("Repeatable")
                                     .font(.subheadline)
                                     .foregroundColor(Color("accent-color"))
@@ -91,8 +88,6 @@ struct DetailTaskView: View {
             }
             
             Spacer()
-            
-            // Fixed button at the bottom
             Button {
                 if let user = user {
                     if task.isCompleted {
@@ -114,17 +109,7 @@ struct DetailTaskView: View {
         }
         .padding(.vertical)
         .frame(maxWidth: .infinity)
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color("background-color"),
-                    Color("background-color").opacity(0.9),
-                    Color.black
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .withGradientBackground()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Edit") {
@@ -137,24 +122,6 @@ struct DetailTaskView: View {
                 dismiss()
             })
         }
-    }
-    
-    private var completionButton: some View {
-        VStack {
-            Button(task.isCompleted ? "Unmark Task" : "Complete Task") {
-                if let user = user {
-                    if task.isCompleted {
-                        task.unmarkTask(for: user, spells: spells)
-                    } else {
-                        task.completeTaskWithBonus(for: user, spells: spells)
-                    }
-                    try? modelContext.save()
-                }
-            }
-            .buttonStyle(TaskCompletionButtonStyle(isCompleted: task.isCompleted))
-            .frame(maxWidth: .infinity, minHeight: 55)
-        }
-        .padding(.horizontal)
     }
 }
 

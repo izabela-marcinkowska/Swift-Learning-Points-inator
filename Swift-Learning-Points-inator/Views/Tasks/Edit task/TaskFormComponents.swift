@@ -13,6 +13,7 @@ struct SchoolPickerView: View {
     var body: some View {
         HStack {
             Spacer()
+            
             Image(selectedSchool.imageName)
                 .resizable()
                 .scaledToFit()
@@ -26,6 +27,7 @@ struct SchoolPickerView: View {
             }
             .labelsHidden()
             .pickerStyle(MenuPickerStyle())
+            
             Spacer()
         }
     }
@@ -38,6 +40,7 @@ struct DifficultyPickerView: View {
     var body: some View {
         HStack {
             Spacer()
+            
             Image(selectedDifficulty.icon)
                 .resizable()
                 .scaledToFit()
@@ -54,6 +57,7 @@ struct DifficultyPickerView: View {
             }
             .labelsHidden()
             .pickerStyle(MenuPickerStyle())
+            
             Spacer()
         }
     }

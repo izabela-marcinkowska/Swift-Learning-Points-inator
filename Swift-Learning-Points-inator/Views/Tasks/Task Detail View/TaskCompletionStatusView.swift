@@ -13,7 +13,6 @@ struct TaskCompletionStatusView: View {
     
     var body: some View {
         VStack (spacing: 12) {
-                
                 Text(task.isCompleted ? "Completed" : "Not Completed")
                 .foregroundColor(task.isCompleted ? Color("accent-color") : Color("progress-color").opacity(0.6))
 
@@ -26,10 +25,7 @@ struct TaskCompletionStatusView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
-                }
-                
-            
-            
+                } 
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 6)

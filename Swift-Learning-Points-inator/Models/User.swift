@@ -174,3 +174,44 @@ extension User {
     }
     
 }
+
+
+extension User {
+    /// Determines if adding mana would cause a level up for a specific school.
+    ///
+    /// - Parameters:
+    ///   - mana: The amount of mana to hypothetically add
+    ///   - school: The school of magic to check
+    /// - Returns: True if adding the mana would cause a level increase
+    func wouldLevelUp(withAdditionalMana mana: Int, for school: SchoolOfMagic) -> Bool {
+        guard let progress = schoolProgress.first(where: { $0.school == school }) else {
+            return false
+        }
+        
+        return progress.wouldLevelUp(withAdditionalMana: mana)
+    }
+    
+    /// Gets the current achievement level for a specific school of magic.
+    ///
+    /// - Parameter school: The school to get the level for
+    /// - Returns: The current achievement level, defaulting to Apprentice if no progress exists
+    func currentLevel(for school: SchoolOfMagic) -> SchoolOfMagic.AchievementLevel {
+        return schoolProgress.first(where: { $0.school == school })?.currentLevel ?? .apprentice
+    }
+    
+    /// Gets the current mana amount for a specific school of magic.
+    ///
+    /// - Parameter school: The school to get the mana for
+    /// - Returns: The total mana earned for this school, or 0 if no progress exists
+    func currentMana(for school: SchoolOfMagic) -> Int {
+        return schoolProgress.first(where: { $0.school == school })?.totalMana ?? 0
+    }
+    
+    /// Gets the SchoolProgress object for a specific school of magic.
+    ///
+    /// - Parameter school: The school to get progress for
+    /// - Returns: The SchoolProgress object, or nil if none exists
+    func getSchoolProgress(for school: SchoolOfMagic) -> SchoolProgress? {
+        return schoolProgress.first(where: { $0.school == school })
+    }
+}

@@ -17,16 +17,6 @@ struct TaskCategoryDetailView: View {
             
             TaskListContainer(tasks: tasks, showIcon: false, showSchoolName: false)
         }
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color("background-color"),
-                    Color("background-color").opacity(0.9),
-                    Color.black
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .withGradientBackground()
     }
 }
