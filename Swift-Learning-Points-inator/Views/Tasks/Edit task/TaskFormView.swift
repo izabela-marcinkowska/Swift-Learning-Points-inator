@@ -35,6 +35,30 @@ struct TaskFormView: View {
         }
     }
     
+    private func updateTask() {
+        if let existingTask = task {
+            existingTask.name = title
+            existingTask.mana = mana
+            existingTask.school = selectedSchool
+            existingTask.isRepeatable = isRepeatable
+            existingTask.difficulty = selectedDifficulty
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error saving context: \(error)")
+            }
+        } else {
+            let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable, difficulty: selectedDifficulty)
+            modelContext.insert(newTask)
+            do {
+                try modelContext.save()
+            } catch {
+                print("Error saving context: \(error)")
+            }
+        }
+        dismiss()
+    }
+    
     private var isFormValid: Bool {
         !title.trimmingCharacters(in: .whitespaces).isEmpty && mana >= 0
     }
@@ -101,40 +125,16 @@ struct TaskFormView: View {
                         }
                         .listRowBackground(Color("card-background"))
                     }
-                    
                 }
                 .scrollContentBackground(.hidden)
                 .background(Color("background-color"))
                 
-                Button ("Update task") {
-                    if let existingTask = task {
-                        existingTask.name = title
-                        existingTask.mana = mana
-                        existingTask.school = selectedSchool
-                        existingTask.isRepeatable = isRepeatable
-                        existingTask.difficulty = selectedDifficulty
-                        do {
-                            try modelContext.save()
-                        } catch {
-                            print("Error saving context: \(error)")
-                        }
-                    } else {
-                        let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable)
-                        modelContext.insert(newTask)
-                        do {
-                            try modelContext.save()
-                        } catch {
-                            print("Error saving context: \(error)")
-                        }
-                    }
-                    dismiss()
-                }
-                .buttonStyle(TaskUpdateButtonStyle())
-                .frame(maxWidth: .infinity, minHeight: 55)
-                .disabled(!isFormValid)
+                MagicalButton(
+                    text: "Update task",
+                    isEnabled: isFormValid,
+                    action: updateTask
+                )
                 .padding(.horizontal)
-                
-                
             }
             .background(Color("background-color"))
             .onAppear {
