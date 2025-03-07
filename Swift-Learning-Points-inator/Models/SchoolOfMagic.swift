@@ -195,3 +195,15 @@ enum SchoolOfMagic: String, CaseIterable {
     }
     
 }
+
+extension SchoolOfMagic.AchievementLevel {
+    /// Calculates mana needed to reach this level from the given current mana
+    func manaNeededFrom(currentMana: Int) -> Int {
+        return max(0, self.manaThreshold - currentMana)
+    }
+    
+    /// Determines if this level would be achieved with the given mana
+    func isAchieved(withMana mana: Int) -> Bool {
+        return mana >= self.manaThreshold
+    }
+}

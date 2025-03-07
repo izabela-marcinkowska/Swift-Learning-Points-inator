@@ -18,56 +18,24 @@ struct SchoolGridItem: View {
     }
     
     private var schoolProgress: SchoolProgress? {
-        user?.schoolProgress.first { $0.school == school}
-    }
+            user?.getSchoolProgress(for: school)
+        }
     
-    /// Determines the next achievement level for this school if available.
-    /// Returns nil if:
-    /// - No current level exists
-    /// - User is already at the maximum level (Grand Sorcerer)
-    ///
-    /// For example, if current level is 'apprentice' (0), returns 'mage' (1).
-    /// If current level is 'grandSorcerer' (3), returns nil.
     private var nextLevel: SchoolOfMagic.AchievementLevel? {
-        guard let currentLevel = schoolProgress?.currentLevel,
-              currentLevel.rawValue < SchoolOfMagic.AchievementLevel.allCases.count - 1 else {
-            return nil
+            schoolProgress?.nextLevel
         }
-        return SchoolOfMagic.AchievementLevel(rawValue: currentLevel.rawValue + 1)
-    }
     
-    /// Creates a string showing progress towards next level threshold.
-    /// Format: "currentMana/nextLevelThreshold"
-    ///
-    /// Examples:
-    /// - "150/300" (150 mana earned, need 300 for next level)
-    /// - "2600/2600" (at max level, showing current mana)
-    ///
-    /// If no progress exists, defaults to "0/0"
     private var manaProgress: String {
-        let currentMana = schoolProgress?.totalMana ?? 0
-        let nextThreshold = nextLevel?.manaThreshold ?? currentMana
-        return "\(currentMana)/\(nextThreshold)"
-    }
+            schoolProgress?.manaProgressText ?? "0/0"
+        }
     
-    // Calculate how much more mana is needed for next level
     private var manaNeededForNextLevel: Int {
-        guard let nextLevel = nextLevel,
-              let currentMana = schoolProgress?.totalMana else {
-            return 0
+            schoolProgress?.manaNeededForNextLevel ?? 0
         }
-        
-        return max(0, nextLevel.manaThreshold - currentMana)
-    }
     
-    // Text to display about level progress
     private var levelUpText: String {
-        guard let nextLevel = nextLevel else {
-            return "Maximum level achieved"
+            schoolProgress?.levelUpText ?? "Maximum level achieved"
         }
-        
-        return "For \(nextLevel.title), need \(manaNeededForNextLevel) more mana"
-    }
     
     var body: some View {
         VStack(spacing: 8) {

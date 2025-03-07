@@ -74,6 +74,18 @@ extension SpellLevel {
     }
 }
 
+extension SpellLevel {
+    /// Calculates mana needed to reach this level from the given current mana
+    func manaNeededFrom(currentMana: Int) -> Int {
+        return max(0, self.manaCost - currentMana)
+    }
+    
+    /// Determines if this level would be achieved with the given mana
+    func isAchieved(withMana mana: Int) -> Bool {
+        return mana >= self.manaCost
+    }
+}
+
 enum SpellCategory: String, CaseIterable {
     case steadyPractice = "Steady Practice"
     case focusedClarity = "Focused Clarity"
@@ -236,5 +248,90 @@ extension Spell {
         let bonus = currentSpellLevel.bonusDescription
         let schools = affectedSchools.map { $0.rawValue }.joined(separator: ", ")
         return bonus.isEmpty ? "No bonus" : "\(bonus) for \(schools)"
+    }
+}
+
+extension Spell {
+    /// Returns the next level for this spell if it exists
+    var nextSpellLevel: SpellLevel? {
+        guard currentLevel < SpellLevel.master.rawValue else {
+            return nil
+        }
+        return SpellLevel(rawValue: currentLevel + 1)
+    }
+    
+    /// Calculates the normalized progress (0-1) towards the next level
+    var progressToNextLevel: Double {
+        guard let nextLevel = nextSpellLevel else {
+            return 1.0 // Already at max level
+        }
+        
+        let currentLevelObj = currentSpellLevel
+        let currentLevelMana = currentLevelObj.manaCost
+        let nextLevelMana = nextLevel.manaCost
+        
+        let manaForNextLevel = nextLevelMana - currentLevelMana
+        let currentProgress = investedMana - currentLevelMana
+        
+        return manaForNextLevel > 0 ?
+            min(max(Double(currentProgress) / Double(manaForNextLevel), 0), 1) : 0
+    }
+    
+    /// Amount of mana needed to reach the next level
+    var manaNeededForNextLevel: Int {
+        guard let nextLevel = nextSpellLevel else {
+            return 0 // Already at max level
+        }
+        
+        return max(0, nextLevel.manaCost - investedMana)
+    }
+    
+    /// Returns appropriate text for displaying mana progress
+    var manaProgressText: String {
+        if let nextLevel = nextSpellLevel {
+            return "\(investedMana)/\(nextLevel.manaCost)"
+        } else {
+            return "\(investedMana)" // Already at max level
+        }
+    }
+    
+    /// Predicts the level that would be achieved with additional mana
+    func predictedLevel(withAdditionalMana additionalMana: Int) -> SpellLevel {
+        return SpellLevel.level(for: investedMana + additionalMana)
+    }
+    
+    /// Checks if investing additional mana would cause a level up
+    func wouldLevelUp(withAdditionalMana additionalMana: Int) -> Bool {
+        let newLevel = predictedLevel(withAdditionalMana: additionalMana)
+        return newLevel.rawValue > currentSpellLevel.rawValue
+    }
+    
+    /// Calculates remaining mana needed after a hypothetical investment
+    func remainingManaForNextLevel(afterInvesting additionalMana: Int) -> Int {
+        let predictedLvl = predictedLevel(withAdditionalMana: additionalMana)
+        guard predictedLvl != .master else { return 0 }
+        
+        let nextLevel = SpellLevel(rawValue: predictedLvl.rawValue + 1) ?? .master
+        return nextLevel.manaCost - (investedMana + additionalMana)
+    }
+    
+    /// Text to display about level progress for a specific level
+    func getLevelStatusText(for level: SpellLevel) -> String {
+        if level.rawValue < currentLevel {
+            return "Level unlocked"
+        } else if level.rawValue == currentLevel {
+            if level == .master {
+                return "Maximum level achieved"
+            } else if let nextLevel = nextSpellLevel {
+                let manaNeeded = manaNeededForNextLevel
+                return "For \(nextLevel.title), need \(manaNeeded) more mana"
+            }
+        } else {
+            // For future levels
+            let manaNeeded = level.manaNeededFrom(currentMana: investedMana)
+            return "Need \(manaNeeded) more mana to unlock"
+        }
+        
+        return ""
     }
 }

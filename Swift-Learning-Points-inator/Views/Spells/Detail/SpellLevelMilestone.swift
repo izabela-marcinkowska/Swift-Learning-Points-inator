@@ -14,18 +14,8 @@ struct SpellLevelMilestone: View {
     let progressValue: Double
     let spell: Spell
     
-    /// Calculates the amount of mana needed to unlock this spell level.
-    ///
-    /// The calculation determines how much more mana the user needs to invest
-    /// to reach the current level by comparing:
-    /// - The level's mana cost threshold
-    /// - The spell's current invested mana
-    ///
-    /// Returns:
-    /// - A positive value if more mana is needed to reach this level
-    /// - Zero if the level is already achieved
     private var manaNeededToUnlock: Int {
-        max(0, level.manaCost - spell.investedMana)
+        level.manaNeededFrom(currentMana: spell.investedMana)
     }
     
     /// Generates a user-friendly description of the bonus provided by this spell level.

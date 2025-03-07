@@ -11,28 +11,14 @@ struct SpellCardView: View {
     let spell: Spell
     
     private var progressToNextLevel: Double {
-        guard spell.currentLevel < SpellLevel.master.rawValue else {
-            return 1.0
-        }
-        
-        let nextLevel = SpellLevel(rawValue: spell.currentLevel + 1) ?? .novice
-        let currentLevel = SpellLevel(rawValue: spell.currentLevel) ?? .novice
-        
-        let currentLevelMana = currentLevel.manaCost
-        let nextLevelMana = nextLevel.manaCost
-        
-        let manaForNextLevel = nextLevelMana - currentLevelMana
-        let currentProgress = spell.investedMana - currentLevelMana
-        
-        return min(max(Double(currentProgress) / Double(manaForNextLevel), 0), 1)
+        spell.progressToNextLevel
     }
     
     private var nextLevelMana: Int {
-        if spell.currentLevel >= SpellLevel.master.rawValue {
-            return spell.investedMana
+        if let nextLevel = spell.nextSpellLevel {
+            return nextLevel.manaCost
         }
-        let nextLevel = SpellLevel(rawValue: spell.currentLevel + 1) ?? .novice
-        return nextLevel.manaCost
+        return spell.investedMana
     }
     
     var body: some View {

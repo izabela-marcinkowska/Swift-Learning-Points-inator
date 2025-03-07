@@ -26,18 +26,15 @@ struct AddManaSheet: View {
     }
     
     private var resultingLevel: SpellLevel {
-        SpellLevel.level(for: spell.investedMana + Int(manaToInvest))
+        spell.predictedLevel(withAdditionalMana: Int(manaToInvest))
     }
     
     private var willLevelUp: Bool {
-        resultingLevel.rawValue > spell.currentSpellLevel.rawValue
+        spell.wouldLevelUp(withAdditionalMana: Int(manaToInvest))
     }
     
     private var remainingManaForNextLevel: Int {
-        guard resultingLevel != .master else { return 0 }
-        
-        let nextLevel = SpellLevel(rawValue: resultingLevel.rawValue + 1) ?? .master
-        return nextLevel.manaCost - (spell.investedMana + Int(manaToInvest))
+        spell.remainingManaForNextLevel(afterInvesting: Int(manaToInvest))
     }
     
     private func investManaAction() {

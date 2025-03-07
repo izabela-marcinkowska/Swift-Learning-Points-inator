@@ -69,43 +69,41 @@ struct LevelProgressionBar: View {
     let totalMana: Int
     
     var body: some View {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("Current level:")
-                    .font(.headline)
-                ForEach(SchoolOfMagic.AchievementLevel.allCases, id: \.self) { level in
-                    let progressToShow = level == currentLevel ? manaProgress : nil
-                    let isCurrent = level == currentLevel
-                    
-                    // Determine status text based on level relationship to current level
-                    let statusText: String? = {
-                        if level.rawValue < currentLevel.rawValue {
-                            return "Achieved!"
-                        } else if level.rawValue == currentLevel.rawValue {
-                            // Use existing levelUpText logic for current level
-                            if level == .grandSorcerer {
-                                return "Maximum level achieved"
+        VStack(alignment: .leading, spacing: 4) {
+                    Text("Current level:")
+                        .font(.headline)
+                    ForEach(SchoolOfMagic.AchievementLevel.allCases, id: \.self) { level in
+                        let progressToShow = level == currentLevel ? manaProgress : nil
+                        let isCurrent = level == currentLevel
+                        
+                        // Determine status text using the model methods
+                        let statusText: String? = {
+                            if level.rawValue < currentLevel.rawValue {
+                                return "Achieved!"
+                            } else if level.rawValue == currentLevel.rawValue {
+                                if level == .grandSorcerer {
+                                    return "Maximum level achieved"
+                                } else {
+                                    let nextLevel = SchoolOfMagic.AchievementLevel(rawValue: level.rawValue + 1)!
+                                    let manaNeeded = nextLevel.manaNeededFrom(currentMana: totalMana)
+                                    return "For \(nextLevel.title), need \(manaNeeded) more mana"
+                                }
                             } else {
-                                let nextLevel = SchoolOfMagic.AchievementLevel(rawValue: level.rawValue + 1)!
-                                let manaNeeded = max(0, nextLevel.manaThreshold - totalMana)
-                                return "For \(nextLevel.title), need \(manaNeeded) more mana"
+                                let manaNeeded = level.manaNeededFrom(currentMana: totalMana)
+                                return "Need \(manaNeeded) more mana to unlock"
                             }
-                        } else {
-                            // For future levels
-                            let manaNeeded = max(0, level.manaThreshold - totalMana)
-                            return "Need \(manaNeeded) more mana to unlock"
-                        }
-                    }()
-                    
-                    LevelIndicator(
-                        level: level,
-                        isAchieved: level.rawValue <= currentLevel.rawValue,
-                        progressText: progressToShow,
-                        statusText: statusText,
-                        isCurrent: isCurrent
-                    )
-                    .frame(maxWidth: .infinity, alignment: .leading)
+                        }()
+                        
+                        LevelIndicator(
+                            level: level,
+                            isAchieved: level.isAchieved(withMana: totalMana),
+                            progressText: progressToShow,
+                            statusText: statusText,
+                            isCurrent: isCurrent
+                        )
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
-            }
             .padding()
             .withCardStyle(useGradient: false)
             .padding(.horizontal, 10)
