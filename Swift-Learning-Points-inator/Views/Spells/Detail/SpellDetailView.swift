@@ -23,9 +23,13 @@ struct SpellDetailView: View {
             ScrollView(.vertical, showsIndicators: false) {
                 SpellBonusesView(spell: spell)
             }
-            InvestManaButton(text: "Invest Mana", action: {
-                showingAddManaSheet.toggle()
-            }, isEnabled: true)
+            MagicalButton(
+                text: "Invest Mana",
+                isEnabled: true,
+                action: {
+                    showingAddManaSheet.toggle()
+                }
+            )
             
         }
         .navigationBarTitleDisplayMode(.inline)

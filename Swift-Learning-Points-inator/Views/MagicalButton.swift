@@ -1,16 +1,22 @@
 //
-//  ManaButtonStyle.swift
+//  MagicalButton.swift
 //  Swift-Learning-Points-inator
 //
-//  Created by Izabela Marcinkowska on 2025-03-03.
+//  Created by Izabela Marcinkowska on 2025-03-07.
 //
 
 import SwiftUI
 
-struct InvestManaButton: View {
+struct MagicalButton: View {
     let text: String
     let action: () -> Void
     var isEnabled: Bool = true
+    
+    init(text: String, isEnabled: Bool = true, action: @escaping () -> Void) {
+        self.text = text
+        self.isEnabled = isEnabled
+        self.action = action
+    }
     
     var body: some View {
         Button(action: action) {
@@ -19,13 +25,12 @@ struct InvestManaButton: View {
                 .padding(.vertical, 10)
                 .frame(maxWidth: .infinity)
         }
-        .buttonStyle(ManaButtonStyle(isEnabled: isEnabled))
+        .buttonStyle(MagicalButtonStyle(isEnabled: isEnabled))
         .disabled(!isEnabled)
-        .padding(.bottom, 8)
     }
 }
 
-struct ManaButtonStyle: ButtonStyle {
+struct MagicalButtonStyle: ButtonStyle {
     var isEnabled: Bool = true
     
     func makeBody(configuration: Configuration) -> some View {

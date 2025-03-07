@@ -99,7 +99,11 @@ struct AddManaSheet: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                     .cornerRadius(8)
                 
-                InvestManaButton(text: "Invest \(Int(manaToInvest)) mana", action: investManaAction, isEnabled: manaToInvest > 0)
+                MagicalButton(
+                    text: "Invest \(Int(manaToInvest)) mana",
+                    isEnabled: manaToInvest > 0,
+                    action: investManaAction
+                )
                 
             }
             .frame(maxHeight: .infinity)

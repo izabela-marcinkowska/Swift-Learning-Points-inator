@@ -72,14 +72,6 @@ struct DetailSchoolView: View {
         return Double(currentProgress) / Double(manaForNextLevel)
     }
     
-    private var uncompletedTasks: [Task] {
-        tasks.filter {$0.school == school && !$0.isCompleted}
-    }
-    
-    private var completedTasks: [Task] {
-        tasks.filter {$0.school == school && $0.isCompleted}
-    }
-    
     var body: some View {
         VStack {
             SchoolLevelHeaderView(school: school)
@@ -94,8 +86,17 @@ struct DetailSchoolView: View {
                 )
             }
             Spacer()
-            NavigationLink(destination: TaskCategoryDetailView(school: school, tasks: tasks.filter { $0.school == school })) {
+            NavigationLink(
+                destination: TaskCategoryDetailView(
+                    school: school,
+                    tasks: tasks.filter { $0.school == school }
+                )
+            ) {
                 Text("Show tasks")
+                    .font(.headline)
+                    .padding(.vertical, 10)
+                    .frame(maxWidth: .infinity)
+                    .padding()
             }
             .buttonStyle(MagicalButtonStyle())
             .padding()
