@@ -114,17 +114,7 @@ struct DetailTaskView: View {
         }
         .padding(.vertical)
         .frame(maxWidth: .infinity)
-        .background(
-            LinearGradient(
-                gradient: Gradient(colors: [
-                    Color("background-color"),
-                    Color("background-color").opacity(0.9),
-                    Color.black
-                ]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-        )
+        .withGradientBackground()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Edit") {
@@ -137,24 +127,6 @@ struct DetailTaskView: View {
                 dismiss()
             })
         }
-    }
-    
-    private var completionButton: some View {
-        VStack {
-            Button(task.isCompleted ? "Unmark Task" : "Complete Task") {
-                if let user = user {
-                    if task.isCompleted {
-                        task.unmarkTask(for: user, spells: spells)
-                    } else {
-                        task.completeTaskWithBonus(for: user, spells: spells)
-                    }
-                    try? modelContext.save()
-                }
-            }
-            .buttonStyle(TaskCompletionButtonStyle(isCompleted: task.isCompleted))
-            .frame(maxWidth: .infinity, minHeight: 55)
-        }
-        .padding(.horizontal)
     }
 }
 
