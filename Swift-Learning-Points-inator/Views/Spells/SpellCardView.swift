@@ -10,10 +10,12 @@ import SwiftUI
 struct SpellCardView: View {
     let spell: Spell
     
+    /// Progress toward next level, using centralized calculation from Spell model
     private var progressToNextLevel: Double {
         spell.progressToNextLevel
     }
     
+    /// Mana required for next level, or current mana if at maximum level
     private var nextLevelMana: Int {
         if let nextLevel = spell.nextSpellLevel {
             return nextLevel.manaCost
