@@ -18,13 +18,20 @@ struct RecentAchievementView: View {
             HStack {
                 switch achievement.type {
                 case .school(let school, _):
-                    Image(systemName: school.icon)
+                    Image(school.imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 28, height: 28)
                 case .spell(let spell, _):
-                    Image(systemName: spell.icon)
+                    Image(spell.imageName)
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 28, height: 28)
                 }
                 
                 Text(achievement.description)
                     .font(.subheadline)
+                    .fixedSize(horizontal: false, vertical: true)
             }
         }
         .padding()

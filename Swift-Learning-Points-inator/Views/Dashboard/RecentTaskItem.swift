@@ -23,14 +23,16 @@ struct RecentTaskItem: View {
     
     var body: some View {
         HStack {
-            Image(systemName: task.school.icon)
-                .font(.title2)
-                .foregroundStyle(.blue)
+            Image(task.school.imageName)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 28, height: 28)
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(task.name)
-                    .font(.headline)
+                    .font(.subheadline)
                     .fontWeight(.medium)
+                    .fixedSize(horizontal: false, vertical: true)
                 
                 if let completedDate = task.lastCompletedDate {
                     Text(completedDate, formatter: dateFormatter)
