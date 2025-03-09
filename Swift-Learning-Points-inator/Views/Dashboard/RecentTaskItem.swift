@@ -53,5 +53,6 @@ struct RecentTaskItem: View {
             }
             
         }
+        .padding()
     }
 }

@@ -11,18 +11,19 @@ struct RecentTasksView: View {
     let tasks: [Task]
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 8) {
             Text("Recent Tasks")
                 .font(.headline)
             
             ForEach (tasks) { task in
-                RecentTaskItem(task: task)
-                    .padding(.vertical, 8)
+                NavigationLink(destination: DetailTaskView(task: task)) {
+                    RecentTaskItem(task: task)
+                }
+                .buttonStyle(.plain)
+                .background(.gray.opacity(0.1))
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
-
