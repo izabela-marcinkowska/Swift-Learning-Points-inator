@@ -33,10 +33,10 @@ struct RecentAchievementView: View {
                     .font(.subheadline)
                     .fixedSize(horizontal: false, vertical: true)
             }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .background(.gray.opacity(0.1))
+            .clipShape(RoundedRectangle(cornerRadius: 10))
         }
-        .padding()
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(.gray.opacity(0.1))
-        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }
