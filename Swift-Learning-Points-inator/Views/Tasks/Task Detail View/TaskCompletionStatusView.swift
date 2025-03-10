@@ -12,7 +12,7 @@ struct TaskCompletionStatusView: View {
     let dateFormatter: DateFormatter
     
     var body: some View {
-        VStack (spacing: 12) {
+        VStack (spacing: 8) {
                 Text(task.isCompleted ? "Completed" : "Not Completed")
                 .foregroundColor(task.isCompleted ? Color("accent-color") : Color("progress-color").opacity(0.6))
 

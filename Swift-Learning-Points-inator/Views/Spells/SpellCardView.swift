@@ -33,7 +33,7 @@ struct SpellCardView: View {
                     .padding(.horizontal, 2)
             }
             
-            HStack(alignment: .top, spacing: 16) {
+            HStack(alignment: .top, spacing: 6) {
                 Image(spell.imageName)
                     .resizable()
                     .scaledToFit()

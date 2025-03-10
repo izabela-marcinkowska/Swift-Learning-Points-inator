@@ -21,7 +21,7 @@ struct TaskRowItem: View {
     
     var body: some View {
         NavigationLink(destination: DetailTaskView(task: task)) {
-            VStack(spacing: 8) {
+            VStack(spacing: 4) {
                 HStack {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(task.name)
@@ -36,7 +36,6 @@ struct TaskRowItem: View {
                             }
                             
                             if showSchoolName {
-                                
                                 Text(task.school.rawValue)
                                     .font(.subheadline)
                                     .foregroundStyle(.secondary)

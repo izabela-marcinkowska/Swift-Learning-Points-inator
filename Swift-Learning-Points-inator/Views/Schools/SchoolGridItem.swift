@@ -38,7 +38,7 @@ struct SchoolGridItem: View {
         }
     
     var body: some View {
-        VStack(spacing: 8) {
+        VStack(spacing: 6) {
             
             HStack(spacing: 6) {
                 Image(schoolProgress?.currentLevel.imageName ?? "apprentice")
