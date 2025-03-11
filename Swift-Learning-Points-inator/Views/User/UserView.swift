@@ -26,28 +26,11 @@ struct UserView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 30) {
-                Image(systemName: "person.circle.fill")
-                    .font(.system(size: 60))
-                    .foregroundColor(.gray)
-                
-                VStack(spacing: 15) {
-                    HStack {
-                        Image(systemName: "person.text.rectangle")
-                        Text("Name: \(user?.name ?? "User")")
-                    }
-                    
-                    HStack {
-                        Image(systemName: "star.fill")
-                        Text("Points: \(user?.mana ?? 0)")
-                    }
-                    
-                    HStack {
-                        Image(systemName: "flame.fill")
-                        Text("Streak: \(user?.streak ?? 0)")
-                    }
-                }
+                UserHeaderView()
+                Spacer()
             }
-            .padding()
+            .frame(maxWidth: .infinity)
+            .withGradientBackground()
             .navigationTitle("Profile")
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -67,9 +50,4 @@ struct UserView: View {
             }
         }
     }
-}
-
-#Preview {
-    UserView()
-        .modelContainer(for: User.self, inMemory: true)
 }
