@@ -27,6 +27,9 @@ struct UserView: View {
         NavigationStack {
             VStack(spacing: 30) {
                 UserHeaderView()
+                SettingsRowItem(icon: "star", title: "Example", action: {
+                    showAlert.toggle()
+                })
                 Spacer()
             }
             .frame(maxWidth: .infinity)
