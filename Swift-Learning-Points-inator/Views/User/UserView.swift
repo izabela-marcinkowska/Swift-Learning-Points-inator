@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import SafariServices
 
 struct UserView: View {
     @Query private var users: [User]
@@ -49,6 +50,33 @@ struct UserView: View {
                                 action: {
                                     // Handle notifications setting
                                 }
+                            )
+                        }
+                        .padding(.horizontal)
+                    }
+                    
+                    SettingsSection(title: "Connect") {
+                        VStack(spacing: 12) {
+                            SettingsRowItem(
+                                icon: "link.circle.fill",
+                                title: "Follow on Threads",
+                                action: {
+                                    if let url = URL(string: "https://www.threads.net/@bugs_and_lemons") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                },
+                                subtitle: "@bugs_and_lemons"
+                            )
+                            
+                            SettingsRowItem(
+                                icon: "camera.circle.fill",
+                                title: "Follow on Instagram",
+                                action: {
+                                    if let url = URL(string: "https://www.instagram.com/bugs_and_lemons/") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                },
+                                subtitle: "@bugs_and_lemons"
                             )
                         }
                         .padding(.horizontal)
