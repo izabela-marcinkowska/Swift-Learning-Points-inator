@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import SafariServices
 
 struct UserView: View {
     @Query private var users: [User]
@@ -25,39 +26,69 @@ struct UserView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 30) {
-                Image(systemName: "person.circle.fill")
-                    .font(.system(size: 60))
-                    .foregroundColor(.gray)
-                
-                VStack(spacing: 15) {
-                    HStack {
-                        Image(systemName: "person.text.rectangle")
-                        Text("Name: \(user?.name ?? "User")")
+            ScrollView {
+                VStack(spacing: 24) {
+                    SettingsSection(title: "User Information") {
+                        VStack(spacing: 12) {
+                            SettingsRowItem(
+                                icon: "user-icon",
+                                title: "Change Name",
+                                action: {
+                                    showAlert.toggle()
+                                },
+                                subtitle: user?.name ?? "User"
+                            )
+                        }
+                        .padding(.horizontal)
                     }
                     
-                    HStack {
-                        Image(systemName: "star.fill")
-                        Text("Points: \(user?.mana ?? 0)")
+                    SettingsSection(title: "App Settings") {
+                        VStack(spacing: 12) {
+                            SettingsRowItem(
+                                icon: "notifications-icon",
+                                title: "Notifications",
+                                action: {
+                                    // Handle notifications setting
+                                }
+                            )
+                        }
+                        .padding(.horizontal)
                     }
                     
-                    HStack {
-                        Image(systemName: "flame.fill")
-                        Text("Streak: \(user?.streak ?? 0)")
+                    SettingsSection(title: "Connect") {
+                        VStack(spacing: 12) {
+                            SettingsRowItem(
+                                icon: "threads-icon",
+                                title: "Follow on Threads",
+                                action: {
+                                    if let url = URL(string: "https://www.threads.net/@bugs_and_lemons") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                },
+                                subtitle: "@bugs_and_lemons"
+                            )
+                            
+                            SettingsRowItem(
+                                icon: "instagram-icon",
+                                title: "Follow on Instagram",
+                                action: {
+                                    if let url = URL(string: "https://www.instagram.com/bugs_and_lemons/") {
+                                        UIApplication.shared.open(url)
+                                    }
+                                },
+                                subtitle: "@bugs_and_lemons"
+                            )
+                        }
+                        .padding(.horizontal)
                     }
+                    
+                    // Add more sections as needed
                 }
+                .padding(.vertical)
             }
-            .padding()
+            .frame(maxWidth: .infinity)
+            .withGradientBackground()
             .navigationTitle("Profile")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showAlert.toggle()
-                    } label: {
-                        Image(systemName: "pencil")
-                    }
-                }
-            }
             .alert("Enter your name", isPresented: $showAlert) {
                 TextField("Name", text: $newName)
                 Button("Cancel", role: .cancel) {}
@@ -67,9 +98,4 @@ struct UserView: View {
             }
         }
     }
-}
-
-#Preview {
-    UserView()
-        .modelContainer(for: User.self, inMemory: true)
 }
