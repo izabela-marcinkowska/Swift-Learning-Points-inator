@@ -25,25 +25,42 @@ struct UserView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 30) {
-                UserHeaderView()
-                SettingsRowItem(icon: "star", title: "Example", action: {
-                    showAlert.toggle()
-                })
-                Spacer()
+            ScrollView {
+                VStack(spacing: 24) {
+                    SettingsSection(title: "User Information") {
+                        VStack(spacing: 12) {
+                            SettingsRowItem(
+                                icon: "person.text.rectangle",
+                                title: "Change Name",
+                                action: {
+                                    showAlert.toggle()
+                                },
+                                subtitle: user?.name ?? "User"
+                            )
+                        }
+                        .padding(.horizontal)
+                    }
+                    
+                    SettingsSection(title: "App Settings") {
+                        VStack(spacing: 12) {
+                            SettingsRowItem(
+                                icon: "bell",
+                                title: "Notifications",
+                                action: {
+                                    // Handle notifications setting
+                                }
+                            )
+                        }
+                        .padding(.horizontal)
+                    }
+                    
+                    // Add more sections as needed
+                }
+                .padding(.vertical)
             }
             .frame(maxWidth: .infinity)
             .withGradientBackground()
             .navigationTitle("Profile")
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button {
-                        showAlert.toggle()
-                    } label: {
-                        Image(systemName: "pencil")
-                    }
-                }
-            }
             .alert("Enter your name", isPresented: $showAlert) {
                 TextField("Name", text: $newName)
                 Button("Cancel", role: .cancel) {}
