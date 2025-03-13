@@ -31,7 +31,7 @@ struct UserView: View {
                     SettingsSection(title: "User Information") {
                         VStack(spacing: 12) {
                             SettingsRowItem(
-                                icon: "person.text.rectangle",
+                                icon: "user-icon",
                                 title: "Change Name",
                                 action: {
                                     showAlert.toggle()
@@ -45,7 +45,7 @@ struct UserView: View {
                     SettingsSection(title: "App Settings") {
                         VStack(spacing: 12) {
                             SettingsRowItem(
-                                icon: "bell",
+                                icon: "notifications-icon",
                                 title: "Notifications",
                                 action: {
                                     // Handle notifications setting
@@ -58,7 +58,7 @@ struct UserView: View {
                     SettingsSection(title: "Connect") {
                         VStack(spacing: 12) {
                             SettingsRowItem(
-                                icon: "link.circle.fill",
+                                icon: "threads-icon",
                                 title: "Follow on Threads",
                                 action: {
                                     if let url = URL(string: "https://www.threads.net/@bugs_and_lemons") {
@@ -69,7 +69,7 @@ struct UserView: View {
                             )
                             
                             SettingsRowItem(
-                                icon: "camera.circle.fill",
+                                icon: "instagram-icon",
                                 title: "Follow on Instagram",
                                 action: {
                                     if let url = URL(string: "https://www.instagram.com/bugs_and_lemons/") {

@@ -16,10 +16,10 @@ struct SettingsRowItem: View {
     
     var body: some View {
         Button(action: action) {
-            HStack {
-                Image(systemName: icon)
-                    .font(.system(size: 18))
-                    .foregroundColor(Color("accent-color"))
+            HStack (spacing: 10) {
+                Image(icon)
+                    .resizable()
+                    .scaledToFit()
                     .frame(width: 24, height: 24)
                 
                 VStack(alignment: .leading, spacing: 2) {
