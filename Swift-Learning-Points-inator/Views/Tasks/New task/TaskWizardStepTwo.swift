@@ -12,36 +12,16 @@ struct TaskWizardStepTwo: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Task Category")
+            Text("Task Difficulty")
                 .font(.title2)
                 .fontWeight(.bold)
                 .foregroundColor(.white)
                 .padding(.bottom, 5)
-            
-            Spacer()
-            // School selection
-            VStack(alignment: .leading, spacing: 8) {
-                Text("School of Magic")
-                    .font(.headline)
-                    .foregroundColor(Color("accent-color"))
-                
-                VStack {
-                    // Reuse your existing SchoolPickerView
-                    SchoolPickerView(selectedSchool: $formData.school)
-                        .padding(.horizontal)
-                        .padding(.vertical, 8)
-                        .background(Color("card-background"))
-                        .cornerRadius(8)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.purple.opacity(0.2), lineWidth: 1)
-                        )
-                }
-            }
+
             
             // Difficulty selection
             VStack(alignment: .leading, spacing: 8) {
-                Text("Task Difficulty")
+                Text("Select Difficulty")
                     .font(.headline)
                     .foregroundColor(Color("accent-color"))
                 
@@ -55,8 +35,19 @@ struct TaskWizardStepTwo: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.purple.opacity(0.2), lineWidth: 1)
                     )
+                    .tint(Color("accent-color"))
             }
             
+            // Mana slider - without background
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Mana Reward")
+                    .font(.headline)
+                    .foregroundColor(Color("accent-color"))
+                
+                // Reuse your existing ManaSliderView without the background
+                ManaSliderView(mana: $formData.mana, difficulty: formData.difficulty)
+                    .padding(.vertical, 12)
+            }
         }
         .padding()
     }
