@@ -12,30 +12,51 @@ struct TaskWizardStepTwo: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Difficulty")
+            Text("Task Category")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding(.bottom, 5)
             
-            HStack(spacing: 12) {
-                ForEach(TaskDifficulty.allCases, id: \.self) { difficulty in
-                    Button {
-                        formData.difficulty = difficulty
-                    } label: {
-                        Text(difficulty.rawValue)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .background(formData.difficulty == difficulty ? Color.blue : Color.gray.opacity(0.2))
-                            .foregroundColor(formData.difficulty == difficulty ? .white : .primary)
-                            .cornerRadius(8)
-                    }
+            Spacer()
+            // School selection
+            VStack(alignment: .leading, spacing: 8) {
+                Text("School of Magic")
+                    .font(.headline)
+                    .foregroundColor(Color("accent-color"))
+                
+                VStack {
+                    // Reuse your existing SchoolPickerView
+                    SchoolPickerView(selectedSchool: $formData.school)
+                        .padding(.horizontal)
+                        .padding(.vertical, 8)
+                        .background(Color("card-background"))
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.purple.opacity(0.2), lineWidth: 1)
+                        )
                 }
             }
             
-            Toggle("Repeatable", isOn: $formData.isRepeatable)
-                .padding(.vertical)
+            // Difficulty selection
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Task Difficulty")
+                    .font(.headline)
+                    .foregroundColor(Color("accent-color"))
+                
+                // Reuse your existing DifficultyPickerView
+                DifficultyPickerView(selectedDifficulty: $formData.difficulty, mana: $formData.mana)
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    .background(Color("card-background"))
+                    .cornerRadius(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.purple.opacity(0.2), lineWidth: 1)
+                    )
+            }
             
-            Text("Mana")
-            TextField("Mana", value: $formData.mana, format: .number)
-                .textFieldStyle(.roundedBorder)
-                .keyboardType(.numberPad)
         }
         .padding()
     }
