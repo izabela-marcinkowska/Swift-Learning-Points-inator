@@ -48,8 +48,7 @@ struct TaskWizardStepOne: View {
                     )
                     .multilineTextAlignment(.leading)
             }
-            
-            Spacer()
         }
+        .padding()
     }
 }
