@@ -138,6 +138,7 @@ struct AddTaskWizard: View {
                             }
                         } label: {
                             Image(systemName: "chevron.left")
+                                .tint(Color("accent-color"))
                         }
                     }
                 }
@@ -147,6 +148,7 @@ struct AddTaskWizard: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
+                            .tint(Color("accent-color"))
                     }
                 }
             }
