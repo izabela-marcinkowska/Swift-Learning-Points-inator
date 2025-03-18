@@ -38,23 +38,14 @@ struct TaskWizardStepThree: View {
                         .tint(Color("accent-color"))
                 }
             }
-            
+            Spacer()
             // Repeatable option
             VStack(alignment: .leading, spacing: 8) {
-                Text("Task Options")
-                    .font(.headline)
-                    .foregroundColor(Color("accent-color"))
                 
                 Toggle("Repeatable Task", isOn: $formData.isRepeatable)
-                    .padding()
-                    .background(Color("card-background"))
-                    .cornerRadius(8)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.purple.opacity(0.2), lineWidth: 1)
-                    )
                     .tint(Color("accent-color"))
             }
+            Spacer()
         }
         .padding()
     }
