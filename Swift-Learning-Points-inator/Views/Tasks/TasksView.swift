@@ -65,6 +65,7 @@ struct TasksView: View {
                     } label: {
                         Image(systemName: showingFilters ? "line.3.horizontal.decrease.circle.fill" : "line.3.horizontal.decrease.circle")
                     }
+                    .tint(Color("accent-color"))
                 }
                 
                 ToolbarItem(placement: .topBarTrailing) {
@@ -73,6 +74,7 @@ struct TasksView: View {
                     } label: {
                         Image(systemName: "plus")
                     }
+                    .tint(Color("accent-color"))
                 }
             }
             .sheet(isPresented: $showingSheet) {

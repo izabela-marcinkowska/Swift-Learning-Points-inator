@@ -23,10 +23,12 @@ struct SchoolPickerView: View {
                 ForEach(SchoolOfMagic.allCases, id: \.self) { school in
                     Text(school.rawValue)
                         .tag(school)
+                        .foregroundColor(.white)
                 }
             }
             .labelsHidden()
             .pickerStyle(MenuPickerStyle())
+            .accentColor(.white)
             
             Spacer()
         }
@@ -48,7 +50,9 @@ struct DifficultyPickerView: View {
             
             Picker("", selection: $selectedDifficulty) {
                 ForEach(TaskDifficulty.allCases, id: \.self) { difficulty in
-                    Text(difficulty.rawValue).tag(difficulty)
+                    Text(difficulty.rawValue)
+                        .tag(difficulty)
+                        .foregroundColor(.white)
                 }
             }
             .onChange(of: selectedDifficulty) { oldValue, newValue in
@@ -57,6 +61,7 @@ struct DifficultyPickerView: View {
             }
             .labelsHidden()
             .pickerStyle(MenuPickerStyle())
+            .accentColor(.white)
             
             Spacer()
         }

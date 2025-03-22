@@ -27,11 +27,12 @@ struct AddTaskWizard: View {
     
     private var isCurrentStepValid: Bool {
         switch currentStep {
-        case 0:
+        case 0: // Title step
             return !formData.title.trimmingCharacters(in: .whitespaces).isEmpty
-        case 1:
-            return formData.mana > 0
-        case 2:
+        case 1: // School and difficulty step
+            // Default values should be valid, so we return true here
+            return true
+        case 2: // Additional options step
             return true
         default:
             return false
@@ -66,23 +67,26 @@ struct AddTaskWizard: View {
                                 insertion: movingForward ? .move(edge: .trailing) : .move(edge: .leading),
                                 removal: movingForward ? .move(edge: .leading) : .move(edge: .trailing)
                             ))
-                    }
-                    else if currentStep == 1 {
+                            .zIndex(currentStep == 0 ? 1 : 0) 
+                    } else if currentStep == 1 {
                         TaskWizardStepTwo(formData: $formData)
                             .transition(.asymmetric(
                                 insertion: movingForward ? .move(edge: .trailing) : .move(edge: .leading),
                                 removal: movingForward ? .move(edge: .leading) : .move(edge: .trailing)
                             ))
-                    }
-                    else if currentStep == 2 {
+                            .zIndex(currentStep == 1 ? 1 : 0)
+                    } else if currentStep == 2 {
                         TaskWizardStepThree(formData: $formData)
                             .transition(.asymmetric(
                                 insertion: movingForward ? .move(edge: .trailing) : .move(edge: .leading),
                                 removal: movingForward ? .move(edge: .leading) : .move(edge: .trailing)
                             ))
+                            .zIndex(currentStep == 2 ? 1 : 0)
                     }
                 }
-                .animation(.default, value: currentStep)
+                .frame(maxWidth: .infinity)
+                .clipped()
+                .animation(.easeInOut(duration: 0.3), value: currentStep)
                 
                 VStack(spacing: 16) {
                     Button {
@@ -96,18 +100,28 @@ struct AddTaskWizard: View {
                         }
                     } label: {
                         Text(currentStep == 2 ? "Create task" : "Next")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                            .background(Color.gray.opacity(0.2))
-                            .cornerRadius(10)
+                            .font(.headline)
+                                    .padding()
+                                    .frame(maxWidth: .infinity)
+                                    .background(
+                                        LinearGradient(
+                                            gradient: Gradient(colors: [Color("button-color").opacity(0.7), Color("button-color")]),
+                                            startPoint: .leading,
+                                            endPoint: .trailing
+                                        )
+                                    )
+                                    .foregroundColor(.white)
+                                    .cornerRadius(12)
+                                    .shadow(color: Color("button-color").opacity(0.4), radius: 4, x: 0, y: 2)
+                                    .opacity(isCurrentStepValid ? 1.0 : 0.6)
                     }
                     .disabled(!isCurrentStepValid)
                     
                     HStack(spacing: 8) {
                         ForEach(0..<3) { index in
                             Circle()
-                                .fill(currentStep == index ? Color.blue : Color.gray)
-                                .frame(width: 8, height: 8)
+                                .fill(currentStep == index ? Color("accent-color") : Color.gray.opacity(0.3))
+                                .frame(width: 10, height: 10)
                         }
                     }
                 }
@@ -124,6 +138,7 @@ struct AddTaskWizard: View {
                             }
                         } label: {
                             Image(systemName: "chevron.left")
+                                .tint(Color("accent-color"))
                         }
                     }
                 }
@@ -133,9 +148,11 @@ struct AddTaskWizard: View {
                         dismiss()
                     } label: {
                         Image(systemName: "xmark")
+                            .tint(Color("accent-color"))
                     }
                 }
             }
+            .background(Color("background-color"))
         }
     }
 }

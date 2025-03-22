@@ -20,8 +20,8 @@ struct FilterButton: View {
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
-        .background(isSelected ? Color.blue : Color.clear)
-        .foregroundColor(isSelected ? .white : .primary)
+        .background(isSelected ? Color("button-color") : Color.clear)
+        .foregroundColor(isSelected ? Color("accent-color") : .primary)
         .cornerRadius(8)
     }
 }

@@ -12,30 +12,42 @@ struct TaskWizardStepTwo: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Difficulty")
+            Text("Task Difficulty")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding(.bottom, 5)
+
             
-            HStack(spacing: 12) {
-                ForEach(TaskDifficulty.allCases, id: \.self) { difficulty in
-                    Button {
-                        formData.difficulty = difficulty
-                    } label: {
-                        Text(difficulty.rawValue)
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .background(formData.difficulty == difficulty ? Color.blue : Color.gray.opacity(0.2))
-                            .foregroundColor(formData.difficulty == difficulty ? .white : .primary)
-                            .cornerRadius(8)
-                    }
-                }
+            // Difficulty selection
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Select Difficulty")
+                    .font(.headline)
+                    .foregroundColor(Color("accent-color"))
+                
+                // Reuse your existing DifficultyPickerView
+                DifficultyPickerView(selectedDifficulty: $formData.difficulty, mana: $formData.mana)
+                    .padding(.horizontal)
+                    .padding(.vertical, 8)
+                    .background(Color("card-background"))
+                    .cornerRadius(8)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.purple.opacity(0.2), lineWidth: 1)
+                    )
+                    .tint(Color("accent-color"))
             }
             
-            Toggle("Repeatable", isOn: $formData.isRepeatable)
-                .padding(.vertical)
-            
-            Text("Mana")
-            TextField("Mana", value: $formData.mana, format: .number)
-                .textFieldStyle(.roundedBorder)
-                .keyboardType(.numberPad)
+            // Mana slider - without background
+            VStack(alignment: .leading, spacing: 8) {
+                Text("Mana Reward")
+                    .font(.headline)
+                    .foregroundColor(Color("accent-color"))
+                
+                // Reuse your existing ManaSliderView without the background
+                ManaSliderView(mana: $formData.mana, difficulty: formData.difficulty)
+                    .padding(.vertical, 12)
+            }
         }
         .padding()
     }

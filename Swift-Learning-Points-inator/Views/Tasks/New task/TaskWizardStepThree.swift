@@ -12,22 +12,40 @@ struct TaskWizardStepThree: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Text("Select School")
+            Text("Final Details")
+                .font(.title2)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding(.bottom, 5)
             
-            Picker("School", selection: $formData.school) {
-                ForEach(SchoolOfMagic.allCases, id: \.self) { school in
-                    HStack {
-                        Image(systemName: school.icon)
-                        Text(school.rawValue)
-                    }
-                    .tag(school)
+            // School selection
+            VStack(alignment: .leading, spacing: 8) {
+                Text("School of Magic")
+                    .font(.headline)
+                    .foregroundColor(Color("accent-color"))
+                
+                VStack {
+                    // Reuse your existing SchoolPickerView
+                    SchoolPickerView(selectedSchool: $formData.school)
+                        .padding(.horizontal)
+                        .padding(.vertical, 8)
+                        .background(Color("card-background"))
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.purple.opacity(0.2), lineWidth: 1)
+                        )
+                        .tint(Color("accent-color"))
                 }
             }
-            
-            Rectangle()
-                .fill(.gray.opacity(0.1))
-                .frame(maxWidth: .infinity)
-                .frame(height: 200)
+            Spacer()
+            // Repeatable option
+            VStack(alignment: .leading, spacing: 8) {
+                
+                Toggle("Repeatable Task", isOn: $formData.isRepeatable)
+                    .tint(Color("accent-color"))
+            }
+            Spacer()
         }
         .padding()
     }
