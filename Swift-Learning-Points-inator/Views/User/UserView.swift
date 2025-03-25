@@ -82,6 +82,15 @@ struct UserView: View {
                         .padding(.horizontal)
                     }
                     
+                    NavigationLink(destination: ButtonsShow()) {
+                        Text("Visa Alert Knappar")
+                            .font(.headline)
+                            .padding()
+                            .background(Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding(.horizontal)
                     // Add more sections as needed
                 }
                 .padding(.vertical)

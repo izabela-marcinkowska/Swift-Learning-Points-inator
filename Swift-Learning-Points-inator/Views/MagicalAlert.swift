@@ -142,7 +142,7 @@ struct MagicalAlertModifier: ViewModifier {
                         self.alert = nil
                     }
                 }
-                .zIndex(100) 
+                .zIndex(100)
             }
         }
     }
