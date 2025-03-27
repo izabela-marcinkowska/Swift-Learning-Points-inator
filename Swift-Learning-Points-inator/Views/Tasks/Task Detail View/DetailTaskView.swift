@@ -18,6 +18,7 @@ struct DetailTaskView: View {
     @Environment(\.dismiss) var dismiss
     private var user: User? { users.first }
     @State private var showingEditSheet = false
+    @State private var alertModel: MagicalAlertModel? = nil
     
     var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -94,6 +95,7 @@ struct DetailTaskView: View {
                         task.unmarkTask(for: user, spells: spells)
                     } else {
                         task.completeTaskWithBonus(for: user, spells: spells)
+                        showCompletionAlert()
                     }
                     try? modelContext.save()
                 }
@@ -108,6 +110,7 @@ struct DetailTaskView: View {
             .padding(.bottom, 8)
         }
         .padding(.vertical)
+        .magicalAlert(isPresented: $alertModel)
         .frame(maxWidth: .infinity)
         .withGradientBackground()
         .toolbar {
@@ -122,6 +125,20 @@ struct DetailTaskView: View {
                 dismiss()
             })
         }
+    }
+    
+    private func showCompletionAlert() {
+        let manaBreakdown = task.calculateManaBreakdown(for: user!, spells: spells)
+        
+        alertModel = MagicalAlertModel(
+            title: "Task Completed!",
+            message: "You've earned \(manaBreakdown.total) mana for completing \(task.name).",
+            primaryButtonText: "Great!",
+            secondaryButtonText: nil,
+            primaryAction: {},
+            secondaryAction: nil,
+            icon: .image(name: task.school.imageName)
+        )
     }
 }
 
