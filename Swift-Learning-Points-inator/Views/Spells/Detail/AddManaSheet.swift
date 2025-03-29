@@ -16,6 +16,7 @@ struct AddManaSheet: View {
     @Query private var users: [User]
     @State private var manaToInvest: Double = 0
     
+    @State private var alertModel: MagicalAlertModel? = nil
     
     private var user: User? {
         users.first
@@ -99,7 +100,9 @@ struct AddManaSheet: View {
                 MagicalButton(
                     text: "Invest \(Int(manaToInvest)) mana",
                     isEnabled: manaToInvest > 0,
-                    action: investManaAction
+                    action: {
+                        showInvestConfirmationAlert()
+                    }
                 )
                 
             }
@@ -119,5 +122,18 @@ struct AddManaSheet: View {
             .background(Color("background-color"))
         }
         .presentationDetents([.height(350)])
+        .magicalAlert(isPresented: $alertModel)
+    }
+    
+    private func showInvestConfirmationAlert() {
+        alertModel = MagicalAlertModel.confirmation(
+            title: "Confirm Investment",
+            message: "Are you sure you want to invest \(Int(manaToInvest)) mana in \(spell.name)? This action cannot be undone.",
+            confirmText: "Invest",
+            cancelText: "Cancel",
+            onConfirm: {
+                investManaAction()
+            }
+        )
     }
 }
