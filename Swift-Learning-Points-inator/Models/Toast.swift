@@ -90,4 +90,14 @@ class ToastManager: ObservableObject {
         )
     }
     
+    // for new task
+    func showTaskCreated(task: Task) {
+        show(
+            title: "Task Created",
+            message: "You've created a new task: \(task.name).",
+            icon: .schoolIcon(school: task.school),
+            duration: 3.0
+        )
+    }
+    
 }

@@ -19,6 +19,7 @@ struct TaskFormData {
 struct AddTaskWizard: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    var onTaskCreated: ((Task) -> Void)?
     
     @State private var currentStep = 0
     @State private var formData = TaskFormData()
@@ -52,6 +53,7 @@ struct AddTaskWizard: View {
         do {
             try modelContext.save()
             dismiss()
+            onTaskCreated?(newTask)
         } catch {
             print("Error saving content: \(error)")
         }

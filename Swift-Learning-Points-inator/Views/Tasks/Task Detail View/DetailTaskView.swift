@@ -131,12 +131,12 @@ struct DetailTaskView: View {
                 }
             }
         }
+        .magicalToast(using: toastManager)
         .sheet(isPresented: $showingEditSheet) {
             TaskFormView(task: task, onDelete: {
                 dismiss()
             })
         }
-        .magicalToast(using: toastManager)
     }
     
 }

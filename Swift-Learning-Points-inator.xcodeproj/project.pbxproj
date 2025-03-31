@@ -6,12 +6,7 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		171621462D75D5FF00243850 /* SpellLevelRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 171621452D75D5FF00243850 /* SpellLevelRow.swift */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
-		171621452D75D5FF00243850 /* SpellLevelRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpellLevelRow.swift; sourceTree = "<group>"; };
 		17FFC5962D0C329D0018D26F /* Swift-Learning-Points-inator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift-Learning-Points-inator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -37,7 +32,6 @@
 		17FFC58D2D0C329D0018D26F = {
 			isa = PBXGroup;
 			children = (
-				171621452D75D5FF00243850 /* SpellLevelRow.swift */,
 				17FFC5982D0C329D0018D26F /* Swift-Learning-Points-inator */,
 				17FFC5972D0C329D0018D26F /* Products */,
 			);
@@ -125,7 +119,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				171621462D75D5FF00243850 /* SpellLevelRow.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
