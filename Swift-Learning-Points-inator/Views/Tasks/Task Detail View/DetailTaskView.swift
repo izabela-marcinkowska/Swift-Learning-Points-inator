@@ -18,7 +18,7 @@ struct DetailTaskView: View {
     @Environment(\.dismiss) var dismiss
     private var user: User? { users.first }
     @State private var showingEditSheet = false
-    @State private var alertModel: MagicalAlertModel? = nil
+    @StateObject private var toastManager = ToastManager()
     
     var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -94,10 +94,22 @@ struct DetailTaskView: View {
                     if task.isCompleted {
                         task.unmarkTask(for: user, spells: spells)
                     } else {
+                        let previousLevel = user.schoolProgress.first(where: {$0.school == task.school})?.currentLevel
+                        
                         task.completeTaskWithBonus(for: user, spells: spells)
-                        showCompletionAlert()
+                        try? modelContext.save()
+                        
+                        if let progress = user.schoolProgress.first(where: { $0.school == task.school }),
+                           let prevLevel = previousLevel,
+                           progress.currentLevel.rawValue > prevLevel.rawValue {
+                            // Show level up toast
+                            toastManager.showLevelUp(school: task.school, level: progress.currentLevel)
+                        } else {
+                            // Show regular completion toast
+                            let manaBreakdown = task.calculateManaBreakdown(for: user, spells: spells)
+                            toastManager.showTaskCompletion(task: task, mana: manaBreakdown.total)
+                        }
                     }
-                    try? modelContext.save()
                 }
             } label: {
                 Text(task.isCompleted ? "Unmark Task" : "Complete Task")
@@ -110,7 +122,6 @@ struct DetailTaskView: View {
             .padding(.bottom, 8)
         }
         .padding(.vertical)
-        .magicalAlert(isPresented: $alertModel)
         .frame(maxWidth: .infinity)
         .withGradientBackground()
         .toolbar {
@@ -125,21 +136,9 @@ struct DetailTaskView: View {
                 dismiss()
             })
         }
+        .magicalToast(using: toastManager)
     }
     
-    private func showCompletionAlert() {
-        let manaBreakdown = task.calculateManaBreakdown(for: user!, spells: spells)
-        
-        alertModel = MagicalAlertModel(
-            title: "Task Completed!",
-            message: "You've earned \(manaBreakdown.total) mana for completing \(task.name).",
-            primaryButtonText: "Great!",
-            secondaryButtonText: nil,
-            primaryAction: {},
-            secondaryAction: nil,
-            icon: .image(name: task.school.imageName)
-        )
-    }
 }
 
 struct TaskCompletionButtonStyle: ButtonStyle {

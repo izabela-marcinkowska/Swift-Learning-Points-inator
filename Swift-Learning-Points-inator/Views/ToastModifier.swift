@@ -26,7 +26,6 @@ struct ToastModifier: ViewModifier {
                                 }
                             }
                     )
-                    .padding(.top, 16)
             }
         }
     }
