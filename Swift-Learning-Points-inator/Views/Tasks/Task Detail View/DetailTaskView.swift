@@ -135,6 +135,8 @@ struct DetailTaskView: View {
         .sheet(isPresented: $showingEditSheet) {
             TaskFormView(task: task, onDelete: {
                 dismiss()
+            }, onTaskUpdated: { updatedTask in
+                toastManager.showTaskUpdated(task: updatedTask)
             })
         }
     }

@@ -100,4 +100,14 @@ class ToastManager: ObservableObject {
         )
     }
     
+    // for edit task
+    func showTaskUpdated(task: Task) {
+        show(
+            title: "Task Updated",
+            message: "You've updated the task: \(task.name).",
+            icon: .schoolIcon(school: task.school),
+            duration: 3.0
+        )
+    }
+    
 }

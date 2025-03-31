@@ -13,6 +13,7 @@ struct TaskFormView: View {
     @Environment(\.dismiss) var dismiss
     let task: Task?
     var onDelete: (() -> Void)? = nil
+    var onTaskUpdated: ((Task) -> Void)?
     
     @State var title = ""
     @State var mana = 0
@@ -21,9 +22,10 @@ struct TaskFormView: View {
     @State private var selectedDifficulty: TaskDifficulty = .easy
     @State private var showDeleteAlert = false
     
-    init(task: Task? = nil, onDelete: (() -> Void)? = nil) {
+    init(task: Task? = nil, onDelete: (() -> Void)? = nil, onTaskUpdated: ((Task) -> Void)? = nil) {
         self.task = task
         self.onDelete = onDelete
+        self.onTaskUpdated = onTaskUpdated
     }
     
     private func deleteTask() {
@@ -44,6 +46,8 @@ struct TaskFormView: View {
             existingTask.difficulty = selectedDifficulty
             do {
                 try modelContext.save()
+                dismiss()
+                onTaskUpdated?(existingTask)
             } catch {
                 print("Error saving context: \(error)")
             }
@@ -52,11 +56,11 @@ struct TaskFormView: View {
             modelContext.insert(newTask)
             do {
                 try modelContext.save()
+                dismiss()
             } catch {
                 print("Error saving context: \(error)")
             }
         }
-        dismiss()
     }
     
     private var isFormValid: Bool {
