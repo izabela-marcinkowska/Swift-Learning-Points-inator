@@ -12,6 +12,7 @@ struct SpellDetailView: View {
     var spell: Spell
     @Query private var users: [User]
     @State private var showingAddManaSheet = false
+    @StateObject private var toastManager = ToastManager()
     
     private var user: User? {
         users.first
@@ -42,7 +43,15 @@ struct SpellDetailView: View {
             }
         }
         .sheet(isPresented: $showingAddManaSheet) {
-            AddManaSheet(spell: spell)
+            AddManaSheet(spell: spell, onComplete: { level, amount in
+                if let level = level {
+                    toastManager.showSpellLevelUp(spell: spell, level: level)
+                } else {
+                    toastManager.showManaInvested(spell: spell, amount: amount)
+                }
+            })
+            .environmentObject(toastManager)
         }
+        .magicalToast(using: toastManager)
     }
 }

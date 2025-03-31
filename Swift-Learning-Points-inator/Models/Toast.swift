@@ -84,7 +84,7 @@ class ToastManager: ObservableObject {
     func showManaInvested(spell: Spell, amount: Int) {
         show(
             title: "Mana Invested!",
-            message: "You've invested \(amount) mana \(spell.name),",
+            message: "You've invested \(amount) mana in \(spell.name).",
             icon: .image(name: spell.imageName),
             duration: 3.0
         )
