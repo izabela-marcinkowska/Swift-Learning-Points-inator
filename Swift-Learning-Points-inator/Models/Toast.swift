@@ -50,6 +50,44 @@ class ToastManager: ObservableObject {
         }
     }
     
+    // for level up
+    func showLevelUp(school: SchoolOfMagic, level: SchoolOfMagic.AchievementLevel) {
+        show(
+            title: "Level up",
+            message: "You've reached \(school.titleForLevel(level)) in \(school.rawValue)!",
+            icon: .schoolIcon(school: school),
+            duration: 4.0
+        )
+    }
     
+    // for spell level up
+    func showSpellLevelUp(spell: Spell, level: SpellLevel) {
+        show(
+            title: "Spell Level Up",
+            message: "\(spell.name) had reached \(level.title)",
+            icon: .spellLevel(level: level),
+            duration: 4.0
+        )
+    }
+    
+    // for task completion
+    func showTaskCompletion(task: Task, mana: Int) {
+        show(
+            title: "Task Completed",
+            message: "You've earned \(mana) mana for completing \(task.name).",
+            icon: .schoolIcon(school: task.school),
+            duration: 3.0
+        )
+    }
+    
+    // for mana investment
+    func showManaInvested(spell: Spell, amount: Int) {
+        show(
+            title: "Mana Invested!",
+            message: "You've invested \(amount) mana \(spell.name),",
+            icon: .image(name: spell.imageName),
+            duration: 3.0
+        )
+    }
     
 }
