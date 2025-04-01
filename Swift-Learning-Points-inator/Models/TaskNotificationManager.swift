@@ -9,16 +9,18 @@ import Foundation
 import SwiftUI
 import Combine
 
-enum TaskActionType {
-    case created
-    case updated
-    case deleted
-    case completed
+enum NotificationType {
+    case taskCreated
+    case taskUpdated
+    case taskDeleted
+    case taskCompleted
+    case levelUp
+    case spellLevelUp
+    case manaInvested
     // We remove levelUp from here since it needs extra data.
 }
 
 class TaskNotificationManager: ObservableObject {
-    // State for task events
     @Published var deletedTaskName: String?
     @Published var deletedTaskSchool: SchoolOfMagic?
     
@@ -27,40 +29,47 @@ class TaskNotificationManager: ObservableObject {
     @Published var completedTask: Task?
     @Published var completedTaskMana: Int = 0
     
-    // Level-up state now holds the school and the exact level achieved.
     @Published var levelUpSchool: SchoolOfMagic?
     @Published var levelUpLevel: SchoolOfMagic.AchievementLevel?
     
     @Published var updatedTask: Task?
     
-    // A flag that signals that a toast should be shown.
+    // Add new spell-related properties
+    @Published var spellLevelUp: (spell: Spell, level: SpellLevel)?
+    @Published var manaInvested: (spell: Spell, amount: Int)?
+    
+    // Flag that signals a toast should be shown
     @Published var shouldShowToast = false
-
-    // Reference to ToastManager (only used to trigger UI display).
+    @Published var notificationType: NotificationType?
+    
+    // Reference to ToastManager
     private var toastManager: ToastManager?
     
-    // Call this from your App initialization to inject the ToastManager.
     func setToastManager(manager: ToastManager) {
         self.toastManager = manager
     }
     
     // Report task actions (created, updated, deleted, completed).
     // These methods update the relevant state and trigger the corresponding toast.
-    func reportTaskAction(type: TaskActionType, task: Task, mana: Int? = nil) {
-            switch type {
-            case .created:
-                createdTask = task
-            case .updated:
-                updatedTask = task  // Just update the state; don't call toastManager directly.
-            case .deleted:
-                deletedTaskName = task.name
-                deletedTaskSchool = task.school
-            case .completed:
-                completedTask = task
-                completedTaskMana = mana ?? 0
-            }
-            shouldShowToast = true
+    func reportTaskAction(type: NotificationType, task: Task, mana: Int? = nil) {
+        switch type {
+        case .taskCreated:
+            createdTask = task
+        case .taskUpdated:
+            updatedTask = task
+        case .taskDeleted:
+            deletedTaskName = task.name
+            deletedTaskSchool = task.school
+        case .taskCompleted:
+            completedTask = task
+            completedTaskMana = mana ?? 0
+        case .levelUp, .spellLevelUp, .manaInvested:
+            // These are handled by other methods
+            break
         }
+        notificationType = type
+        shouldShowToast = true
+    }
 
     
     // Report a level-up action.
@@ -71,8 +80,21 @@ class TaskNotificationManager: ObservableObject {
         shouldShowToast = true
     }
     
+    func reportSpellLevelUp(spell: Spell, level: SpellLevel) {
+        spellLevelUp = (spell: spell, level: level)
+        notificationType = .spellLevelUp
+        shouldShowToast = true
+    }
+    
+    func reportManaInvested(spell: Spell, amount: Int) {
+        manaInvested = (spell: spell, amount: amount)
+        notificationType = .manaInvested
+        shouldShowToast = true
+    }
+    
     // Clear all task-related state after the toast is dismissed.
-    func clearTaskData() {
+    func clearToastData() {
+        // Clear task-related data
         deletedTaskName = nil
         updatedTask = nil
         deletedTaskSchool = nil
@@ -81,6 +103,12 @@ class TaskNotificationManager: ObservableObject {
         completedTaskMana = 0
         levelUpSchool = nil
         levelUpLevel = nil
+        
+        // Clear spell-related data
+        spellLevelUp = nil
+        manaInvested = nil
+        
+        notificationType = nil
         shouldShowToast = false
     }
 }

@@ -12,7 +12,6 @@ struct ContentView: View {
     @Query private var users: [User]
     private var user: User? { users.first }
     
-    // Both managers are injected via EnvironmentObject
     @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
     @EnvironmentObject private var toastManager: ToastManager
 
@@ -55,20 +54,42 @@ struct ContentView: View {
         .magicalToast(using: toastManager)
         .onChange(of: taskNotificationManager.shouldShowToast) { oldValue, newValue in
             if newValue {
-                if let task = taskNotificationManager.createdTask {
-                    toastManager.showTaskCreated(task: task)
-                } else if let task = taskNotificationManager.updatedTask {
-                    toastManager.showTaskUpdated(task: task)
-                } else if let name = taskNotificationManager.deletedTaskName,
-                          let school = taskNotificationManager.deletedTaskSchool {
-                    toastManager.showTaskDeleted(name: name, school: school)
-                } else if let task = taskNotificationManager.completedTask {
-                    toastManager.showTaskCompletion(task: task, mana: taskNotificationManager.completedTaskMana)
-                } else if let school = taskNotificationManager.levelUpSchool,
-                          let level = taskNotificationManager.levelUpLevel {
-                    toastManager.showLevelUp(school: school, level: level)
+                switch taskNotificationManager.notificationType {
+                case .taskCreated:
+                    if let task = taskNotificationManager.createdTask {
+                        toastManager.showTaskCreated(task: task)
+                    }
+                case .taskUpdated:
+                    if let task = taskNotificationManager.updatedTask {
+                        toastManager.showTaskUpdated(task: task)
+                    }
+                case .taskDeleted:
+                    if let name = taskNotificationManager.deletedTaskName,
+                       let school = taskNotificationManager.deletedTaskSchool {
+                        toastManager.showTaskDeleted(name: name, school: school)
+                    }
+                case .taskCompleted:
+                    if let task = taskNotificationManager.completedTask {
+                        toastManager.showTaskCompletion(task: task, mana: taskNotificationManager.completedTaskMana)
+                    }
+                case .levelUp:
+                    if let school = taskNotificationManager.levelUpSchool,
+                       let level = taskNotificationManager.levelUpLevel {
+                        toastManager.showLevelUp(school: school, level: level)
+                    }
+                case .spellLevelUp:
+                    if let spellData = taskNotificationManager.spellLevelUp {
+                        toastManager.showSpellLevelUp(spell: spellData.spell, level: spellData.level)
+                    }
+                case .manaInvested:
+                    if let manaData = taskNotificationManager.manaInvested {
+                        toastManager.showManaInvested(spell: manaData.spell, amount: manaData.amount)
+                    }
+                case nil:
+                    // No notification type set
+                    break
                 }
-                taskNotificationManager.clearTaskData()
+                taskNotificationManager.clearToastData()
             }
         }
     }

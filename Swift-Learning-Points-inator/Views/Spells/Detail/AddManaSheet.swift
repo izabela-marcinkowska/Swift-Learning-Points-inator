@@ -13,6 +13,7 @@ struct AddManaSheet: View {
     let onComplete: (SpellLevel?, Int) -> Void
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
     
     @Query private var users: [User]
     @State private var manaToInvest: Double = 0

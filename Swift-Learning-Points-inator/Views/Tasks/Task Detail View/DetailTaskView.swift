@@ -98,7 +98,7 @@ struct DetailTaskView: View {
                         task.completeTaskWithBonus(for: user, spells: spells)
                         try? modelContext.save()
                         let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
-                        taskNotificationManager.reportTaskAction(type: .completed, task: task, mana: breakdown.total)
+                        taskNotificationManager.reportTaskAction(type: .taskCompleted, task: task, mana: breakdown.total)
                     }
                 }
             } label: {

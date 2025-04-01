@@ -54,7 +54,7 @@ struct AddTaskWizard: View {
         do {
             try modelContext.save()
             dismiss()
-            taskNotificationManager.reportTaskAction(type: .created, task: newTask)
+            taskNotificationManager.reportTaskAction(type: .taskCreated, task: newTask)
         } catch {
             print("Error saving content: \(error)")
         }
