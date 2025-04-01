@@ -9,6 +9,8 @@ import Foundation
 import SwiftUI
 import Combine
 
+/// Represents a toast notification message to be displayed to the user.
+/// Contains all information needed to render the toast, including text content and icons.
 struct ToastMessage: Identifiable, Equatable {
     let id = UUID()
     let title: String
@@ -22,10 +24,22 @@ struct ToastMessage: Identifiable, Equatable {
     }
 }
 
+/// Manages the display of toast notifications in the app.
+///
+/// Handles creating toast messages, timing their display duration,
+/// and dismissing them automatically. Provides convenience methods
+/// for showing different types of toast notifications.
 class ToastManager: ObservableObject {
     @Published var currentToast: ToastMessage?
     private var cancellable: AnyCancellable?
     
+    /// Shows a toast notification with the specified content
+    ///
+    /// - Parameters:
+    ///   - title: The title text for the toast
+    ///   - message: The body message for the toast
+    ///   - icon: The icon to display in the toast
+    ///   - duration: How long the toast should remain visible (in seconds)
     private func show(title: String, message: String, icon: ToastMessage.IconType, duration: Double = 3.0) {
         cancellable?.cancel()
         
@@ -43,6 +57,7 @@ class ToastManager: ObservableObject {
             }
     }
     
+    /// Manually dismisses the current toast notification, if any
     func hide() {
         cancellable?.cancel()
         withAnimation(.easeOut) {
@@ -50,7 +65,11 @@ class ToastManager: ObservableObject {
         }
     }
     
-    // for level up
+    /// Shows a toast notification for a school level-up achievement
+    ///
+    /// - Parameters:
+    ///   - school: The school that leveled up
+    ///   - level: The new achievement level
     func showLevelUp(school: SchoolOfMagic, level: SchoolOfMagic.AchievementLevel) {
         show(
             title: "Level up",
@@ -60,7 +79,11 @@ class ToastManager: ObservableObject {
         )
     }
     
-    // for spell level up
+    /// Shows a toast notification for a spell level-up
+    ///
+    /// - Parameters:
+    ///   - spell: The spell that leveled up
+    ///   - level: The new spell level
     func showSpellLevelUp(spell: Spell, level: SpellLevel) {
         show(
             title: "Spell Level Up",
@@ -70,7 +93,11 @@ class ToastManager: ObservableObject {
         )
     }
     
-    // for task completion
+    /// Shows a toast notification for a completed task
+    ///
+    /// - Parameters:
+    ///   - task: The completed task
+    ///   - mana: Amount of mana earned from the task
     func showTaskCompletion(task: Task, mana: Int) {
         show(
             title: "Task Completed",
@@ -80,7 +107,11 @@ class ToastManager: ObservableObject {
         )
     }
     
-    // for mana investment
+    /// Shows a toast notification for mana invested in a spell
+    ///
+    /// - Parameters:
+    ///   - spell: The spell that received the mana investment
+    ///   - amount: Amount of mana invested
     func showManaInvested(spell: Spell, amount: Int) {
         show(
             title: "Mana Invested!",
@@ -90,7 +121,9 @@ class ToastManager: ObservableObject {
         )
     }
     
-    // for new task
+    /// Shows a toast notification for a newly created task
+    ///
+    /// - Parameter task: The newly created task
     func showTaskCreated(task: Task) {
         show(
             title: "Task Created",
@@ -100,7 +133,9 @@ class ToastManager: ObservableObject {
         )
     }
     
-    // for edit task
+    /// Shows a toast notification for an updated task
+    ///
+    /// - Parameter task: The updated task
     func showTaskUpdated(task: Task) {
         show(
             title: "Task Updated",
@@ -110,7 +145,11 @@ class ToastManager: ObservableObject {
         )
     }
     
-    // for delete task
+    /// Shows a toast notification for a deleted task
+    ///
+    /// - Parameters:
+    ///   - name: The name of the deleted task
+    ///   - school: The school of the deleted task
     func showTaskDeleted(name: String, school: SchoolOfMagic) {
         print("Showing delete toast for: \(name)")
         show(

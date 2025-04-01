@@ -17,9 +17,14 @@ enum NotificationType {
     case levelUp
     case spellLevelUp
     case manaInvested
-    // We remove levelUp from here since it needs extra data.
 }
 
+/// Manages notification state and coordinates with ToastManager to display
+/// user-facing notifications about task, school, and spell-related events.
+///
+/// This class tracks notification data and determines when notifications should
+/// be shown to the user. It works with the ToastManager to handle the visual
+/// presentation of these notifications.
 class TaskNotificationManager: ObservableObject {
     @Published var deletedTaskName: String?
     @Published var deletedTaskSchool: SchoolOfMagic?
@@ -34,25 +39,30 @@ class TaskNotificationManager: ObservableObject {
     
     @Published var updatedTask: Task?
     
-    // Add new spell-related properties
     @Published var spellLevelUp: (spell: Spell, level: SpellLevel)?
     @Published var manaInvested: (spell: Spell, amount: Int)?
     
-    // Flag that signals a toast should be shown
     @Published var shouldShowToast = false
     @Published var notificationType: NotificationType?
     
-    // Reference to ToastManager
     private var toastManager: ToastManager?
     
+    /// Sets the ToastManager instance that will be used to display notifications
+    /// - Parameter manager: The ToastManager instance to use
     func setToastManager(manager: ToastManager) {
         self.toastManager = manager
     }
     
+    /// Temporarily stores level up information for delayed notifications
+    /// Used when we want to show a level-up notification after a task completion
     private var delayedLevelUpInfo: (school: SchoolOfMagic, level: SchoolOfMagic.AchievementLevel)?
     
-    // Report task actions (created, updated, deleted, completed).
-    // These methods update the relevant state and trigger the corresponding toast.
+    /// Reports a task-related action that should trigger a notification
+    ///
+    /// - Parameters:
+    ///   - type: The type of notification to display
+    ///   - task: The task associated with the notification
+    ///   - mana: Optional mana amount for task completion notifications
     func reportTaskAction(type: NotificationType, task: Task, mana: Int? = nil) {
         switch type {
         case .taskCreated:
@@ -66,42 +76,61 @@ class TaskNotificationManager: ObservableObject {
             completedTask = task
             completedTaskMana = mana ?? 0
         case .levelUp, .spellLevelUp, .manaInvested:
-            // These are handled by other methods
             break
         }
         notificationType = type
         shouldShowToast = true
     }
 
-    
-    // Report a level-up action.
-    // Instead of assuming a default level, you must pass in the school and the new level.
+
+    /// Reports a school level up achievement that should trigger a notification
+    ///
+    /// - Parameters:
+    ///   - school: The school that leveled up
+    ///   - level: The new achievement level reached
     func reportTaskLevelUp(school: SchoolOfMagic, level: SchoolOfMagic.AchievementLevel) {
         levelUpSchool = school
         levelUpLevel = level
         shouldShowToast = true
     }
     
+    /// Reports a spell level up that should trigger a notification
+    ///
+    /// - Parameters:
+    ///   - spell: The spell that leveled up
+    ///   - level: The new spell level reached
     func reportSpellLevelUp(spell: Spell, level: SpellLevel) {
         spellLevelUp = (spell: spell, level: level)
         notificationType = .spellLevelUp
         shouldShowToast = true
     }
     
+    /// Reports that mana was invested in a spell
+    ///
+    /// - Parameters:
+    ///   - spell: The spell that received the mana investment
+    ///   - amount: Amount of mana invested
     func reportManaInvested(spell: Spell, amount: Int) {
         manaInvested = (spell: spell, amount: amount)
         notificationType = .manaInvested
         shouldShowToast = true
     }
     
+    /// Reports a task completion that also triggered a level up
+    /// Shows the task completion notification first, followed by a delayed
+    /// level up notification.
+    ///
+    /// - Parameters:
+    ///   - task: The completed task
+    ///   - mana: Amount of mana earned from the task
+    ///   - school: The school that leveled up
+    ///   - level: The new achievement level reached
     func reportTaskCompletedWithLevelUp(task: Task, mana: Int, school: SchoolOfMagic, level: SchoolOfMagic.AchievementLevel) {
-        // First show task completion
         completedTask = task
         completedTaskMana = mana
         notificationType = .taskCompleted
         shouldShowToast = true
         
-        // Store level up info for delayed notification
         delayedLevelUpInfo = (school, level)
         
         // Set a timer to show level up notification after the first toast
@@ -116,7 +145,8 @@ class TaskNotificationManager: ObservableObject {
         }
     }
     
-    // Clear all task-related state after the toast is dismissed.
+    /// Clears all notification-related data after a toast is dismissed
+    /// Resets all published properties to their default state
     func clearToastData() {
         // Clear task-related data
         deletedTaskName = nil
