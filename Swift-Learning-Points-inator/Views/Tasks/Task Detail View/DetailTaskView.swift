@@ -95,10 +95,30 @@ struct DetailTaskView: View {
                     if task.isCompleted {
                         task.unmarkTask(for: user, spells: spells)
                     } else {
+                        // Before completing task, check the current level
+                        let currentLevel = user.currentLevel(for: task.school)
+                        
+                        // Complete the task
                         task.completeTaskWithBonus(for: user, spells: spells)
                         try? modelContext.save()
+                        
+                        // Calculate mana breakdown for notification
                         let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
-                        taskNotificationManager.reportTaskAction(type: .taskCompleted, task: task, mana: breakdown.total)
+                        
+                        // Check if level up occurred
+                        let newLevel = user.currentLevel(for: task.school)
+                        if newLevel.rawValue > currentLevel.rawValue {
+                            // Level up occurred, use the new method
+                            taskNotificationManager.reportTaskCompletedWithLevelUp(
+                                task: task,
+                                mana: breakdown.total,
+                                school: task.school,
+                                level: newLevel
+                            )
+                        } else {
+                            // No level up, just report task completion as before
+                            taskNotificationManager.reportTaskAction(type: .taskCompleted, task: task, mana: breakdown.total)
+                        }
                     }
                 }
             } label: {

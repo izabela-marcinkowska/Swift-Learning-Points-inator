@@ -49,6 +49,8 @@ class TaskNotificationManager: ObservableObject {
         self.toastManager = manager
     }
     
+    private var delayedLevelUpInfo: (school: SchoolOfMagic, level: SchoolOfMagic.AchievementLevel)?
+    
     // Report task actions (created, updated, deleted, completed).
     // These methods update the relevant state and trigger the corresponding toast.
     func reportTaskAction(type: NotificationType, task: Task, mana: Int? = nil) {
@@ -90,6 +92,28 @@ class TaskNotificationManager: ObservableObject {
         manaInvested = (spell: spell, amount: amount)
         notificationType = .manaInvested
         shouldShowToast = true
+    }
+    
+    func reportTaskCompletedWithLevelUp(task: Task, mana: Int, school: SchoolOfMagic, level: SchoolOfMagic.AchievementLevel) {
+        // First show task completion
+        completedTask = task
+        completedTaskMana = mana
+        notificationType = .taskCompleted
+        shouldShowToast = true
+        
+        // Store level up info for delayed notification
+        delayedLevelUpInfo = (school, level)
+        
+        // Set a timer to show level up notification after the first toast
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.5) { [weak self] in
+            guard let self = self, let levelUpInfo = self.delayedLevelUpInfo else { return }
+            
+            self.levelUpSchool = levelUpInfo.school
+            self.levelUpLevel = levelUpInfo.level
+            self.notificationType = .levelUp
+            self.shouldShowToast = true
+            self.delayedLevelUpInfo = nil
+        }
     }
     
     // Clear all task-related state after the toast is dismissed.
