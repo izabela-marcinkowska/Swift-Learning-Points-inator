@@ -22,7 +22,7 @@ struct TaskFormView: View {
     @State private var selectedSchool: SchoolOfMagic = .everydayEndeavors
     @State private var isRepeatable = false
     @State private var selectedDifficulty: TaskDifficulty = .easy
-    @State private var showDeleteAlert = false
+    @State private var deleteAlertModel: MagicalAlertModel? = nil
     
     init(task: Task? = nil, onDelete: (() -> Void)? = nil, onTaskUpdated: ((Task) -> Void)? = nil) {
         self.task = task
@@ -124,7 +124,15 @@ struct TaskFormView: View {
                     if task != nil {
                         Section {
                             Button(role: .destructive) {
-                                showDeleteAlert = true
+                                deleteAlertModel = MagicalAlertModel.confirmation(
+                                    title: "Delete Task",
+                                    message: "Are you sure you want to delete this task? This action cannot be undone.",
+                                    confirmText: "Delete",
+                                    cancelText: "Cancel",
+                                    onConfirm: {
+                                        deleteTask()
+                                    }
+                                )
                             } label: {
                                 HStack {
                                     Spacer()
@@ -156,7 +164,7 @@ struct TaskFormView: View {
                     selectedDifficulty = task.difficulty
                 }
             }
-            
+            .magicalAlert(isPresented: $deleteAlertModel)
             .toolbar {
                 ToolbarItem (placement: .topBarTrailing) {
                     Button {
@@ -171,14 +179,6 @@ struct TaskFormView: View {
                 
             }
             .navigationTitle("Edit task")
-            .alert("Delete Task", isPresented: $showDeleteAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Delete", role: .destructive) {
-                    deleteTask()
-                }
-            } message: {
-                Text("Are you sure you want to delete this task? This action cannot be undone.")
-            }
         }
     }
 }
