@@ -10,13 +10,14 @@ import SwiftData
 
 struct AddManaSheet: View {
     let spell: Spell
+    let onComplete: (SpellLevel?, Int) -> Void
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
+    @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
     
     @Query private var users: [User]
     @State private var manaToInvest: Double = 0
     
-    @State private var alertModel: MagicalAlertModel? = nil
     
     private var user: User? {
         users.first
@@ -40,9 +41,19 @@ struct AddManaSheet: View {
     
     private func investManaAction() {
         if let user = user {
+            let currentLevel = spell.currentSpellLevel
+            let amount = Int(manaToInvest)
+            
             if spell.investMana(amount: Int(manaToInvest), from: user) {
                 try? modelContext.save()
+                
                 dismiss()
+                
+                if spell.currentSpellLevel != currentLevel {
+                    onComplete(spell.currentSpellLevel, amount)
+                } else {
+                    onComplete(nil, amount)
+                }
             } else {
                 print("Failed to invest mana")
             }
@@ -101,7 +112,7 @@ struct AddManaSheet: View {
                     text: "Invest \(Int(manaToInvest)) mana",
                     isEnabled: manaToInvest > 0,
                     action: {
-                        showInvestConfirmationAlert()
+                        investManaAction()
                     }
                 )
                 
@@ -122,18 +133,5 @@ struct AddManaSheet: View {
             .background(Color("background-color"))
         }
         .presentationDetents([.height(350)])
-        .magicalAlert(isPresented: $alertModel)
-    }
-    
-    private func showInvestConfirmationAlert() {
-        alertModel = MagicalAlertModel.confirmation(
-            title: "Confirm Investment",
-            message: "Are you sure you want to invest \(Int(manaToInvest)) mana in \(spell.name)? This action cannot be undone.",
-            confirmText: "Invest",
-            cancelText: "Cancel",
-            onConfirm: {
-                investManaAction()
-            }
-        )
     }
 }

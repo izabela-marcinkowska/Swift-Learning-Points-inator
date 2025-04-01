@@ -20,6 +20,7 @@ struct TasksView: View {
     @State private var showingSheet = false
     @State private var viewMode: TaskViewMode = .bySchool
     @State private var showingFilters = false
+    @StateObject private var toastManager = ToastManager()
     
     let columns = [
         GridItem(.flexible(), spacing: 16)
@@ -78,10 +79,13 @@ struct TasksView: View {
                 }
             }
             .sheet(isPresented: $showingSheet) {
-                AddTaskWizard()
-                    .presentationDetents([.height(450)])
+                AddTaskWizard(onTaskCreated: { task in
+                    toastManager.showTaskCreated(task: task)
+                })
+                .presentationDetents([.height(450)])
             }
             .withGradientBackground()
+            .magicalToast(using: toastManager)
         }
     }
 }

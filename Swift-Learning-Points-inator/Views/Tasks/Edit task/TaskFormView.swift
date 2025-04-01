@@ -13,23 +13,29 @@ struct TaskFormView: View {
     @Environment(\.dismiss) var dismiss
     let task: Task?
     var onDelete: (() -> Void)? = nil
+    var onTaskUpdated: ((Task) -> Void)?
+    @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
+    
     
     @State var title = ""
     @State var mana = 0
     @State private var selectedSchool: SchoolOfMagic = .everydayEndeavors
     @State private var isRepeatable = false
     @State private var selectedDifficulty: TaskDifficulty = .easy
-    @State private var showDeleteAlert = false
+    @State private var deleteAlertModel: MagicalAlertModel? = nil
     
-    init(task: Task? = nil, onDelete: (() -> Void)? = nil) {
+    init(task: Task? = nil, onDelete: (() -> Void)? = nil, onTaskUpdated: ((Task) -> Void)? = nil) {
         self.task = task
         self.onDelete = onDelete
+        self.onTaskUpdated = onTaskUpdated
     }
     
     private func deleteTask() {
         if let task = task {
+            taskNotificationManager.reportTaskAction(type: .taskDeleted, task: task)
             modelContext.delete(task)
             try? modelContext.save()
+            
             dismiss()
             onDelete?()
         }
@@ -44,19 +50,23 @@ struct TaskFormView: View {
             existingTask.difficulty = selectedDifficulty
             do {
                 try modelContext.save()
+                taskNotificationManager.reportTaskAction(type: .taskUpdated, task: existingTask)
+                dismiss()
+                onTaskUpdated?(existingTask)
             } catch {
                 print("Error saving context: \(error)")
             }
         } else {
             let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable, difficulty: selectedDifficulty)
             modelContext.insert(newTask)
+            taskNotificationManager.reportTaskAction(type: .taskCreated, task: newTask)
             do {
                 try modelContext.save()
+                dismiss()
             } catch {
                 print("Error saving context: \(error)")
             }
         }
-        dismiss()
     }
     
     private var isFormValid: Bool {
@@ -114,7 +124,15 @@ struct TaskFormView: View {
                     if task != nil {
                         Section {
                             Button(role: .destructive) {
-                                showDeleteAlert = true
+                                deleteAlertModel = MagicalAlertModel.confirmation(
+                                    title: "Delete Task",
+                                    message: "Are you sure you want to delete this task? This action cannot be undone.",
+                                    confirmText: "Delete",
+                                    cancelText: "Cancel",
+                                    onConfirm: {
+                                        deleteTask()
+                                    }
+                                )
                             } label: {
                                 HStack {
                                     Spacer()
@@ -135,6 +153,7 @@ struct TaskFormView: View {
                     action: updateTask
                 )
                 .padding(.horizontal)
+                .padding(.vertical, 10)
             }
             .background(Color("background-color"))
             .onAppear {
@@ -146,7 +165,7 @@ struct TaskFormView: View {
                     selectedDifficulty = task.difficulty
                 }
             }
-            
+            .magicalAlert(isPresented: $deleteAlertModel)
             .toolbar {
                 ToolbarItem (placement: .topBarTrailing) {
                     Button {
@@ -161,14 +180,10 @@ struct TaskFormView: View {
                 
             }
             .navigationTitle("Edit task")
-            .alert("Delete Task", isPresented: $showDeleteAlert) {
-                Button("Cancel", role: .cancel) { }
-                Button("Delete", role: .destructive) {
-                    deleteTask()
-                }
-            } message: {
-                Text("Are you sure you want to delete this task? This action cannot be undone.")
-            }
+            .toolbarBackground(Color("background-color"), for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .toolbarColorScheme(.dark, for: .navigationBar)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

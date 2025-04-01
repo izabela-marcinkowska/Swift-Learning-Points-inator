@@ -18,7 +18,8 @@ struct DetailTaskView: View {
     @Environment(\.dismiss) var dismiss
     private var user: User? { users.first }
     @State private var showingEditSheet = false
-    @State private var alertModel: MagicalAlertModel? = nil
+    @EnvironmentObject private var toastManager: ToastManager
+    @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
     
     var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -94,10 +95,31 @@ struct DetailTaskView: View {
                     if task.isCompleted {
                         task.unmarkTask(for: user, spells: spells)
                     } else {
+                        // Before completing task, check the current level
+                        let currentLevel = user.currentLevel(for: task.school)
+                        
+                        // Complete the task
                         task.completeTaskWithBonus(for: user, spells: spells)
-                        showCompletionAlert()
+                        try? modelContext.save()
+                        
+                        // Calculate mana breakdown for notification
+                        let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
+                        
+                        // Check if level up occurred
+                        let newLevel = user.currentLevel(for: task.school)
+                        if newLevel.rawValue > currentLevel.rawValue {
+                            // Level up occurred, use the new method
+                            taskNotificationManager.reportTaskCompletedWithLevelUp(
+                                task: task,
+                                mana: breakdown.total,
+                                school: task.school,
+                                level: newLevel
+                            )
+                        } else {
+                            // No level up, just report task completion as before
+                            taskNotificationManager.reportTaskAction(type: .taskCompleted, task: task, mana: breakdown.total)
+                        }
                     }
-                    try? modelContext.save()
                 }
             } label: {
                 Text(task.isCompleted ? "Unmark Task" : "Complete Task")
@@ -110,7 +132,6 @@ struct DetailTaskView: View {
             .padding(.bottom, 8)
         }
         .padding(.vertical)
-        .magicalAlert(isPresented: $alertModel)
         .frame(maxWidth: .infinity)
         .withGradientBackground()
         .toolbar {
@@ -127,19 +148,6 @@ struct DetailTaskView: View {
         }
     }
     
-    private func showCompletionAlert() {
-        let manaBreakdown = task.calculateManaBreakdown(for: user!, spells: spells)
-        
-        alertModel = MagicalAlertModel(
-            title: "Task Completed!",
-            message: "You've earned \(manaBreakdown.total) mana for completing \(task.name).",
-            primaryButtonText: "Great!",
-            secondaryButtonText: nil,
-            primaryAction: {},
-            secondaryAction: nil,
-            icon: .image(name: task.school.imageName)
-        )
-    }
 }
 
 struct TaskCompletionButtonStyle: ButtonStyle {
