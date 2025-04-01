@@ -153,6 +153,7 @@ struct TaskFormView: View {
                     action: updateTask
                 )
                 .padding(.horizontal)
+                .padding(.vertical, 10)
             }
             .background(Color("background-color"))
             .onAppear {
@@ -179,6 +180,10 @@ struct TaskFormView: View {
                 
             }
             .navigationTitle("Edit task")
+            .toolbarBackground(Color("background-color"), for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+                    .toolbarColorScheme(.dark, for: .navigationBar)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
