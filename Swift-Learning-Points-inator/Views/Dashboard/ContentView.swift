@@ -11,12 +11,12 @@ import SwiftData
 struct ContentView: View {
     @Query private var users: [User]
     private var user: User? { users.first }
-    @EnvironmentObject private var taskDeletionManager: TaskDeletionManager
-        @StateObject private var toastManager = ToastManager()
-    @State private var showTestToast = false
     
+    // Both managers are injected via EnvironmentObject
+    @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
+    @EnvironmentObject private var toastManager: ToastManager
+
     var body: some View {
-        
         TabView {
             DashboardView()
                 .tabItem {
@@ -53,66 +53,40 @@ struct ContentView: View {
                 }
         }
         .magicalToast(using: toastManager)
-        .onChange(of: taskDeletionManager.shouldShowToast) { oldValue, newValue in
-            if newValue == true {
-                if let name = taskDeletionManager.deletedTaskName,
-                   let school = taskDeletionManager.deletedTaskSchool {
-                    print("ContentView showing toast for: \(name)")
+        .onChange(of: taskNotificationManager.shouldShowToast) { oldValue, newValue in
+            if newValue {
+                if let task = taskNotificationManager.createdTask {
+                    toastManager.showTaskCreated(task: task)
+                } else if let task = taskNotificationManager.updatedTask {
+                    toastManager.showTaskUpdated(task: task)
+                } else if let name = taskNotificationManager.deletedTaskName,
+                          let school = taskNotificationManager.deletedTaskSchool {
                     toastManager.showTaskDeleted(name: name, school: school)
-                    taskDeletionManager.clearDeletedTask()
+                } else if let task = taskNotificationManager.completedTask {
+                    toastManager.showTaskCompletion(task: task, mana: taskNotificationManager.completedTaskMana)
+                } else if let school = taskNotificationManager.levelUpSchool,
+                          let level = taskNotificationManager.levelUpLevel {
+                    toastManager.showLevelUp(school: school, level: level)
                 }
+                taskNotificationManager.clearTaskData()
             }
         }
-        .onChange(of: taskDeletionManager.createdTask) { oldValue, newValue in
-            if let task = newValue {
-                print("ContentView showing toast for created task: \(task.name)")
-                toastManager.showTaskCreated(task: task)
-                taskDeletionManager.clearCreatedTask()
-            }
-        }
-        .onChange(of: taskDeletionManager.hasCompletedTask) { oldValue, newValue in
-            if newValue,
-               let task = taskDeletionManager.completedTask {
-                print("ContentView showing toast for completed task: \(task.name)")
-                toastManager.showTaskCompletion(task: task, mana: taskDeletionManager.completedTaskMana)
-                taskDeletionManager.clearCompletedTask()
-            }
-        }
-
-        .onChange(of: taskDeletionManager.hasLevelUp) { oldValue, newValue in
-            if newValue,
-               let school = taskDeletionManager.levelUpSchool,
-               let level = taskDeletionManager.levelUpLevel {
-                print("ContentView showing toast for level up: \(school.rawValue)")
-                toastManager.showLevelUp(school: school, level: level)
-                taskDeletionManager.clearTaskLevelUp()
-            }
-        }
-        
     }
-}
-
-#Preview {
-    ContentView()
 }
 
 struct ScaledImage: View {
     let name: String
     let size: CGSize
     
-    var body: Image {
+    var body: some View {
         let uiImage = resizedImage(named: self.name, for: self.size) ?? UIImage()
-        
         return Image(uiImage: uiImage.withRenderingMode(.alwaysOriginal))
     }
     
     func resizedImage(named: String, for size: CGSize) -> UIImage? {
-        guard let image = UIImage(named: named) else {
-            return nil
-        }
-
+        guard let image = UIImage(named: named) else { return nil }
         let renderer = UIGraphicsImageRenderer(size: size)
-        return renderer.image { (context) in
+        return renderer.image { context in
             image.draw(in: CGRect(origin: .zero, size: size))
         }
     }

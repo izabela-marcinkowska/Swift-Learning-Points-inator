@@ -14,7 +14,8 @@ struct TaskFormView: View {
     let task: Task?
     var onDelete: (() -> Void)? = nil
     var onTaskUpdated: ((Task) -> Void)?
-    @EnvironmentObject private var taskDeletionManager: TaskDeletionManager
+    @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
+
     
     @State var title = ""
     @State var mana = 0
@@ -30,16 +31,16 @@ struct TaskFormView: View {
     }
     
     private func deleteTask() {
-        if let task = task {
-            print("Deleting task: \(task.name)")
-            taskDeletionManager.reportTaskDeleted(name: task.name, school: task.school)
-            print("Deletion info set")
-            modelContext.delete(task)
-            try? modelContext.save()
-            dismiss()
-            onDelete?()
+            if let task = task {
+                print("Deleting task: \(task.name)")
+                taskNotificationManager.reportTaskAction(type: .deleted, task: task)
+                print("Deletion info set")
+                modelContext.delete(task)
+                try? modelContext.save()
+                dismiss()
+                onDelete?()
+            }
         }
-    }
     
     private func updateTask() {
         if let existingTask = task {
@@ -50,6 +51,7 @@ struct TaskFormView: View {
             existingTask.difficulty = selectedDifficulty
             do {
                 try modelContext.save()
+                taskNotificationManager.reportTaskAction(type: .updated, task: existingTask)
                 dismiss()
                 onTaskUpdated?(existingTask)
             } catch {

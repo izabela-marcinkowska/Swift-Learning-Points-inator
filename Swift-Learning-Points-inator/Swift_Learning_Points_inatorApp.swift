@@ -11,7 +11,8 @@ import SwiftData
 @main
 struct Swift_Learning_Points_inatorApp: App {
     let container: ModelContainer
-    @StateObject private var taskDeletionManager = TaskDeletionManager()
+    @StateObject private var taskNotificationManager = TaskNotificationManager()
+    @StateObject private var toastManager = ToastManager()
     
     init() {
         let lightAppearance = UITabBarAppearance()
@@ -158,8 +159,13 @@ struct Swift_Learning_Points_inatorApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environmentObject(taskNotificationManager)
+                .environmentObject(toastManager)
+                .onAppear {
+                    // Now both state objects are installed and ready.
+                    taskNotificationManager.setToastManager(manager: toastManager)
+                }
         }
         .modelContainer(container)
-        .environmentObject(taskDeletionManager)
     }
 }

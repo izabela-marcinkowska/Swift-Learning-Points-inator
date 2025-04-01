@@ -18,8 +18,8 @@ struct DetailTaskView: View {
     @Environment(\.dismiss) var dismiss
     private var user: User? { users.first }
     @State private var showingEditSheet = false
-    @StateObject private var toastManager = ToastManager()
-    @EnvironmentObject private var taskDeletionManager: TaskDeletionManager
+    @EnvironmentObject private var toastManager: ToastManager
+    @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
     
     var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -95,21 +95,10 @@ struct DetailTaskView: View {
                     if task.isCompleted {
                         task.unmarkTask(for: user, spells: spells)
                     } else {
-                        let previousLevel = user.schoolProgress.first(where: {$0.school == task.school})?.currentLevel
-                        
                         task.completeTaskWithBonus(for: user, spells: spells)
                         try? modelContext.save()
-                        
-                        if let progress = user.schoolProgress.first(where: { $0.school == task.school }),
-                           let prevLevel = previousLevel,
-                           progress.currentLevel.rawValue > prevLevel.rawValue {
-                            // Report level up
-                            taskDeletionManager.reportTaskLevelUp(school: task.school, level: progress.currentLevel)
-                        } else {
-                            // Report regular completion
-                            let manaBreakdown = task.calculateManaBreakdown(for: user, spells: spells)
-                            taskDeletionManager.reportTaskCompleted(task: task, mana: manaBreakdown.total)
-                        }
+                        let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
+                        taskNotificationManager.reportTaskAction(type: .completed, task: task, mana: breakdown.total)
                     }
                 }
             } label: {
@@ -132,12 +121,9 @@ struct DetailTaskView: View {
                 }
             }
         }
-        .magicalToast(using: toastManager)
         .sheet(isPresented: $showingEditSheet) {
             TaskFormView(task: task, onDelete: {
                 dismiss()
-            }, onTaskUpdated: { updatedTask in
-                toastManager.showTaskUpdated(task: updatedTask)
             })
         }
     }
