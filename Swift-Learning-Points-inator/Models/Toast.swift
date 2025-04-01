@@ -110,4 +110,15 @@ class ToastManager: ObservableObject {
         )
     }
     
+    // for delete task
+    func showTaskDeleted(name: String, school: SchoolOfMagic) {
+        print("Showing delete toast for: \(name)")
+        show(
+            title: "Task Deleted",
+            message: "\(name) has been deleted.",
+            icon: .schoolIcon(school: school),
+            duration: 3.0
+        )
+    }
+    
 }

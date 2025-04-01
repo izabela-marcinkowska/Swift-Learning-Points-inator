@@ -19,6 +19,7 @@ struct DetailTaskView: View {
     private var user: User? { users.first }
     @State private var showingEditSheet = false
     @StateObject private var toastManager = ToastManager()
+    @EnvironmentObject private var taskDeletionManager: TaskDeletionManager
     
     var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -102,12 +103,12 @@ struct DetailTaskView: View {
                         if let progress = user.schoolProgress.first(where: { $0.school == task.school }),
                            let prevLevel = previousLevel,
                            progress.currentLevel.rawValue > prevLevel.rawValue {
-                            // Show level up toast
-                            toastManager.showLevelUp(school: task.school, level: progress.currentLevel)
+                            // Report level up
+                            taskDeletionManager.reportTaskLevelUp(school: task.school, level: progress.currentLevel)
                         } else {
-                            // Show regular completion toast
+                            // Report regular completion
                             let manaBreakdown = task.calculateManaBreakdown(for: user, spells: spells)
-                            toastManager.showTaskCompletion(task: task, mana: manaBreakdown.total)
+                            taskDeletionManager.reportTaskCompleted(task: task, mana: manaBreakdown.total)
                         }
                     }
                 }

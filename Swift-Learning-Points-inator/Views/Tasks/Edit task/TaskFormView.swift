@@ -14,6 +14,7 @@ struct TaskFormView: View {
     let task: Task?
     var onDelete: (() -> Void)? = nil
     var onTaskUpdated: ((Task) -> Void)?
+    @EnvironmentObject private var taskDeletionManager: TaskDeletionManager
     
     @State var title = ""
     @State var mana = 0
@@ -30,6 +31,9 @@ struct TaskFormView: View {
     
     private func deleteTask() {
         if let task = task {
+            print("Deleting task: \(task.name)")
+            taskDeletionManager.reportTaskDeleted(name: task.name, school: task.school)
+            print("Deletion info set")
             modelContext.delete(task)
             try? modelContext.save()
             dismiss()

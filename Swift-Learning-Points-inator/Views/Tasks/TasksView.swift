@@ -21,6 +21,7 @@ struct TasksView: View {
     @State private var viewMode: TaskViewMode = .bySchool
     @State private var showingFilters = false
     @StateObject private var toastManager = ToastManager()
+    @EnvironmentObject private var taskDeletionManager: TaskDeletionManager
     
     let columns = [
         GridItem(.flexible(), spacing: 16)

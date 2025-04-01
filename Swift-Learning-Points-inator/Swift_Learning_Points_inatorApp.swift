@@ -11,6 +11,7 @@ import SwiftData
 @main
 struct Swift_Learning_Points_inatorApp: App {
     let container: ModelContainer
+    @StateObject private var taskDeletionManager = TaskDeletionManager()
     
     init() {
         let lightAppearance = UITabBarAppearance()
@@ -157,6 +158,8 @@ struct Swift_Learning_Points_inatorApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-        }.modelContainer(container)
+        }
+        .modelContainer(container)
+        .environmentObject(taskDeletionManager)
     }
 }

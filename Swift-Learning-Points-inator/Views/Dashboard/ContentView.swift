@@ -11,6 +11,9 @@ import SwiftData
 struct ContentView: View {
     @Query private var users: [User]
     private var user: User? { users.first }
+    @EnvironmentObject private var taskDeletionManager: TaskDeletionManager
+        @StateObject private var toastManager = ToastManager()
+    @State private var showTestToast = false
     
     var body: some View {
         
@@ -49,6 +52,43 @@ struct ContentView: View {
                     Text("Profile")
                 }
         }
+        .magicalToast(using: toastManager)
+        .onChange(of: taskDeletionManager.shouldShowToast) { oldValue, newValue in
+            if newValue == true {
+                if let name = taskDeletionManager.deletedTaskName,
+                   let school = taskDeletionManager.deletedTaskSchool {
+                    print("ContentView showing toast for: \(name)")
+                    toastManager.showTaskDeleted(name: name, school: school)
+                    taskDeletionManager.clearDeletedTask()
+                }
+            }
+        }
+        .onChange(of: taskDeletionManager.createdTask) { oldValue, newValue in
+            if let task = newValue {
+                print("ContentView showing toast for created task: \(task.name)")
+                toastManager.showTaskCreated(task: task)
+                taskDeletionManager.clearCreatedTask()
+            }
+        }
+        .onChange(of: taskDeletionManager.hasCompletedTask) { oldValue, newValue in
+            if newValue,
+               let task = taskDeletionManager.completedTask {
+                print("ContentView showing toast for completed task: \(task.name)")
+                toastManager.showTaskCompletion(task: task, mana: taskDeletionManager.completedTaskMana)
+                taskDeletionManager.clearCompletedTask()
+            }
+        }
+
+        .onChange(of: taskDeletionManager.hasLevelUp) { oldValue, newValue in
+            if newValue,
+               let school = taskDeletionManager.levelUpSchool,
+               let level = taskDeletionManager.levelUpLevel {
+                print("ContentView showing toast for level up: \(school.rawValue)")
+                toastManager.showLevelUp(school: school, level: level)
+                taskDeletionManager.clearTaskLevelUp()
+            }
+        }
+        
     }
 }
 
