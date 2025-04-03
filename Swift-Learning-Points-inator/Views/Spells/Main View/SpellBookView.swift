@@ -45,6 +45,7 @@ struct SpellBookView: View {
                 )
             )
         }
+        .tint(Color("accent-color"))
     }
 }
 

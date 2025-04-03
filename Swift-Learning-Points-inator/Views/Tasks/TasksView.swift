@@ -87,5 +87,6 @@ struct TasksView: View {
             .withGradientBackground()
             .magicalToast(using: toastManager)
         }
+        .tint(Color("accent-color"))
     }
 }

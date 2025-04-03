@@ -106,5 +106,6 @@ struct UserView: View {
                 Text("Please enter your name")
             }
         }
+        .tint(Color("accent-color"))
     }
 }
