@@ -29,6 +29,4 @@ struct OnboardingWelcomeView: View {
     }
 }
 
-#Preview {
-    OnboardingWelcomeView()
-}
+

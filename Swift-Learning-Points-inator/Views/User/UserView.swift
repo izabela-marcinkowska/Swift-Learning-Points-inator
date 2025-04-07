@@ -15,6 +15,7 @@ struct UserView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var showAlert: Bool = false
     @State private var newName = ""
+    @State private var showOnboarding: Bool = false
     
     private func submit () {
         if let user = user {
@@ -49,6 +50,16 @@ struct UserView: View {
                                 title: "Notifications",
                                 action: {
                                     // Handle notifications setting
+                                }
+                            )
+                            
+                            SettingsRowItem(
+                                icon: "magic-book",
+                                title: "Start Onboarding",
+                                action: {
+                                    let manager = OnboardingManager()
+                                    manager.resetOmboarding()
+                                    showOnboarding.toggle()
                                 }
                             )
                         }
@@ -98,6 +109,9 @@ struct UserView: View {
             .frame(maxWidth: .infinity)
             .withGradientBackground()
             .navigationTitle("Profile")
+            .fullScreenCover(isPresented: $showOnboarding) {
+                OnboardingContainerView()
+            }
             .alert("Enter your name", isPresented: $showAlert) {
                 TextField("Name", text: $newName)
                 Button("Cancel", role: .cancel) {}
