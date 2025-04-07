@@ -32,6 +32,7 @@ struct OnboardingContainerView: View {
                 VStack {
                     // Page content
                     Spacer()
+                    
                     ZStack {
                         if currentPage == 0 {
                             OnboardingWelcomeView()
@@ -45,7 +46,20 @@ struct OnboardingContainerView: View {
                                     insertion: .move(edge: .trailing),
                                     removal: .move(edge: .leading)
                                 ))
+                        } else if currentPage == 2 {
+                            OnboardingSpellsView()
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing),
+                                    removal: .move(edge: .leading)
+                                ))
+                        } else if currentPage == 3 {
+                            OnboardingProgressionView()
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing),
+                                    removal: .move(edge: .leading)
+                                ))
                         }
+                        // We'll add the remaining pages later
                     }
                     .animation(.easeInOut(duration: 0.3), value: currentPage)
                     
