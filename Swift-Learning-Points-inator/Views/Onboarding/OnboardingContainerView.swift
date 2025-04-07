@@ -29,6 +29,23 @@ struct OnboardingContainerView: View {
             
             VStack {
                 // Page content
+                ZStack {
+                    if currentPage == 0 {
+                        OnboardingWelcomeView()
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
+                    } else if currentPage == 1 {
+                        OnboardingTasksView()
+                            .transition(.asymmetric(
+                                insertion: .move(edge: .trailing),
+                                removal: .move(edge: .leading)
+                            ))
+                    }
+                        .animation(.easeInOut(duration: 0.3), value: currentPage)
+                }
+                
                 Spacer()
                 HStack (spacing: 16) {
                     if currentPage > 0 {
