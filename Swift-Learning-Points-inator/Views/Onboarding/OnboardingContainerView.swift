@@ -29,35 +29,41 @@ struct OnboardingContainerView: View {
             
             VStack {
                 // Page content
-                
-                HStack {
-                    Button(action: {
-                        withAnimation {
-                            currentPage -= 1
-                        }
-                    }) {
-                        Text("Back")
-                            .padding()
-                            .opacity(currentPage > 0 ? 1 : 0)
-                    }
-                    .disabled(currentPage == 0)
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        withAnimation {
-                            if currentPage < pageCount - 1 {
-                                currentPage += 1
-                            } else {
-                                onboardingManager.completeOmboardning()
+                Spacer()
+                HStack (spacing: 16) {
+                    if currentPage > 0 {
+                        Button {
+                            withAnimation {
+                                currentPage -= 1
+                            }
+                        } label: {
+                            HStack {
+                                Image(systemName: "chevron.left")
+                                Text("Back")
                             }
                         }
-                    }) {
-                        Text(currentPage < pageCount - 1 ? "Next" : "Get started")
-                            .padding()
+                        .buttonStyle(SecondaryAlertButtonStyle())
+                        .frame(maxWidth: .infinity)
                     }
+                    
+                    
+                    MagicalButton(
+                        text: currentPage < pageCount - 1 ? "Next" : "Get Started",
+                        action: {
+                            withAnimation {
+                                if currentPage < pageCount - 1 {
+                                    currentPage += 1
+                                } else {
+                                    // Complete onboarding
+                                    onboardingManager.completeOnboardning()
+                                }
+                            }
+                        }
+                    )
+                    .frame(maxWidth: .infinity)
                 }
-                .padding()
+                .padding(.horizontal)
+                .padding(.bottom, 50)
             }
         }
     }

@@ -16,7 +16,7 @@ class OnboardingManager: ObservableObject {
         self.hasCompletedOnboardning = UserDefaults.standard.bool(forKey: hasCompletedOnboardingKey)
     }
     
-    func completeOmboardning() {
+    func completeOnboardning() {
         hasCompletedOnboardning = true
         UserDefaults.standard.set(true, forKey: hasCompletedOnboardingKey)
     }
