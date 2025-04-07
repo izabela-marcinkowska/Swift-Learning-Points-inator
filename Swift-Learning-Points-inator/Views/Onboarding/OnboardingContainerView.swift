@@ -43,8 +43,8 @@ struct OnboardingContainerView: View {
                                 removal: .move(edge: .leading)
                             ))
                     }
-                        .animation(.easeInOut(duration: 0.3), value: currentPage)
                 }
+                .animation(.easeInOut(duration: 0.3), value: currentPage)
                 
                 Spacer()
                 HStack (spacing: 16) {
