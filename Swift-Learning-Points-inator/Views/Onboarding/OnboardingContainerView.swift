@@ -58,8 +58,19 @@ struct OnboardingContainerView: View {
                                     insertion: .move(edge: .trailing),
                                     removal: .move(edge: .leading)
                                 ))
+                        } else if currentPage == 4 {
+                            OnboardingNameInputView(userName: $userName)
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing),
+                                    removal: .move(edge: .leading)
+                                ))
+                        } else if currentPage == 5 {
+                            OnboardingCompletionView(userName: userName)
+                                .transition(.asymmetric(
+                                    insertion: .move(edge: .trailing),
+                                    removal: .move(edge: .leading)
+                                ))
                         }
-                        // We'll add the remaining pages later
                     }
                     .animation(.easeInOut(duration: 0.3), value: currentPage)
                     
