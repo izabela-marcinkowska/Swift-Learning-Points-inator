@@ -6,14 +6,31 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct OnboardingContainerView: View {
     @StateObject private var onboardingManager = OnboardingManager()
+    @Environment(\.modelContext) private var modelContext
     @State private var currentPage = 0
     @State private var userName: String = ""
     @Environment(\.dismiss) private var dismiss
     
     private let  pageCount = 6
+    
+    private func saveUserName() {
+        guard !userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        
+        let descriptor = FetchDescriptor<User>()
+        do {
+            let users = try modelContext.fetch(descriptor)
+            if let user = users.first {
+                user.name = userName
+                try modelContext.save()
+            }
+        } catch {
+            print("Error saving user name: \(error)")
+        }
+    }
     
     var body: some View {
         NavigationStack {
@@ -84,13 +101,17 @@ struct OnboardingContainerView: View {
                         }
                     }
                     .padding(.bottom, 20)
-                        
-                        MagicalButton(
-                            text: currentPage < pageCount - 1 ? "Next" : "Get Started",
-                            action: {
-                                withAnimation {
-                                    if currentPage < pageCount - 1 {
-                                        currentPage += 1
+                    
+                    MagicalButton(
+                        text: currentPage < pageCount - 1 ? "Next" : "Get Started",
+                        action: {
+                            withAnimation {
+                                if currentPage < pageCount - 1 {
+                                    if currentPage == 4 && !userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                                        // Save user name to your User model
+                                        saveUserName()
+                                    }
+                                    currentPage += 1
                                     } else {
                                         // Complete onboarding
                                         onboardingManager.completeOnboardning()
