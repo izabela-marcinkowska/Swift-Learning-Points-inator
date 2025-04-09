@@ -15,6 +15,7 @@ struct OnboardingContainerView: View {
     @State private var userName: String = ""
     @Environment(\.dismiss) private var dismiss
     @State private var movingForward = true
+    @State private var selectedGender: UserGender = .female
     
     private let  pageCount = 6
     
@@ -44,9 +45,9 @@ struct OnboardingContainerView: View {
         case 3:
             return AnyView(OnboardingProgressionView().zIndex(1))
         case 4:
-            return AnyView(OnboardingNameInputView(userName: $userName).zIndex(1))
+            return AnyView(OnboardingNameInputView(userName: $userName, selectedGender: $selectedGender).zIndex(1))
         case 5:
-            return AnyView(OnboardingCompletionView(userName: userName).zIndex(1))
+            return AnyView(OnboardingCompletionView(userName: userName, gender: selectedGender).zIndex(1))
         default:
             return AnyView(EmptyView())
         }
