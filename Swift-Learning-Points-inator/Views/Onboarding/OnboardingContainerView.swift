@@ -14,6 +14,7 @@ struct OnboardingContainerView: View {
     @State private var currentPage = 0
     @State private var userName: String = ""
     @Environment(\.dismiss) private var dismiss
+    @State private var movingForward = true
     
     private let  pageCount = 6
     
@@ -29,6 +30,25 @@ struct OnboardingContainerView: View {
             }
         } catch {
             print("Error saving user name: \(error)")
+        }
+    }
+    
+    var currentOnboardingView: some View {
+        switch currentPage {
+        case 0:
+            return AnyView(OnboardingWelcomeView().zIndex(1))
+        case 1:
+            return AnyView(OnboardingTasksView().zIndex(1))
+        case 2:
+            return AnyView(OnboardingSpellsView().zIndex(1))
+        case 3:
+            return AnyView(OnboardingProgressionView().zIndex(1))
+        case 4:
+            return AnyView(OnboardingNameInputView(userName: $userName).zIndex(1))
+        case 5:
+            return AnyView(OnboardingCompletionView(userName: userName).zIndex(1))
+        default:
+            return AnyView(EmptyView())
         }
     }
     
@@ -50,46 +70,15 @@ struct OnboardingContainerView: View {
                     // Page content
                     Spacer()
                     
-                    ZStack {
-                        if currentPage == 0 {
-                            OnboardingWelcomeView()
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .trailing),
-                                    removal: .move(edge: .leading)
-                                ))
-                        } else if currentPage == 1 {
-                            OnboardingTasksView()
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .trailing),
-                                    removal: .move(edge: .leading)
-                                ))
-                        } else if currentPage == 2 {
-                            OnboardingSpellsView()
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .trailing),
-                                    removal: .move(edge: .leading)
-                                ))
-                        } else if currentPage == 3 {
-                            OnboardingProgressionView()
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .trailing),
-                                    removal: .move(edge: .leading)
-                                ))
-                        } else if currentPage == 4 {
-                            OnboardingNameInputView(userName: $userName)
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .trailing),
-                                    removal: .move(edge: .leading)
-                                ))
-                        } else if currentPage == 5 {
-                            OnboardingCompletionView(userName: userName)
-                                .transition(.asymmetric(
-                                    insertion: .move(edge: .trailing),
-                                    removal: .move(edge: .leading)
-                                ))
-                        }
-                    }
-                    .animation(.easeInOut(duration: 0.3), value: currentPage)
+                    
+                    currentOnboardingView
+                        .id(currentPage)
+                        .transition(.asymmetric(
+                            insertion: movingForward ? .move(edge: .trailing) : .move(edge: .leading),
+                            removal: movingForward ? .move(edge: .leading) : .move(edge: .trailing)
+                        ))
+                        .animation(.easeInOut(duration: 0.3), value: currentPage)
+                    
                     
                     Spacer()
                     
@@ -104,22 +93,23 @@ struct OnboardingContainerView: View {
                     
                     MagicalButton(
                         text: currentPage < pageCount - 1 ? "Next" : "Get Started",
+                        isEnabled: currentPage != 4 || !userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
                         action: {
+                            movingForward = true
                             withAnimation {
                                 if currentPage < pageCount - 1 {
-                                    if currentPage == 4 && !userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                                        // Save user name to your User model
-                                        saveUserName()
-                                    }
-                                    currentPage += 1
-                                    } else {
-                                        // Complete onboarding
-                                        onboardingManager.completeOnboardning()
-                                        dismiss()
-                                    }
+                                            saveUserName() // Perform the save _before_ the animated transition.
+                                            withAnimation {
+                                                currentPage += 1
+                                            }
+                                } else {
+                                    // Complete onboarding
+                                    onboardingManager.completeOnboardning()
+                                    dismiss()
                                 }
                             }
-                        )
+                        }
+                    )
                     .padding(.horizontal)
                     .padding(.bottom, 50)
                 }
@@ -128,9 +118,11 @@ struct OnboardingContainerView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if currentPage > 0 {
                         Button {
+                            movingForward = false    // Update the flag immediately
                             withAnimation {
-                                currentPage -= 1
+                                currentPage -= 1      // Then animate the page change
                             }
+                            print("Moving forward? \(movingForward)")
                         } label: {
                             Image(systemName: "chevron.left")
                                 .tint(Color("accent-color"))
