@@ -13,6 +13,7 @@ struct Swift_Learning_Points_inatorApp: App {
     let container: ModelContainer
     @StateObject private var taskNotificationManager = TaskNotificationManager()
     @StateObject private var toastManager = ToastManager()
+    @StateObject private var onboardingManager = OnboardingManager()
     
     init() {
         let lightAppearance = UITabBarAppearance()
@@ -161,8 +162,8 @@ struct Swift_Learning_Points_inatorApp: App {
             ContentView()
                 .environmentObject(taskNotificationManager)
                 .environmentObject(toastManager)
+                .environmentObject(onboardingManager)
                 .onAppear {
-                    // Now both state objects are installed and ready.
                     taskNotificationManager.setToastManager(manager: toastManager)
                 }
         }

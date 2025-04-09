@@ -14,6 +14,7 @@ struct ContentView: View {
     
     @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
     @EnvironmentObject private var toastManager: ToastManager
+    @EnvironmentObject private var onboardingManager: OnboardingManager
 
     var body: some View {
         TabView {
@@ -52,6 +53,17 @@ struct ContentView: View {
                 }
         }
         .magicalToast(using: toastManager)
+                .fullScreenCover(isPresented: Binding(
+                    get: { !onboardingManager.hasCompletedOnboardning },
+                    set: { newValue in
+                        if newValue == false {
+                            onboardingManager.completeOnboardning()
+                        }
+                    }
+                )) {
+                    OnboardingContainerView()
+                        .environmentObject(onboardingManager)
+                }
         .onChange(of: taskNotificationManager.shouldShowToast) { oldValue, newValue in
             if newValue {
                 switch taskNotificationManager.notificationType {
