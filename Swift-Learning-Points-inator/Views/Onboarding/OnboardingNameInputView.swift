@@ -26,17 +26,26 @@ struct OnboardingNameInputView: View {
             Text("Tell us what to call you, future magic coder!")
                 .font(.body)
                 .multilineTextAlignment(.center)
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal)
             
-            TextField("Enter your name", text: $userName)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding(.horizontal, 40)
-                .focused($isNameFieldFocused)
-                .onAppear {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        isNameFieldFocused = true
-                    }
-                }
+            VStack(alignment: .leading, spacing: 8) {
+                            TextField("Enter your name", text: $userName)
+                                .padding()
+                                .background(Color("card-background"))
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color.purple.opacity(0.2), lineWidth: 1)
+                                )
+                                .focused($isNameFieldFocused)
+                        }
+                        .padding(.horizontal, 40)
+                        .onAppear {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                isNameFieldFocused = true
+                            }
+                        }
             
         }
         .padding()
