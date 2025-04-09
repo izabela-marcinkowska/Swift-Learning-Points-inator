@@ -9,10 +9,11 @@ import SwiftUI
 
 struct OnboardingCompletionView: View {
     let userName: String
+    let gender: UserGender
     
     var body: some View {
         VStack (spacing: 30) {
-            Image("witchexample")
+            Image(gender.avatarName)
                 .resizable()
                 .scaledToFit()
                 .frame(height: 180)

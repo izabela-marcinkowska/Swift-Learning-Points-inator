@@ -19,18 +19,21 @@ struct OnboardingContainerView: View {
     
     private let  pageCount = 6
     
-    private func saveUserName() {
-        guard !userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+    private func saveUserInfo() {
+        // Skip if name is empty
+        let trimmedName = userName.trimmingCharacters(in: .whitespacesAndNewlines)
+        if trimmedName.isEmpty { return }
         
         let descriptor = FetchDescriptor<User>()
         do {
             let users = try modelContext.fetch(descriptor)
             if let user = users.first {
-                user.name = userName
+                user.name = trimmedName
+                user.gender = selectedGender
                 try modelContext.save()
             }
         } catch {
-            print("Error saving user name: \(error)")
+            print("Error saving user info: \(error)")
         }
     }
     
@@ -99,7 +102,7 @@ struct OnboardingContainerView: View {
                             movingForward = true
                             withAnimation {
                                 if currentPage < pageCount - 1 {
-                                            saveUserName() // Perform the save _before_ the animated transition.
+                                    saveUserInfo() // Perform the save _before_ the animated transition.
                                             withAnimation {
                                                 currentPage += 1
                                             }

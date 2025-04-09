@@ -46,7 +46,7 @@ struct DashboardView: View {
                         .opacity(0.3)
                     
                     // Main witch image
-                    Image("witchexample")
+                    Image(user?.gender.avatarName ?? "female-avatar")
                         .resizable()
                         .scaledToFit()
                         .frame(maxHeight: 180)
