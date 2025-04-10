@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 
 struct OnboardingContainerView: View {
-    @StateObject private var onboardingManager = OnboardingManager()
+    @EnvironmentObject var onboardingManager: OnboardingManager
     @Environment(\.modelContext) private var modelContext
     @State private var currentPage = 0
     @State private var userName: String = ""
@@ -20,20 +20,17 @@ struct OnboardingContainerView: View {
     private let  pageCount = 6
     
     private func saveUserInfo() {
-        // Skip if name is empty
-        let trimmedName = userName.trimmingCharacters(in: .whitespacesAndNewlines)
-        if trimmedName.isEmpty { return }
+        guard !userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         
         let descriptor = FetchDescriptor<User>()
         do {
             let users = try modelContext.fetch(descriptor)
             if let user = users.first {
-                user.name = trimmedName
-                user.gender = selectedGender
+                user.name = userName
                 try modelContext.save()
             }
         } catch {
-            print("Error saving user info: \(error)")
+            print("Error saving user name: \(error)")
         }
     }
     

@@ -53,17 +53,17 @@ struct ContentView: View {
                 }
         }
         .magicalToast(using: toastManager)
-                .fullScreenCover(isPresented: Binding(
-                    get: { !onboardingManager.hasCompletedOnboardning },
-                    set: { newValue in
-                        if newValue == false {
-                            onboardingManager.completeOnboardning()
-                        }
-                    }
-                )) {
-                    OnboardingContainerView()
-                        .environmentObject(onboardingManager)
+        .fullScreenCover(isPresented: Binding(
+            get: { !onboardingManager.hasCompletedOnboardning },
+            set: { newValue in
+                if newValue == false {
+                    onboardingManager.completeOnboardning()
                 }
+            }
+        )) {
+            OnboardingContainerView()
+                .environmentObject(onboardingManager)
+        }
         .onChange(of: taskNotificationManager.shouldShowToast) { oldValue, newValue in
             if newValue {
                 switch taskNotificationManager.notificationType {

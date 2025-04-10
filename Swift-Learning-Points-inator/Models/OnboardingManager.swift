@@ -8,21 +8,23 @@
 import Foundation
 
 class OnboardingManager: ObservableObject {
-    @Published var hasCompletedOnboardning: Bool
+    private let onboardingCompletedKey = "hasCompletedOnboarding"
     
-    private let hasCompletedOnboardingKey = "hasCompletedOnboarding"
+    @Published var hasCompletedOnboardning: Bool {
+            didSet {
+                UserDefaults.standard.set(hasCompletedOnboardning, forKey: onboardingCompletedKey)
+            }
+        }
     
     init() {
-        self.hasCompletedOnboardning = UserDefaults.standard.bool(forKey: hasCompletedOnboardingKey)
+        self.hasCompletedOnboardning = UserDefaults.standard.bool(forKey: onboardingCompletedKey)
     }
     
     func completeOnboardning() {
         hasCompletedOnboardning = true
-        UserDefaults.standard.set(true, forKey: hasCompletedOnboardingKey)
     }
     
     func resetOmboarding() {
         hasCompletedOnboardning = false
-        UserDefaults.standard.set(false, forKey: hasCompletedOnboardingKey)
     }
 }
