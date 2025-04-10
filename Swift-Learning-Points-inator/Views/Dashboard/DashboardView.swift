@@ -70,10 +70,15 @@ struct DashboardView: View {
                     if let user = user,
                        let achievement = user.getMostRecentAchievement(spells: spells) {
                         RecentAchievementView(achievement: achievement)
+                        
+                    } else {
+                        EmptyAchievementView()
                     }
                     
                     if !recentTasks.isEmpty {
                         RecentTasksView(tasks: recentTasks)
+                    } else {
+                        EmptyTasksView()
                     }
                     
                     Spacer()
