@@ -25,12 +25,22 @@ struct DashboardView: View {
             .map { $0 }
     }
     
+    func getBackgroundImage() -> String {
+        let hour = Calendar.current.component(.hour, from: Date())
+        
+        if hour >= 7 && hour < 19 {
+            return "background-day"
+        } else {
+            return "background-evening"
+        }
+    }
+    
     var body: some View {
         NavigationStack {
             VStack(spacing: -5) {
                 ZStack {
                     GeometryReader { geometry in
-                        Image("background-valley")
+                        Image(getBackgroundImage())
                             .resizable()
                             .scaledToFill()
                             .frame(width: geometry.size.width, height: geometry.size.height)
@@ -39,12 +49,7 @@ struct DashboardView: View {
                     .ignoresSafeArea()
                     
                     // White glow shape
-                    Circle()
-                        .fill(.white)
-                        .frame(width: 220, height: 220)
-                        .blur(radius: 20)
-                        .opacity(0.3)
-                    
+
                     // Main witch image
                     Image(user?.gender.avatarName ?? "female-avatar")
                         .resizable()

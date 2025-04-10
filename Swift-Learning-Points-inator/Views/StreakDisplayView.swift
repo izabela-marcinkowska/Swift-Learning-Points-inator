@@ -15,11 +15,7 @@ struct StreakDisplayView: View {
     var body: some View {
         HStack(spacing: 0) {
             ZStack {
-                Circle()
-                    .fill(.white)
-                    .frame(width: 46, height: 46)
-                    .blur(radius: 8)
-                    .opacity(0.8)
+
                     
                 Image("red-streak-icon")
                     .resizable()
