@@ -46,7 +46,7 @@ struct DashboardView: View {
                         .opacity(0.3)
                     
                     // Main witch image
-                    Image("witchexample")
+                    Image(user?.gender.avatarName ?? "female-avatar")
                         .resizable()
                         .scaledToFit()
                         .frame(maxHeight: 180)
@@ -104,7 +104,6 @@ struct DashboardView: View {
     }
 }
 
-// Helper shape to round specific corners.
 struct RoundedCorner: Shape {
     var radius: CGFloat = .infinity
     var corners: UIRectCorner = .allCorners

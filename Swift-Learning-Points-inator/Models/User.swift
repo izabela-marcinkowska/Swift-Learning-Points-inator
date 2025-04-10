@@ -17,13 +17,24 @@ class User {
     var streak: Int
     var lastStreakDate: Date?
     var schoolProgress: [SchoolProgress]
+    private var genderRaw: String
+    
+    var gender: UserGender {
+        get {
+            UserGender(rawValue: genderRaw) ?? .other
+        }
+        set {
+            genderRaw = newValue.rawValue
+        }
+    }
     
     
-    init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil) {
+    init(name: String = "", mana: Int = 0, streak: Int = 0, lastStreakDate: Date? = nil, gender: UserGender = .other) {
         self.name = name
         self.mana = mana
         self.streak = streak
         self.lastStreakDate = lastStreakDate
+        self.genderRaw = gender.rawValue
         self.schoolProgress = SchoolOfMagic.allCases.map { school in
             SchoolProgress(school: school)
         }
@@ -213,5 +224,19 @@ extension User {
     /// - Returns: The SchoolProgress object, or nil if none exists
     func getSchoolProgress(for school: SchoolOfMagic) -> SchoolProgress? {
         return schoolProgress.first(where: { $0.school == school })
+    }
+}
+
+enum UserGender: String, Codable, CaseIterable {
+    case female = "Female"
+    case male = "Male"
+    case other = "Other"
+    
+    var avatarName: String {
+        switch self {
+        case .female: return "female-avatar"
+        case .male: return "male-avatar"
+        case .other: return "other-avatar"
+        }
     }
 }

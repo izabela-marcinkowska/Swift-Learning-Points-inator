@@ -36,6 +36,11 @@ struct SpellCategoryView: View {
             }
         }
         .withGradientBackground()
+        .toolbar {
+            ToolbarItem(placement: .navigationBarTrailing) {
+                ManaDisplayView()
+            }
+        }
     }
 }
 

@@ -35,6 +35,7 @@ struct SchoolsView: View {
             .navigationTitle("Schools of Magic")
             .withGradientBackground()
         }
+        .tint(Color("accent-color"))
     }
 }
 
