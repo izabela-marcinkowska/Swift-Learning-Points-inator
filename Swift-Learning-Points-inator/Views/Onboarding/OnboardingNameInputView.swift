@@ -14,23 +14,19 @@ struct OnboardingNameInputView: View {
     
     var body: some View {
         VStack(spacing: 30) {
-            Image("profile")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 140)
-            
-            Text("What's your name?")
+            Text("Tell us about yourself!")
                 .font(.title)
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
             
-            Text("Tell us what to call you, future magic coder!")
-                .font(.body)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal)
-            
-            VStack(alignment: .leading, spacing: 8) {
+            // Name section
+            VStack(spacing: 12) {
+                Text("What's your name?")
+                    .font(.headline)
+                    .fontWeight(.medium)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
                 TextField("Enter your name", text: $userName)
                     .padding()
                     .background(Color("card-background"))
@@ -40,30 +36,48 @@ struct OnboardingNameInputView: View {
                             .stroke(Color.purple.opacity(0.2), lineWidth: 1)
                     )
                     .focused($isNameFieldFocused)
-                
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("Choose your avatar type:")
-                        .font(.subheadline)
-                        .foregroundColor(.secondary)
-                    
-                    HStack(spacing: 15) {
-                        ForEach(UserGender.allCases, id: \.self) { gender in
-                            GenderOptionView(gender: gender, isSelected: selectedGender == gender, action: { selectedGender = gender })
-                        }
-                    }
-                }
-                
-            }
-            .padding(.horizontal, 40)
-            .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    isNameFieldFocused = true
-                }
+                    .padding(.horizontal, 20)
             }
             
+            // Visual separator
+            Divider()
+                .padding(.vertical, 10)
+                .padding(.horizontal, 40)
+            
+            // Gender selection section
+            VStack(spacing: 12) {
+                Text("Choose your avatar style")
+                    .font(.headline)
+                    .fontWeight(.medium)
+                    .multilineTextAlignment(.center)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
+                Text("Select which type of character represents you best!")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                
+                HStack(spacing: 15) {
+                    ForEach(UserGender.allCases, id: \.self) { gender in
+                        GenderOptionView(
+                            gender: gender,
+                            isSelected: selectedGender == gender,
+                            action: { selectedGender = gender }
+                        )
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 8)
+            }
         }
         .padding()
         .frame(maxWidth: .infinity)
+        .onAppear {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                isNameFieldFocused = true
+            }
+        }
     }
 }
 
@@ -78,11 +92,11 @@ struct GenderOptionView: View {
                 Image(gender.avatarName)
                     .resizable()
                     .scaledToFit()
-                    .frame(height: 50)
+                    .frame(height: 80)
                     .clipShape(Circle())
                     .overlay(
                         Circle()
-                            .stroke(isSelected ? Color("accent-color") : Color.clear, lineWidth: 3)
+                            .stroke(isSelected ? Color("accent-color") : Color.clear, lineWidth: 2)
                     )
                 
                 Text(gender.rawValue)
@@ -92,11 +106,7 @@ struct GenderOptionView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
-            .background(
-                RoundedRectangle(cornerRadius: 8)
-                    .fill(Color("card-background").opacity(0.3))
-                    .opacity(isSelected ? 1 : 0.7)
-            )
+
         }
         .buttonStyle(PlainButtonStyle())
     }
