@@ -68,7 +68,6 @@ struct OnboardingContainerView: View {
                 .ignoresSafeArea()
                 
                 VStack {
-                    // Page content
                     Spacer()
                     
                     
@@ -99,12 +98,11 @@ struct OnboardingContainerView: View {
                             movingForward = true
                             withAnimation {
                                 if currentPage < pageCount - 1 {
-                                    saveUserInfo() // Perform the save _before_ the animated transition.
-                                            withAnimation {
-                                                currentPage += 1
-                                            }
+                                    saveUserInfo()
+                                    withAnimation {
+                                        currentPage += 1
+                                    }
                                 } else {
-                                    // Complete onboarding
                                     onboardingManager.completeOnboardning()
                                     dismiss()
                                 }
@@ -119,9 +117,9 @@ struct OnboardingContainerView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     if currentPage > 0 {
                         Button {
-                            movingForward = false    // Update the flag immediately
+                            movingForward = false
                             withAnimation {
-                                currentPage -= 1      // Then animate the page change
+                                currentPage -= 1
                             }
                             print("Moving forward? \(movingForward)")
                         } label: {

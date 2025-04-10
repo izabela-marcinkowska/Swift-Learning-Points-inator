@@ -19,7 +19,6 @@ struct OnboardingNameInputView: View {
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
             
-            // Name section
             VStack(spacing: 12) {
                 Text("What's your name?")
                     .font(.headline)
@@ -39,12 +38,10 @@ struct OnboardingNameInputView: View {
                     .padding(.horizontal, 20)
             }
             
-            // Visual separator
             Divider()
                 .padding(.vertical, 10)
                 .padding(.horizontal, 40)
             
-            // Gender selection section
             VStack(spacing: 12) {
                 Text("Choose your avatar style")
                     .font(.headline)
@@ -106,7 +103,7 @@ struct GenderOptionView: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 8)
-
+            
         }
         .buttonStyle(PlainButtonStyle())
     }
