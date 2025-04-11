@@ -161,3 +161,33 @@ class ToastManager: ObservableObject {
     }
     
 }
+
+extension ToastManager {
+    /// Shows a toast notification for an error
+    ///
+    /// - Parameter error: The AppError to display
+    func showError(_ error: AppError) {
+        show(
+            title: "Error",
+            message: error.userMessage,
+            icon: error.icon,
+            duration: 4.0
+        )
+    }
+    
+    func handleError(_ error: Error, context: String) {
+        print("Error in \(context): \(error.localizedDescription)")
+        
+        if let appError = error as? AppError {
+            showError(appError)
+        } else {
+            show(
+                title: "Error",
+                message: "Something went wrong. Please try again.",
+                icon: .image(name: "error-icon"),
+                duration: 3.0
+            )
+        }
+    }
+    
+}
