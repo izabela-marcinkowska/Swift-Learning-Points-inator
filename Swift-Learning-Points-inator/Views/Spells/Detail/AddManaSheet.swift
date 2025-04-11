@@ -14,6 +14,7 @@ struct AddManaSheet: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
     @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
+    @EnvironmentObject var toastManager: ToastManager
     
     @Query private var users: [User]
     @State private var manaToInvest: Double = 0
@@ -40,26 +41,29 @@ struct AddManaSheet: View {
     }
     
     private func investManaAction() {
-        if let user = user {
-            let currentLevel = spell.currentSpellLevel
-            let amount = Int(manaToInvest)
-            
-            if spell.investMana(amount: Int(manaToInvest), from: user) {
-                try? modelContext.save()
-                
+        guard let user = user else {
+            toastManager.showError(AppError.spellOperation("User data not avaliabkle."))
+            return
+        }
+        
+        let currentLevel = spell.currentSpellLevel
+        let amount = Int(manaToInvest)
+        
+        if spell.investMana(amount: Int(manaToInvest), from: user) {
+            if modelContext.saveWithErrorHandling(toastManager: toastManager, context: "investing mana") {
                 dismiss()
-                
                 if spell.currentSpellLevel != currentLevel {
                     onComplete(spell.currentSpellLevel, amount)
                 } else {
                     onComplete(nil, amount)
                 }
-            } else {
-                print("Failed to invest mana")
             }
+        } else {
+            toastManager.showError(AppError.spellOperation("Not enought mana to invest"))
         }
     }
-    
+
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
