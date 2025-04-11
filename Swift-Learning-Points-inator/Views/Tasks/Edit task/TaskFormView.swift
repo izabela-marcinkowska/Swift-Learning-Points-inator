@@ -15,6 +15,7 @@ struct TaskFormView: View {
     var onDelete: (() -> Void)? = nil
     var onTaskUpdated: ((Task) -> Void)?
     @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
+    @EnvironmentObject var toastManager: ToastManager
     
     
     @State var title = ""
@@ -48,23 +49,21 @@ struct TaskFormView: View {
             existingTask.school = selectedSchool
             existingTask.isRepeatable = isRepeatable
             existingTask.difficulty = selectedDifficulty
-            do {
-                try modelContext.save()
+           
+            if modelContext.saveWithErrorHandling(toastManager: toastManager, context: "updating task") {
                 taskNotificationManager.reportTaskAction(type: .taskUpdated, task: existingTask)
                 dismiss()
                 onTaskUpdated?(existingTask)
-            } catch {
-                print("Error saving context: \(error)")
             }
+            
         } else {
             let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable, difficulty: selectedDifficulty)
             modelContext.insert(newTask)
             taskNotificationManager.reportTaskAction(type: .taskCreated, task: newTask)
-            do {
-                try modelContext.save()
+            
+            if modelContext.saveWithErrorHandling(toastManager: toastManager, context: "creating task") {
+                taskNotificationManager.reportTaskAction(type: .taskCreated, task: newTask)
                 dismiss()
-            } catch {
-                print("Error saving context: \(error)")
             }
         }
     }
