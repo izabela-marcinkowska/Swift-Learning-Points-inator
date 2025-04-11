@@ -175,6 +175,11 @@ extension ToastManager {
         )
     }
     
+    /// Handles a caught error by showing an appropriate toast notification
+    ///
+    /// - Parameters:
+    ///   - error: The error that was caught
+    ///   - context: A string describing where the error occurred, for debugging
     func handleError(_ error: Error, context: String) {
         print("Error in \(context): \(error.localizedDescription)")
         
