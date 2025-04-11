@@ -196,3 +196,21 @@ extension ToastManager {
     }
     
 }
+
+extension ToastManager {
+    /// Executes a throwing operation and handles any errors
+    ///
+    /// - Parameters:
+    ///   - context: Description of what operation is being performed
+    ///   - operation: The throwing operation to execute
+    /// - Returns: Whether the operation succeeded without errors
+    func performWithErrorHandling(context: String, operation: () throws -> Void) -> Bool {
+        do {
+            try operation()
+            return true
+        } catch {
+            handleError(AppError.generalError("Operation Failed"), context: context)
+            return false
+        }
+    }
+}
