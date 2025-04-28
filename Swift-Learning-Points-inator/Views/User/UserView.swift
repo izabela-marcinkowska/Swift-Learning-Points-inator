@@ -21,9 +21,12 @@ struct UserView: View {
     private func submit () {
         if let user = user {
             user.name = newName
-            _ = modelContext.saveWithErrorHandling(toastManager: toastManager, context: "updating user name")
+            if modelContext.saveWithErrorHandling(toastManager: toastManager, context: "updating user name") {
+                newName = ""
+            }
+        } else {
+            toastManager.showError(AppError.generalError("User profile not found"))
         }
-        newName = ""
     }
     
     var body: some View {
