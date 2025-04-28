@@ -40,6 +40,16 @@ struct AddManaSheet: View {
         spell.remainingManaForNextLevel(afterInvesting: Int(manaToInvest))
     }
     
+    /// Processes the mana investment transaction between the user and spell.
+    ///
+    /// This function handles the complete process of investing mana in a spell:
+    /// 1. Verifies the user exists
+    /// 2. Attempts to transfer the specified amount of mana from user to spell
+    /// 3. Saves the changes to the data context
+    /// 4. Reports back whether the investment caused a level-up
+    ///
+    /// - Note: On success, this function will dismiss the current view
+    /// - Important: The function will display appropriate error messages if the user doesn't exist or lacks sufficient mana
     private func investManaAction() {
         guard let user = user else {
             toastManager.showError(AppError.spellOperation("User data not avaliabkle."))

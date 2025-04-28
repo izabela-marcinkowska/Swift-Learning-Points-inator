@@ -45,14 +45,14 @@ class TaskResetManager {
     
     /// Fetching all the tasks that are repeatable and performing the reset of `isCompleted` so that tasks can we completed again.
     /// - Parameter modelContext: current model context
-    private func performReset(modelContext: ModelContext) {
+    private func performReset(modelContext: ModelContext, toastManager: ToastManager) {
         let descriptor = FetchDescriptor<Task>(
             predicate: #Predicate<Task> { task in
                 task.isRepeatable
             }
         )
         
-        do {
+        let sucess = toastManager.performWithErrorHandling(context: "fetching repeatable tasks") {
             let repeatableTasks = try modelContext.fetch(descriptor)
             
             for task in repeatableTasks {
@@ -61,19 +61,19 @@ class TaskResetManager {
             }
             
             try modelContext.save()
-            
+        }
+        
+        if sucess {
             lastResetDate = Date()
-        } catch {
-            print("Error resetting tasks: \(error)")
         }
     }
     
     
     /// If time passed reset time, it's calling the function that is performing reset of the tasks. 
     /// - Parameter modelContext: <#modelContext description#>
-    func checkAndResetTasks(modelContext: ModelContext) {
+    func checkAndResetTasks(modelContext: ModelContext, toastManager: ToastManager) {
         if needReset() {
-            performReset(modelContext: modelContext)
+            performReset(modelContext: modelContext, toastManager: toastManager)
         }
     }
     

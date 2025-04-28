@@ -13,13 +13,13 @@ struct AffirmationWindow: View {
     @State private var currentAffirmation: Affirmation?
     @Environment(\.modelContext) private var modelContext
     private var affirmationManager: AffirmationManager? { affirmationsManagers.first }
+    @EnvironmentObject private var toastManager: ToastManager
     
     private func fetchDailyAffirmation() {
         guard let manager = affirmationManager else { return }
-        do {
+        
+        _ = toastManager.performWithErrorHandling(context: "fetching daily afirmation") {
             currentAffirmation = try manager.getDailyAffirmation(context: modelContext)
-        } catch {
-            print("Error fetching affirmation: {\(error)")
         }
     }
     

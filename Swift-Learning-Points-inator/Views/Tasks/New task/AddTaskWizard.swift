@@ -21,6 +21,7 @@ struct AddTaskWizard: View {
     @Environment(\.modelContext) private var modelContext
     var onTaskCreated: ((Task) -> Void)?
     @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
+    @EnvironmentObject var toastManager: ToastManager
     
     @State private var currentStep = 0
     @State private var formData = TaskFormData()
@@ -41,6 +42,15 @@ struct AddTaskWizard: View {
         }
     }
     
+    /// Creates and persists a new task based on the current form data.
+    ///
+    /// This function handles the complete process of task creation:
+    /// 1. Constructs a new Task instance using the validated form data
+    /// 2. Inserts the task into the model context
+    /// 3. Persists the changes to storage
+    /// 4. Notifies listeners about the newly created task
+    ///
+    /// - Note: On success, this function will dismiss the current view
     private func createTask() {
         let newTask = Task(
             name: formData.title,
@@ -51,12 +61,9 @@ struct AddTaskWizard: View {
         )
         modelContext.insert(newTask)
         
-        do {
-            try modelContext.save()
+        if modelContext.saveWithErrorHandling(toastManager: toastManager, context: "creating task") {
             dismiss()
-            taskNotificationManager.reportTaskAction(type: .taskCreated, task: newTask)
-        } catch {
-            print("Error saving content: \(error)")
+            onTaskCreated?(newTask)
         }
     }
     

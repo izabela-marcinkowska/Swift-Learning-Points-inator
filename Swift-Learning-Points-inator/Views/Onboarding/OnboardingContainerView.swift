@@ -16,6 +16,7 @@ struct OnboardingContainerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var movingForward = true
     @State private var selectedGender: UserGender = .female
+    @EnvironmentObject var toastManager: ToastManager
     
     private let  pageCount = 6
     
@@ -23,14 +24,13 @@ struct OnboardingContainerView: View {
         guard !userName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
         
         let descriptor = FetchDescriptor<User>()
-        do {
+        
+        _ = toastManager.performWithErrorHandling(context: "fetching user") {
             let users = try modelContext.fetch(descriptor)
             if let user = users.first {
                 user.name = userName
                 try modelContext.save()
             }
-        } catch {
-            print("Error saving user name: \(error)")
         }
     }
     
