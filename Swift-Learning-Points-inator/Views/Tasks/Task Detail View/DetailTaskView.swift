@@ -94,13 +94,21 @@ struct DetailTaskView: View {
                 if let user = user {
                     if task.isCompleted {
                         task.unmarkTask(for: user, spells: spells)
+                        if !modelContext.saveWithErrorHandling(toastManager: toastManager, context: "unmarking task") {
+                            task.isCompleted = true
+                            return
+                        }
                     } else {
                         // Before completing task, check the current level
                         let currentLevel = user.currentLevel(for: task.school)
                         
                         // Complete the task
                         task.completeTaskWithBonus(for: user, spells: spells)
-                        try? modelContext.save()
+                       
+                        if !modelContext.saveWithErrorHandling(toastManager: toastManager, context: "completing task") {
+                            task.isCompleted = false
+                            return
+                        }
                         
                         // Calculate mana breakdown for notification
                         let breakdown = task.calculateManaBreakdown(for: user, spells: spells)
@@ -120,6 +128,8 @@ struct DetailTaskView: View {
                             taskNotificationManager.reportTaskAction(type: .taskCompleted, task: task, mana: breakdown.total)
                         }
                     }
+                } else {
+                    toastManager.showError(AppError.taskOperation("User data not avaliable."))
                 }
             } label: {
                 Text(task.isCompleted ? "Unmark Task" : "Complete Task")

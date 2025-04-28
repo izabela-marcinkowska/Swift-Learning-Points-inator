@@ -161,3 +161,56 @@ class ToastManager: ObservableObject {
     }
     
 }
+
+extension ToastManager {
+    /// Shows a toast notification for an error
+    ///
+    /// - Parameter error: The AppError to display
+    func showError(_ error: AppError) {
+        show(
+            title: "Error",
+            message: error.userMessage,
+            icon: error.icon,
+            duration: 4.0
+        )
+    }
+    
+    /// Handles a caught error by showing an appropriate toast notification
+    ///
+    /// - Parameters:
+    ///   - error: The error that was caught
+    ///   - context: A string describing where the error occurred, for debugging
+    func handleError(_ error: Error, context: String) {
+        print("Error in \(context): \(error.localizedDescription)")
+        
+        if let appError = error as? AppError {
+            showError(appError)
+        } else {
+            show(
+                title: "Error",
+                message: "Something went wrong. Please try again.",
+                icon: .image(name: "error-icon"),
+                duration: 3.0
+            )
+        }
+    }
+    
+}
+
+extension ToastManager {
+    /// Executes a throwing operation and handles any errors
+    ///
+    /// - Parameters:
+    ///   - context: Description of what operation is being performed
+    ///   - operation: The throwing operation to execute
+    /// - Returns: Whether the operation succeeded without errors
+    func performWithErrorHandling(context: String, operation: () throws -> Void) -> Bool {
+        do {
+            try operation()
+            return true
+        } catch {
+            handleError(AppError.generalError("Operation Failed"), context: context)
+            return false
+        }
+    }
+}

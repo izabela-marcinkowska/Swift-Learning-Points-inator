@@ -35,7 +35,7 @@ struct Swift_Learning_Points_inatorApp: App {
             configureTabBarAppearance()
             
             
-            TaskResetManager.shared.checkAndResetTasks(modelContext: modelContext)
+         
             
             
             // MARK: - Affirmation
@@ -165,6 +165,11 @@ struct Swift_Learning_Points_inatorApp: App {
                 .environmentObject(onboardingManager)
                 .onAppear {
                     taskNotificationManager.setToastManager(manager: toastManager)
+                    
+                    TaskResetManager.shared.checkAndResetTasks(
+                        modelContext: container.mainContext,
+                        toastManager: toastManager
+                    )
                 }
         }
         .modelContainer(container)

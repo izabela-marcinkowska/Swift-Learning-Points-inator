@@ -19,6 +19,7 @@ struct ContentView: View {
     var body: some View {
         TabView {
             DashboardView()
+                .environmentObject(toastManager)
                 .tabItem {
                     VStack {
                         ScaledImage(name: "dashboard", size: CGSize(width: 32, height: 32))
@@ -27,6 +28,7 @@ struct ContentView: View {
                 }
             
             SpellBookView()
+                .environmentObject(toastManager)
                 .tabItem {
                     VStack {
                         ScaledImage(name: "magic-book", size: CGSize(width: 32, height: 32))
@@ -35,18 +37,21 @@ struct ContentView: View {
                 }
             
             TasksView()
+                .environmentObject(toastManager)
                 .tabItem {
                     ScaledImage(name: "tasks-icon", size: CGSize(width: 32, height: 32))
                     Text("Tasks")
                 }
             
             SchoolsView()
+                .environmentObject(toastManager)
                 .tabItem {
                     ScaledImage(name: "schools", size: CGSize(width: 32, height: 32))
                     Text("Schools")
                 }
             
             UserView()
+                .environmentObject(toastManager)
                 .tabItem {
                     ScaledImage(name: "profile", size: CGSize(width: 32, height: 32))
                     Text("Profile")

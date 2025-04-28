@@ -82,6 +82,7 @@ struct TasksView: View {
                 AddTaskWizard(onTaskCreated: { task in
                     toastManager.showTaskCreated(task: task)
                 })
+                .environmentObject(toastManager)
                 .presentationDetents([.height(450)])
             }
             .withGradientBackground()

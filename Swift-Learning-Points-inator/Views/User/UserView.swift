@@ -16,11 +16,12 @@ struct UserView: View {
     @State private var showAlert: Bool = false
     @State private var newName = ""
     @State private var showOnboarding: Bool = false
+    @EnvironmentObject var toastManager: ToastManager
     
     private func submit () {
         if let user = user {
             user.name = newName
-            try? modelContext.save()
+            _ = modelContext.saveWithErrorHandling(toastManager: toastManager, context: "updating user name")
         }
         newName = ""
     }

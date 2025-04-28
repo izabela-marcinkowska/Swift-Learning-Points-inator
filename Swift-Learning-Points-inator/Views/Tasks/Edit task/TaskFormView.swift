@@ -15,6 +15,7 @@ struct TaskFormView: View {
     var onDelete: (() -> Void)? = nil
     var onTaskUpdated: ((Task) -> Void)?
     @EnvironmentObject private var taskNotificationManager: TaskNotificationManager
+    @EnvironmentObject var toastManager: ToastManager
     
     
     @State var title = ""
@@ -30,17 +31,39 @@ struct TaskFormView: View {
         self.onTaskUpdated = onTaskUpdated
     }
     
+    /// Deletes the currently selected task from the data store.
+    ///
+    /// This function removes the existing task from the persistent storage:
+    /// 1. Confirms a task is available for deletion
+    /// 2. Deletes the task and persists the change
+    /// 3. Reports the deletion to the notification system
+    /// 4. Dismisses the current view
+    ///
+    /// - Note: This operation only proceeds if a valid task exists
     private func deleteTask() {
         if let task = task {
-            taskNotificationManager.reportTaskAction(type: .taskDeleted, task: task)
-            modelContext.delete(task)
-            try? modelContext.save()
             
-            dismiss()
-            onDelete?()
+            if modelContext.saveWithErrorHandling(toastManager: toastManager, context: "deleting task") {
+                taskNotificationManager.reportTaskAction(type: .taskDeleted, task: task)
+                dismiss()
+                onDelete?()
+            }
         }
     }
     
+    /// Updates an existing task or creates a new one based on the current form state.
+    ///
+    /// This function handles two distinct paths:
+    /// - For existing tasks: Updates all properties with current form values
+    /// - For new tasks: Creates a fresh Task instance with the form values
+    ///
+    /// In both cases, the function:
+    /// 1. Persists the changes to storage
+    /// 2. Reports the appropriate action to the notification system
+    /// 3. Dismisses the current view
+    /// 4. Triggers the appropriate completion callback
+    ///
+    /// - Note: The behavior changes based on whether `task` property contains a value
     private func updateTask() {
         if let existingTask = task {
             existingTask.name = title
@@ -48,23 +71,21 @@ struct TaskFormView: View {
             existingTask.school = selectedSchool
             existingTask.isRepeatable = isRepeatable
             existingTask.difficulty = selectedDifficulty
-            do {
-                try modelContext.save()
+           
+            if modelContext.saveWithErrorHandling(toastManager: toastManager, context: "updating task") {
                 taskNotificationManager.reportTaskAction(type: .taskUpdated, task: existingTask)
                 dismiss()
                 onTaskUpdated?(existingTask)
-            } catch {
-                print("Error saving context: \(error)")
             }
+            
         } else {
             let newTask = Task(name: title, mana: mana, school: selectedSchool, isRepeatable: isRepeatable, difficulty: selectedDifficulty)
             modelContext.insert(newTask)
             taskNotificationManager.reportTaskAction(type: .taskCreated, task: newTask)
-            do {
-                try modelContext.save()
+            
+            if modelContext.saveWithErrorHandling(toastManager: toastManager, context: "creating task") {
+                taskNotificationManager.reportTaskAction(type: .taskCreated, task: newTask)
                 dismiss()
-            } catch {
-                print("Error saving context: \(error)")
             }
         }
     }
