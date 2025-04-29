@@ -14,6 +14,7 @@ struct Swift_Learning_Points_inatorApp: App {
     @StateObject private var taskNotificationManager = TaskNotificationManager()
     @StateObject private var toastManager = ToastManager()
     @StateObject private var onboardingManager = OnboardingManager()
+    let notificationDelegate = NotificationDelegate()
     
     init() {
         let lightAppearance = UITabBarAppearance()
@@ -28,7 +29,7 @@ struct Swift_Learning_Points_inatorApp: App {
 #endif
         do {
             container = try ModelContainer(for: User.self, Task.self, Spell.self, SchoolProgress.self, Affirmation.self, AffirmationManager.self)
-            
+            notificationDelegate.registerAsDelegate()
             let modelContext = container.mainContext
             
             let userDescriptor = FetchDescriptor<User>()
@@ -156,6 +157,37 @@ struct Swift_Learning_Points_inatorApp: App {
         tabBar.scrollEdgeAppearance = appearance
     }
     
+    private func checkAndScheduleStreakReminder() {
+        let descriptor = FetchDescriptor<User>()
+        do {
+            let users = try container.mainContext.fetch(descriptor)
+            guard let user = users.first else { return }
+            
+            // Check if user has a streak to maintain
+            guard user.streak > 0 else {
+                // No streak to lose, remove any pending notifications
+                NotificationManager.shared.removePendingNotifications(of: .streakReminder)
+                return
+            }
+            
+            // Check if user already completed tasks today
+            let streakStatus = user.checkStreakStatus()
+            if streakStatus == .continuing && Calendar.current.isDateInToday(user.lastStreakDate ?? Date.distantPast) {
+                // User already completed tasks today, no need for reminder
+                NotificationManager.shared.removePendingNotifications(of: .streakReminder)
+                print("User already completed tasks today, no streak reminder needed")
+            } else {
+                // User has a streak but hasn't completed tasks today - schedule reminder
+                NotificationManager.shared.scheduleStreakReminderForEndOfDay(
+                    currentStreak: user.streak
+                )
+                print("Scheduled streak reminder for user with \(user.streak)-day streak")
+            }
+        } catch {
+            print("Error fetching user for streak reminder: \(error)")
+        }
+    }
+    
     
     var body: some Scene {
         WindowGroup {
@@ -170,6 +202,8 @@ struct Swift_Learning_Points_inatorApp: App {
                         modelContext: container.mainContext,
                         toastManager: toastManager
                     )
+                    
+                    checkAndScheduleStreakReminder()
                 }
         }
         .modelContainer(container)

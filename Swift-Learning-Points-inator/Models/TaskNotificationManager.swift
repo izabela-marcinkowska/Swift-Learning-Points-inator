@@ -75,11 +75,19 @@ class TaskNotificationManager: ObservableObject {
         case .taskCompleted:
             completedTask = task
             completedTaskMana = mana ?? 0
+            
+            updateStreakNotificationsAfterTaskCompletion()
         case .levelUp, .spellLevelUp, .manaInvested:
             break
         }
         notificationType = type
         shouldShowToast = true
+    }
+    
+    func updateStreakNotificationsAfterTaskCompletion() {
+        // Cancel any pending streak reminders since a task was completed today
+        NotificationManager.shared.removePendingNotifications(of: .streakReminder)
+        print("Task completed today, removed pending streak reminders")
     }
 
 

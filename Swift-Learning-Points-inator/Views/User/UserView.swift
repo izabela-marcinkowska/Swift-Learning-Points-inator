@@ -112,10 +112,28 @@ struct UserView: View {
                                 title: "Test Model Error",
                                 action: {
                                     let _ = toastManager.performWithErrorHandling(context: "testing errors") {
-                                                throw AppError.dataModification("Simulated data error for testing")
-                                            }
+                                        throw AppError.dataModification("Simulated data error for testing")
+                                    }
                                 }
                             )
+                            
+                            SettingsRowItem(
+                                icon: "sad",
+                                title: "Test notification",
+                                action: {
+                                    NotificationManager.shared.sendTestNotification()
+                                }
+                            )
+                            
+                            SettingsRowItem(
+                                icon: "icon",
+                                title: "Notification Permission",
+                                action: {
+                                    NotificationManager.shared.requestPermission { granted in
+                                        print("Notification permission granted: \(granted)")
+                                    }
+                                })
+                            
                         }
                         .padding(.horizontal)
                     }
