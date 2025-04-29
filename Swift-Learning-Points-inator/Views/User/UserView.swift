@@ -97,6 +97,29 @@ struct UserView: View {
                         .padding(.horizontal)
                     }
                     
+                    SettingsSection(title: "Debug") {
+                        VStack(spacing: 12) {
+                            SettingsRowItem(
+                                icon: "bug",
+                                title: "Test Error Toast",
+                                action: {
+                                    toastManager.showError(AppError.generalError("This is test error msg"))
+                                }
+                            )
+                            
+                            SettingsRowItem(
+                                icon: "exclamationmark.triangle",
+                                title: "Test Model Error",
+                                action: {
+                                    let _ = toastManager.performWithErrorHandling(context: "testing errors") {
+                                                throw AppError.dataModification("Simulated data error for testing")
+                                            }
+                                }
+                            )
+                        }
+                        .padding(.horizontal)
+                    }
+                    
                     NavigationLink(destination: ButtonsShow()) {
                         Text("Visa Alert Knappar")
                             .font(.headline)
