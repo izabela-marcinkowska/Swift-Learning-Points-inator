@@ -70,7 +70,6 @@ struct OnboardingContainerView: View {
                 VStack {
                     Spacer()
                     
-                    
                     currentOnboardingView
                         .id(currentPage)
                         .transition(.asymmetric(

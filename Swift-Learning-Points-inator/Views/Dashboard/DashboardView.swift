@@ -48,9 +48,6 @@ struct DashboardView: View {
                     }
                     .ignoresSafeArea()
                     
-                    // White glow shape
-
-                    // Main witch image
                     Image(user?.gender.avatarName ?? "female-avatar")
                         .resizable()
                         .scaledToFit()
@@ -128,11 +125,3 @@ struct RoundedCorner: Shape {
     }
 }
 
-#Preview {
-    let container = try! ModelContainer(for: User.self, configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-    let context = container.mainContext
-    context.insert(User(name: "Bella", mana: 42, streak: 5))
-    
-    return DashboardView()
-        .modelContainer(container)
-}

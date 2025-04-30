@@ -68,7 +68,6 @@ struct WaveAnimationModifier: ViewModifier {
             .overlay(
                 GeometryReader { geometry in
                     ZStack {
-                        // Wave animation
                         Path { path in
                             let width = geometry.size.width
                             let height = geometry.size.height
@@ -81,7 +80,7 @@ struct WaveAnimationModifier: ViewModifier {
                             path.addLine(to: CGPoint(x: width, y: height))
                             path.closeSubpath()
                         }
-                        .fill(accent.opacity(0.1)) // Reduced opacity here
+                        .fill(accent.opacity(0.1))
                         .mask(
                             Rectangle()
                                 .fill(

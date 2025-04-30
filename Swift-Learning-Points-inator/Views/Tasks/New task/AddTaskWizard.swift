@@ -33,7 +33,6 @@ struct AddTaskWizard: View {
         case 0: // Title step
             return !formData.title.trimmingCharacters(in: .whitespaces).isEmpty
         case 1: // School and difficulty step
-            // Default values should be valid, so we return true here
             return true
         case 2: // Additional options step
             return true

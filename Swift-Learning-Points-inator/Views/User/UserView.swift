@@ -19,6 +19,7 @@ struct UserView: View {
     @EnvironmentObject var toastManager: ToastManager
     @State private var notificationsEnabled = false
     
+    /// Submits the changes made in the user profile, specifically updating the user's name.
     private func submit () {
         if let user = user {
             user.name = newName
@@ -30,31 +31,30 @@ struct UserView: View {
         }
     }
     
+    /// Refreshes the `notificationsEnabled` state by checking the current notification permission status and the user's preference.
     private func refreshNotificationStatus() {
         NotificationManager.shared.checkPermissionStatus { status in
-            // Only set to true if both the system permissions are granted AND the user preference is enabled
             let userPreference = NotificationManager.shared.getUserNotificationPreference()
             notificationsEnabled = (status == .authorized && userPreference)
         }
     }
     
+    /// Handles the toggling of the notification preference. It updates the user's preference and requests permission if enabling notifications. If disabling, it removes all pending notifications.
+    ///
+    /// - Parameter isEnabled: A boolean value indicating whether notifications are being enabled (`true`) or disabled (`false`).
     private func handleNotificationToggle(isEnabled: Bool) {
-        // Store the user's preference
         NotificationManager.shared.setUserNotificationPreference(enabled: isEnabled)
         
         if isEnabled {
             NotificationManager.shared.requestPermission { granted in
                 if !granted {
-                    // Update UI if permission is denied
                     notificationsEnabled = false
                     NotificationManager.shared.setUserNotificationPreference(enabled: false)
                     
-                    // Show toast to inform user
                     toastManager.showError(AppError.generalError("Please enable notifications in Settings to receive reminders"))
                 }
             }
         } else {
-            // User has disabled notifications in the app
             NotificationManager.shared.removeAllPendingNotifications()
         }
     }

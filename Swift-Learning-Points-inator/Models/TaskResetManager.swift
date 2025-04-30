@@ -70,7 +70,6 @@ class TaskResetManager {
     
     
     /// If time passed reset time, it's calling the function that is performing reset of the tasks. 
-    /// - Parameter modelContext: <#modelContext description#>
     func checkAndResetTasks(modelContext: ModelContext, toastManager: ToastManager) {
         if needReset() {
             performReset(modelContext: modelContext, toastManager: toastManager)

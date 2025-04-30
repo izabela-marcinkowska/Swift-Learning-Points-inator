@@ -79,12 +79,10 @@ struct SpellLevelMilestone: View {
                         .font(.caption)
                         .foregroundStyle(.secondary)
                 } else if isArchieved {
-                    // Only show "Level unlocked" for levels that are fully achieved
                     Text("Level unlocked")
                         .font(.caption)
                         .foregroundStyle(.green)
                 } else if isCurrent {
-                    // For the current level, show progress info
                     HStack(spacing: 2) {
                         Text("Requires")
                             .font(.caption)
@@ -100,7 +98,6 @@ struct SpellLevelMilestone: View {
                             .foregroundStyle(.secondary)
                     }
                 } else {
-                    // For future levels
                     HStack(spacing: 1) {
                         Text("Requires")
                             .font(.caption)

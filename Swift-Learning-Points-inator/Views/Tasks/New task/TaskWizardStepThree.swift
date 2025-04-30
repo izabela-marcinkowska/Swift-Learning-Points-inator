@@ -18,14 +18,12 @@ struct TaskWizardStepThree: View {
                 .foregroundColor(.white)
                 .padding(.bottom, 5)
             
-            // School selection
             VStack(alignment: .leading, spacing: 8) {
                 Text("School of Magic")
                     .font(.headline)
                     .foregroundColor(Color("accent-color"))
                 
                 VStack {
-                    // Reuse your existing SchoolPickerView
                     SchoolPickerView(selectedSchool: $formData.school)
                         .padding(.horizontal)
                         .padding(.vertical, 8)
@@ -39,7 +37,6 @@ struct TaskWizardStepThree: View {
                 }
             }
             Spacer()
-            // Repeatable option
             VStack(alignment: .leading, spacing: 8) {
                 
                 Toggle("Repeatable Task", isOn: $formData.isRepeatable)

@@ -8,6 +8,7 @@
 import Foundation
 import UserNotifications
 
+/// Manages local notifications for the application.
 class NotificationManager {
     static let shared = NotificationManager()
     
@@ -18,20 +19,29 @@ class NotificationManager {
     private init() {}
     
     private let notificationPreferenceKey = "userNotificationPreference"
-
+    
+    
+    /// Sets the user's preference for receiving notifications.
+    ///
+    /// - Parameter enabled: A boolean value indicating whether notifications should be enabled (`true`) or disabled (`false`).
     func setUserNotificationPreference(enabled: Bool) {
         UserDefaults.standard.set(enabled, forKey: notificationPreferenceKey)
     }
-
+    
+    /// Retrieves the user's current notification preference.
+    ///
+    /// - Returns: A boolean value indicating whether notifications are currently enabled (`true`) or disabled (`false`).
     func getUserNotificationPreference() -> Bool {
         return UserDefaults.standard.bool(forKey: notificationPreferenceKey)
     }
     
+    /// Requests permission from the user to send local notifications.
+    ///
+    /// - Parameter completion: A closure that is called with a boolean value indicating whether permission was granted (`true`) or denied (`false`).
     func requestPermission(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             DispatchQueue.main.async {
                 if let error = error {
-                    // now we’re using the error constant…
                     print("Notification permission error: \(error.localizedDescription)")
                     completion(false)
                     return
@@ -41,7 +51,9 @@ class NotificationManager {
         }
     }
     
-    /// Check notification permission status
+    /// Checks the current authorization status for local notifications.
+    ///
+    /// - Parameter completion: A closure that is called with the current `UNAuthorizationStatus`.
     func checkPermissionStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
             DispatchQueue.main.async {
@@ -50,7 +62,9 @@ class NotificationManager {
         }
     }
     
-    /// Remove pending notifications of a specific type
+    /// Removes all pending notifications of a specific type.
+    ///
+    /// - Parameter type: The `NotificationType` of the notifications to remove.
     func removePendingNotifications(of type: NotificationType) {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [type.rawValue])
     }
@@ -60,6 +74,11 @@ class NotificationManager {
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
     
+    /// Schedules a notification to remind the user about their current learning streak at a specific time.
+    ///
+    /// - Parameters:
+    ///   - currentStreak: The user's current learning streak (number of consecutive days).
+    ///   - time: The `Date` at which the notification should be delivered.
     func scheduleStreakReminder(currentStreak: Int, at time: Date) {
         let content = UNMutableNotificationContent()
         content.title = "Don't break your streak!"
@@ -83,8 +102,13 @@ class NotificationManager {
         }
     }
     
+    /// Schedules a streak reminder notification for the end of the current day.
+    ///
+    /// - Parameters:
+    ///   - currentStreak: The user's current learning streak.
+    ///   - hour: The hour (in 24-hour format) at which to schedule the reminder (default is 20).
+    ///   - minute: The minute at which to schedule the reminder (default is 0).
     func scheduleStreakReminderForEndOfDay(currentStreak: Int, hour: Int = 20, minute: Int = 0) {
-        // Create a date for today at the specified hour and minute
         var components = DateComponents()
         components.hour = hour
         components.minute = minute
@@ -103,17 +127,21 @@ class NotificationManager {
         }
     }
     
+    /// Schedules a streak reminder notification for the beginning of the next day.
+    ///
+    /// - Parameters:
+    ///   - currentStreak: The user's current learning streak.
+    ///   - hour: The hour (in 24-hour format) at which to schedule the reminder (default is 9).
+    ///   - minute: The minute at which to schedule the reminder (default is 0).
     func scheduleStreakReminderForNextDay(currentStreak: Int, hour: Int = 9, minute: Int = 0) {
         let now = Date()
         let calendar = Calendar.current
         
-        // Get tomorrow's date
         guard let tomorrow = calendar.date(byAdding: .day, value: 1, to: now) else {
             print("Failed to calculate tomorrow's date")
             return
         }
         
-        // Create components for tomorrow at the specified time
         var components = calendar.dateComponents([.year, .month, .day], from: tomorrow)
         components.hour = hour
         components.minute = minute
@@ -126,7 +154,7 @@ class NotificationManager {
         scheduleStreakReminder(currentStreak: currentStreak, at: reminderTime)
     }
     
-    // Add this to NotificationManager.swift
+    /// Sends a test notification immediately (after a short delay). This is useful for debugging notification setup.
     func sendTestNotification() {
         let content = UNMutableNotificationContent()
         content.title = "Test Notification"

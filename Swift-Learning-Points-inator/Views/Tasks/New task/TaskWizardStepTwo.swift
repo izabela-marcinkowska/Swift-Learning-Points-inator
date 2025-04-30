@@ -18,14 +18,11 @@ struct TaskWizardStepTwo: View {
                 .foregroundColor(.white)
                 .padding(.bottom, 5)
 
-            
-            // Difficulty selection
             VStack(alignment: .leading, spacing: 8) {
                 Text("Select Difficulty")
                     .font(.headline)
                     .foregroundColor(Color("accent-color"))
                 
-                // Reuse your existing DifficultyPickerView
                 DifficultyPickerView(selectedDifficulty: $formData.difficulty, mana: $formData.mana)
                     .padding(.horizontal)
                     .padding(.vertical, 8)
@@ -38,13 +35,11 @@ struct TaskWizardStepTwo: View {
                     .tint(Color("accent-color"))
             }
             
-            // Mana slider - without background
             VStack(alignment: .leading, spacing: 8) {
                 Text("Mana Reward")
                     .font(.headline)
                     .foregroundColor(Color("accent-color"))
                 
-                // Reuse your existing ManaSliderView without the background
                 ManaSliderView(mana: $formData.mana, difficulty: formData.difficulty)
                     .padding(.vertical, 12)
             }
