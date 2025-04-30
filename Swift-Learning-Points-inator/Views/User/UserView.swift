@@ -33,6 +33,10 @@ struct UserView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 24) {
+                    if let user = user {
+                        UserCardView(user: user)
+                            .padding(.horizontal)
+                    }
                     SettingsSection(title: "User Information") {
                         VStack(spacing: 12) {
                             SettingsRowItem(
