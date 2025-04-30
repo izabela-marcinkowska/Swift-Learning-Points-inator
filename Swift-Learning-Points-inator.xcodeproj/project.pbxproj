@@ -6,11 +6,27 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		1764E46B2DC2141200BC9029 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 17FFC58E2D0C329D0018D26F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 17FFC5952D0C329D0018D26F;
+			remoteInfo = "Swift-Learning-Points-inator";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		1764E4672DC2141200BC9029 /* Swift-Learning-Points-inatorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swift-Learning-Points-inatorTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		17FFC5962D0C329D0018D26F /* Swift-Learning-Points-inator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swift-Learning-Points-inator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		1764E4682DC2141200BC9029 /* Swift-Learning-Points-inatorTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "Swift-Learning-Points-inatorTests";
+			sourceTree = "<group>";
+		};
 		17FFC5982D0C329D0018D26F /* Swift-Learning-Points-inator */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = "Swift-Learning-Points-inator";
@@ -19,6 +35,13 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1764E4642DC2141200BC9029 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		17FFC5932D0C329D0018D26F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				17FFC5982D0C329D0018D26F /* Swift-Learning-Points-inator */,
+				1764E4682DC2141200BC9029 /* Swift-Learning-Points-inatorTests */,
 				17FFC5972D0C329D0018D26F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				17FFC5962D0C329D0018D26F /* Swift-Learning-Points-inator.app */,
+				1764E4672DC2141200BC9029 /* Swift-Learning-Points-inatorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,6 +73,29 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1764E4662DC2141200BC9029 /* Swift-Learning-Points-inatorTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1764E46D2DC2141200BC9029 /* Build configuration list for PBXNativeTarget "Swift-Learning-Points-inatorTests" */;
+			buildPhases = (
+				1764E4632DC2141200BC9029 /* Sources */,
+				1764E4642DC2141200BC9029 /* Frameworks */,
+				1764E4652DC2141200BC9029 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1764E46C2DC2141200BC9029 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				1764E4682DC2141200BC9029 /* Swift-Learning-Points-inatorTests */,
+			);
+			name = "Swift-Learning-Points-inatorTests";
+			packageProductDependencies = (
+			);
+			productName = "Swift-Learning-Points-inatorTests";
+			productReference = 1764E4672DC2141200BC9029 /* Swift-Learning-Points-inatorTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		17FFC5952D0C329D0018D26F /* Swift-Learning-Points-inator */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 17FFC5A42D0C329F0018D26F /* Build configuration list for PBXNativeTarget "Swift-Learning-Points-inator" */;
@@ -77,9 +125,13 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1620;
+				LastSwiftUpdateCheck = 1630;
 				LastUpgradeCheck = 1630;
 				TargetAttributes = {
+					1764E4662DC2141200BC9029 = {
+						CreatedOnToolsVersion = 16.3;
+						TestTargetID = 17FFC5952D0C329D0018D26F;
+					};
 					17FFC5952D0C329D0018D26F = {
 						CreatedOnToolsVersion = 16.2;
 					};
@@ -100,11 +152,19 @@
 			projectRoot = "";
 			targets = (
 				17FFC5952D0C329D0018D26F /* Swift-Learning-Points-inator */,
+				1764E4662DC2141200BC9029 /* Swift-Learning-Points-inatorTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1764E4652DC2141200BC9029 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		17FFC5942D0C329D0018D26F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -115,6 +175,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1764E4632DC2141200BC9029 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		17FFC5922D0C329D0018D26F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -124,7 +191,53 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		1764E46C2DC2141200BC9029 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 17FFC5952D0C329D0018D26F /* Swift-Learning-Points-inator */;
+			targetProxy = 1764E46B2DC2141200BC9029 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		1764E46E2DC2141200BC9029 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHJYGQ3B7G;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "se.izabela.Swift-Learning-Points-inatorTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swift-Learning-Points-inator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Swift-Learning-Points-inator";
+			};
+			name = Debug;
+		};
+		1764E46F2DC2141200BC9029 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = NHJYGQ3B7G;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.4;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "se.izabela.Swift-Learning-Points-inatorTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Swift-Learning-Points-inator.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Swift-Learning-Points-inator";
+			};
+			name = Release;
+		};
 		17FFC5A22D0C329F0018D26F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -305,6 +418,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1764E46D2DC2141200BC9029 /* Build configuration list for PBXNativeTarget "Swift-Learning-Points-inatorTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1764E46E2DC2141200BC9029 /* Debug */,
+				1764E46F2DC2141200BC9029 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		17FFC5912D0C329D0018D26F /* Build configuration list for PBXProject "Swift-Learning-Points-inator" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
