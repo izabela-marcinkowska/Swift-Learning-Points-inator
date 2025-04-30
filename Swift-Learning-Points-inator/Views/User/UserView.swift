@@ -104,7 +104,7 @@ struct UserView: View {
                     SettingsSection(title: "Debug") {
                         VStack(spacing: 12) {
                             SettingsRowItem(
-                                icon: "bug",
+                                icon: "debug-icon",
                                 title: "Test Error Toast",
                                 action: {
                                     toastManager.showError(AppError.generalError("This is test error msg"))
@@ -112,7 +112,7 @@ struct UserView: View {
                             )
                             
                             SettingsRowItem(
-                                icon: "exclamationmark.triangle",
+                                icon: "debug-icon",
                                 title: "Test Model Error",
                                 action: {
                                     let _ = toastManager.performWithErrorHandling(context: "testing errors") {
@@ -122,7 +122,7 @@ struct UserView: View {
                             )
                             
                             SettingsRowItem(
-                                icon: "sad",
+                                icon: "debug-icon",
                                 title: "Test notification",
                                 action: {
                                     NotificationManager.shared.sendTestNotification()
@@ -130,7 +130,7 @@ struct UserView: View {
                             )
                             
                             SettingsRowItem(
-                                icon: "icon",
+                                icon: "debug-icon",
                                 title: "Notification Permission",
                                 action: {
                                     NotificationManager.shared.requestPermission { granted in
