@@ -17,6 +17,16 @@ class NotificationManager {
     
     private init() {}
     
+    private let notificationPreferenceKey = "userNotificationPreference"
+
+    func setUserNotificationPreference(enabled: Bool) {
+        UserDefaults.standard.set(enabled, forKey: notificationPreferenceKey)
+    }
+
+    func getUserNotificationPreference() -> Bool {
+        return UserDefaults.standard.bool(forKey: notificationPreferenceKey)
+    }
+    
     func requestPermission(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { granted, error in
             DispatchQueue.main.async {

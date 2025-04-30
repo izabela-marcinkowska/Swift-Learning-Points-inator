@@ -17,6 +17,7 @@ struct UserView: View {
     @State private var newName = ""
     @State private var showOnboarding: Bool = false
     @EnvironmentObject var toastManager: ToastManager
+    @State private var notificationsEnabled = false
     
     private func submit () {
         if let user = user {
@@ -26,6 +27,35 @@ struct UserView: View {
             }
         } else {
             toastManager.showError(AppError.generalError("User profile not found"))
+        }
+    }
+    
+    private func refreshNotificationStatus() {
+        NotificationManager.shared.checkPermissionStatus { status in
+            // Only set to true if both the system permissions are granted AND the user preference is enabled
+            let userPreference = NotificationManager.shared.getUserNotificationPreference()
+            notificationsEnabled = (status == .authorized && userPreference)
+        }
+    }
+    
+    private func handleNotificationToggle(isEnabled: Bool) {
+        // Store the user's preference
+        NotificationManager.shared.setUserNotificationPreference(enabled: isEnabled)
+        
+        if isEnabled {
+            NotificationManager.shared.requestPermission { granted in
+                if !granted {
+                    // Update UI if permission is denied
+                    notificationsEnabled = false
+                    NotificationManager.shared.setUserNotificationPreference(enabled: false)
+                    
+                    // Show toast to inform user
+                    toastManager.showError(AppError.generalError("Please enable notifications in Settings to receive reminders"))
+                }
+            }
+        } else {
+            // User has disabled notifications in the app
+            NotificationManager.shared.removeAllPendingNotifications()
         }
     }
     
@@ -53,12 +83,12 @@ struct UserView: View {
                     
                     SettingsSection(title: "App Settings") {
                         VStack(spacing: 12) {
-                            SettingsRowItem(
+                            SettingsToggleItem(
                                 icon: "notifications-icon",
-                                title: "Notifications",
-                                action: {
-                                    // Handle notifications setting
-                                }
+                                title: "Enable Notifications",
+                                subtitle: "Receive streak reminders and achievement alerts",
+                                isOn: $notificationsEnabled,
+                                action: handleNotificationToggle
                             )
                             
                             SettingsRowItem(
@@ -121,13 +151,6 @@ struct UserView: View {
                                 }
                             )
                             
-                            SettingsRowItem(
-                                icon: "debug-icon",
-                                title: "Test notification",
-                                action: {
-                                    NotificationManager.shared.sendTestNotification()
-                                }
-                            )
                             
                             SettingsRowItem(
                                 icon: "debug-icon",
@@ -170,5 +193,8 @@ struct UserView: View {
             }
         }
         .tint(Color("accent-color"))
+        .onAppear {
+            refreshNotificationStatus()
+        }
     }
 }
